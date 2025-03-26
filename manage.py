@@ -4,6 +4,7 @@ import os
 import sys
 from django.http import HttpResponse
 from dotenv import load_dotenv
+from pathlib import Path
 
 
 def main():
@@ -20,4 +21,5 @@ def main():
 
 
 if __name__ == "__main__":
+    print(Path(__file__).resolve().parent.parent)
     main()

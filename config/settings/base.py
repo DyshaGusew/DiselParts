@@ -2,9 +2,10 @@ from pathlib import Path
 import os
 
 # Build paths
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DEBUG = os.getenv("DEBUG")
+
 # Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",
