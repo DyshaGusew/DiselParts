@@ -1,17 +1,9 @@
-"""Django's command-line utility for administrative tasks."""
-
 import os
 import sys
-from django.http import HttpResponse
-from dotenv import load_dotenv
-from pathlib import Path
 
 
 def main():
-    load_dotenv()
-    """Run administrative tasks."""
-    settings_module = os.getenv("DJANGO_SETTINGS_MODULE", "config.settings.local")
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings_module)
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
     try:
         from django.core.management import execute_from_command_line
@@ -21,5 +13,4 @@ def main():
 
 
 if __name__ == "__main__":
-    print(Path(__file__).resolve().parent.parent)
     main()
