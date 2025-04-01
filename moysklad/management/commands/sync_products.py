@@ -1,12 +1,12 @@
 from django.core.management.base import BaseCommand
-from moysklad.services import sync_with_moysklad
+from moysklad.services import sync_products_with_moysklad
 
 
 class Command(BaseCommand):
-    help = "Sync products with Moysklad"
+    help = "Синхронизация товаров с МойСклад"
 
     def handle(self, *args, **options):
-        if sync_with_moysklad():
-            self.stdout.write("✅ Sync successful")
+        if sync_products_with_moysklad():
+            self.stdout.write(self.style.SUCCESS("✅ Синхронизация успешна"))
         else:
-            self.stdout.write("❌ Sync failed")
+            self.stdout.write(self.style.ERROR("❌ Синхронизация завершена с ошибками"))

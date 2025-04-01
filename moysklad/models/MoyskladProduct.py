@@ -4,6 +4,7 @@ from config.models.persistent import Persistent
 
 
 class MoyskladProduct(Persistent):
+    # Основные поля
     id = models.CharField(primary_key=True, max_length=255, verbose_name="ID")
     name = models.CharField(max_length=255, verbose_name="Название")
     code = models.CharField(max_length=100, blank=True, verbose_name="Код")

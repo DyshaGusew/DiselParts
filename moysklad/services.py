@@ -1,61 +1,21 @@
 from .models import MoyskladProduct
-from .api import fetch_products
 import requests
+from django.conf import settings
 
 
-def sync_with_moysklad1():
-    """Выводит данные товаров из МойСклад в консоль"""
+def fetch_products() -> dict:
+    """Получение товаров из API МойСклад"""
     try:
-        response = requests.get("https://api.moysklad.ru/api/remap/1.2/entity/product", headers={"Authorization": f"Bearer 2756edceecbb64362b588a793b8246974f792248", "Accept-Encoding": "gzip"}, timeout=15)
+        response = requests.get("https://api.moysklad.ru/api/remap/1.2/entity/product", headers={"Authorization": f"Bearer {settings.MOYSKLAD_TOKEN}", "Accept-Encoding": "gzip"}, timeout=15)
         response.raise_for_status()
-        data = response.json()
-
-        if "rows" not in data:
-            print("Ошибка: в ответе API отсутствует ключ 'rows'")
-            return False
-
-        print("\n" + "=" * 80)
-        print(f"Найдено товаров: {len(data['rows'])}")
-        print("=" * 80 + "\n")
-
-        for product in data["rows"]:
-            print(f"ID: {product.get('id')}")
-            print(f"Название: {product.get('name')}")
-            print(f"Артикул: {product.get('article', 'не указан')}")
-            print(f"Код: {product.get('code', 'не указан')}")
-
-            # Обработка цен
-            if "salePrices" in product and product["salePrices"]:
-                print("\nЦены:")
-                for price in product["salePrices"]:
-                    value = price.get("value", 0)
-                    currency_name = price["currency"]["meta"].get("name", "неизвестно")
-                    price_type = price["priceType"].get("name", "неизвестный тип")
-                    print(f"  - {price_type}: {value/100} {currency_name}")
-            else:
-                print("\nНет цен для этого товара")
-
-            # Обработка штрихкодов
-            if "barcodes" in product and product["barcodes"]:
-                print("\nШтрихкоды:")
-                for barcode in product["barcodes"]:
-                    if "ean13" in barcode:
-                        print(f"  - EAN13: {barcode['ean13']}")
-
-            print("\n" + "-" * 80 + "\n")
-
-        return True
-
+        return response.json()
     except requests.exceptions.RequestException as e:
-        print(f"\nОшибка при запросе к API МойСклад: {str(e)}\n")
-        return False
-    except Exception as e:
-        print(f"\nНеожиданная ошибка: {str(e)}\n")
-        return False
+        print(f"Ошибка API: {str(e)}")
+        return None
 
 
-def sync_with_moysklad():
-    """Логика синхронизации без модели Currency"""
+def sync_products_with_moysklad() -> bool:
+    """Основная логика синхронизации товаров"""
     products_data = fetch_products()
     if not products_data:
         print("Не удалось получить данные из API")
@@ -65,8 +25,7 @@ def sync_with_moysklad():
         print("Некорректный формат ответа API: отсутствует ключ 'rows'")
         return False
 
-    success_count = 0
-    error_count = 0
+    success_count, error_count = 0, 0
 
     for product_data in products_data["rows"]:
         try:

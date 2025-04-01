@@ -20,12 +20,14 @@ CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
 
 # Application definition
 INSTALLED_APPS = ["unfold", "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes", "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles", "moysklad"]
+
 UNFOLD = {
     "SITE_TITLE": "Админ-панель",
     "SITE_HEADER": "Админ-панель",
     "SITE_URL": "/",
-    "THEME": "dark",  # или "light"
+    "THEME": "dark",
 }
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",

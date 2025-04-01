@@ -6,7 +6,6 @@ from unfold.admin import ModelAdmin
 
 class DateModelForm(forms.ModelForm):
     class Meta:
-        # model = ent_Org
         fields = "__all__"
         widgets = {
             "date": forms.DateInput(attrs={"type": "date"}),
@@ -20,7 +19,6 @@ class MoyskladProductAdmin(ModelAdmin):
     search_fields = ("name", "article", "code", "price_value")
     readonly_fields = ("created_at", "updated_at")
 
-    # Добавляем русские названия полей
     fieldsets = [
         ("Основная информация", {"fields": ["name", "article", "code"], "description": "Основные данные о товаре"}),
         (
@@ -38,15 +36,12 @@ class MoyskladProductAdmin(ModelAdmin):
         ("Даты", {"fields": ["created_at", "updated_at"], "description": "Даты создания и обновления"}),
     ]
 
-    # Русские названия для списка
     list_display = ("name", "article", "code", "price_value")
     list_display_links = ("name",)
 
-    # Русские названия в фильтрах
     list_filter = ("vat_enabled", "price_currency")
 
     # Русские заголовки для полей
     def get_fieldsets(self, request, obj=None):
         fieldsets = super().get_fieldsets(request, obj)
-        # Можно дополнительно настроить поля здесь
         return fieldsets
