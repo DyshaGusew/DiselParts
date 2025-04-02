@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Для моей любимой Дашули</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<style>
+			body {
+				margin: 0;
+				padding: 20px;
+				font-family: "Arial", sans-serif;
+				text-align: center;
+				background: linear-gradient(to bottom, #ffebee, #ffcdd2);
+				min-height: 100vh;
+				overflow-x: hidden;
+				position: relative;
+			}
+
+			/* Анимация падающих сердечек */
+			.falling-heart {
+				position: fixed; /* Изменили с absolute на fixed */
+				color: #e91e63;
+				font-size: 20px;
+				animation: falling linear infinite;
+				pointer-events: none;
+				z-index: 1;
+				top: -30px; /* Начинаем выше экрана */
+			}
+
+			@keyframes falling {
+				0% {
+					transform: translateY(-20px) rotate(0deg);
+					opacity: 1;
+				}
+				100% {
+					transform: translateY(calc(100vh + 20px)) rotate(360deg);
+					opacity: 0;
+				}
+			}
+
+			.content {
+				position: relative;
+				z-index: 2;
+				background-color: rgba(255, 255, 255, 0.85);
+				border-radius: 15px;
+				padding: 30px;
+				box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+				max-width: 800px;
+				margin: 0 auto;
+			}
+
+			.heart {
+				color: #e91e63;
+				font-size: 80px;
+				animation: beat 1s infinite alternate;
+				margin-bottom: 20px;
+			}
+
+			@keyframes beat {
+				to {
+					transform: scale(1.2);
+				}
+			}
+
+			.message {
+				font-size: 22px;
+				margin: 25px 0;
+				color: #d81b60;
+				line-height: 1.5;
+			}
+
+			.date {
+				font-style: italic;
+				color: #ad1457;
+				margin-bottom: 30px;
+			}
+
+			.photos {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				gap: 15px;
+				margin: 30px 0;
+			}
+
+			.photo {
+				width: 100%;
+				max-width: 300px;
+				height: auto;
+				aspect-ratio: 1/1;
+				object-fit: cover;
+				border-radius: 10px;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+				transition: transform 0.3s;
+			}
+
+			.photo:hover {
+				transform: scale(1.03);
+			}
+
+			/* Адаптивность для мобильных */
+			@media (max-width: 600px) {
+				.content {
+					padding: 20px;
+				}
+				.heart {
+					font-size: 60px;
+				}
+				.message {
+					font-size: 18px;
+				}
+				.photos {
+					gap: 10px;
+				}
+			}
+
+			/* Стиль для аудио элемента */
+			audio {
+				width: 100%;
+				max-width: 300px;
+				margin-top: 20px;
+				border-radius: 20px;
+				box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Падающие сердечки будут созданы через JS -->
+
+		<div class="content">
+			<div class="heart">❤️</div>
+			<div class="message">{{ message }}</div>
+			<div class="date">{{ date }}</div>
+
+			<div class="photos">
+				<img src="/static/IMG_0172.PNG" class="photo" alt="Наше фото 1" />
+				<img src="/static/IMG_0202.PNG" class="photo" alt="Наше фото 2" />
+			</div>
+
+			<audio controls autoplay loop>
+				<source src="/static/love_song.mp3" type="audio/mpeg" />
+				Ваш браузер не поддерживает аудио элемент.
+			</audio>
+		</div>
+
+		<script>
+			// Создаем падающие сердечки
+			function createHearts() {
+				const heart = document.createElement("div");
+				heart.className = "falling-heart";
+				heart.innerHTML = "❤️";
+				heart.style.left = Math.random() * window.innerWidth + "px";
+				heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+				heart.style.fontSize = Math.random() * 20 + 10 + "px";
+				heart.style.opacity = Math.random() * 0.5 + 0.3;
+
+				// Устанавливаем начальную позицию выше экрана
+				heart.style.top = "-30px";
+
+				document.body.appendChild(heart);
+
+				// Удаляем сердечко после завершения анимации
+				setTimeout(() => {
+					if (heart.parentNode) {
+						heart.remove();
+					}
+				}, 5000);
+			}
+
+			// Запускаем создание сердечек каждые 300мс
+			setInterval(createHearts, 300);
+
+			// Сразу создаем несколько сердечек
+			for (let i = 0; i < 30; i++) {
+				setTimeout(createHearts, i * 200);
+			}
+
+			// Заменяем плейсхолдеры на реальные данные
+			document.addEventListener("DOMContentLoaded", function () {
+				const messageElement = document.querySelector(".message");
+				const dateElement = document.querySelector(".date");
+
+				if (messageElement && messageElement.textContent === "{{ message }}") {
+					messageElement.textContent = "Дашуля, ты самое прекрасное, что случилось в моей жизни! ❤️";
+				}
+
+				if (dateElement && dateElement.textContent === "{{ date }}") {
+					dateElement.textContent = "С самого первого дня, когда мы встретились...";
+				}
+			});
+		</script>
+	</body>
+</html>
