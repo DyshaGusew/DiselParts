@@ -1,3 +1,3 @@
-from .moyskladProduct import MoyskladProduct
+from .MoyskladProduct import MoyskladProduct
 
 __all__ = ["MoyskladProduct"]

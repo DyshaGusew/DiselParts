@@ -51,12 +51,12 @@ def process_linked_object(data: dict, field: str) -> str:
 def get_product_folder_info(folder_id: str) -> dict:
     """Получение информации о группе товаров"""
     if not folder_id:
-        return {"name": "", "description": ""}
+        return {"name": "Основная", "description": "Основная группа всех товаров"}
 
     url = f"https://api.moysklad.ru/api/remap/1.2/entity/productfolder/{folder_id}"
     data = fetch_additional_data(url)
 
-    return {"name": data.get("name", ""), "description": data.get("description", "")}
+    return {"name": data.get("name", "Основная"), "description": data.get("description", "")}
 
 
 def get_country_info(country_id: str) -> str:
@@ -107,7 +107,7 @@ def extract_article_number(name: str) -> str:
 
     # Дополнительный шаблон для артикула без тире
     match = re.search(r"\b[A-Z]?\d+[A-Z]?\d*\b", name)
-    return match.group(0) if match else ""
+    return match.group(0) if match else name
 
 
 def get_or_create_article(product_data: dict) -> dict:
@@ -118,13 +118,18 @@ def get_or_create_article(product_data: dict) -> dict:
     if article:
         return product_data
 
+    existing_product = None
+    if name:
+        existing_product = MoyskladProduct.objects.filter(name=name).first()
+
+    if existing_product and existing_product.article:
+        product_data["article"] = existing_product.article
+        return product_data
+
     extracted_article = extract_article_number(name)
 
     if extracted_article:
-        exists = MoyskladProduct.objects.filter(Q(article=extracted_article) | Q(code=extracted_article)).exists()
-
-        if not exists:
-            product_data["article"] = extracted_article
+        product_data["article"] = extracted_article
 
     return product_data
 
@@ -219,7 +224,7 @@ def sync_products_with_moysklad() -> bool:
 
         except Exception as e:
             error_count += 1
-            print(f"Ошибка обработки товара {product_data.get('id')}: {str(e)}")
+            print(f"Ошибка обработки товара {product_data.get('article')}: {str(e)}")
             continue
 
     print(f"\nСинхронизация завершена. Успешно: {success_count}, Ошибок: {error_count}")

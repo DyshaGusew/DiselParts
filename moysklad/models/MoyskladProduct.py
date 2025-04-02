@@ -13,7 +13,7 @@ class MoyskladProduct(Persistent):
 
     # Налоговая информация
     vat = models.IntegerField(default=0, verbose_name="НДС")
-    effective_vat = models.IntegerField(default=0, verbose_name="Эффективный НДС")
+    effective_vat = models.IntegerField(default=0, blank=True, verbose_name="Эффективный НДС")
     effective_vat_enabled = models.BooleanField(default=False, verbose_name="Эффективный НДС включен")
     vat_enabled = models.BooleanField(default=False, verbose_name="НДС включен")
 
@@ -21,24 +21,24 @@ class MoyskladProduct(Persistent):
     archived = models.BooleanField(default=False, verbose_name="В архиве")
 
     # Физические характеристики
-    weight = models.FloatField(default=0.0, verbose_name="Вес")
-    volume = models.FloatField(default=0.0, verbose_name="Объем")
-    minimum_balance = models.FloatField(default=0.0, verbose_name="Минимальный остаток")
+    weight = models.FloatField(default=0.0, blank=True, verbose_name="Вес")
+    volume = models.FloatField(default=0.0, blank=True, verbose_name="Объем")
+    minimum_balance = models.FloatField(default=0.0, blank=True, verbose_name="Минимальный остаток")
 
     # Идентификаторы
-    barcodes = models.JSONField(default=list, verbose_name="Штрихкоды")
+    barcodes = models.JSONField(default=list, blank=True, verbose_name="Штрихкоды")
     payment_item_type = models.CharField(max_length=50, default="GOOD", verbose_name="Тип оплаты")
 
     # Цены
     price_value = models.DecimalField(max_digits=15, decimal_places=2, default=0, verbose_name="Цена")
     price_type = models.CharField(max_length=100, blank=True, verbose_name="Тип цены")
 
-    min_price_value = models.DecimalField(max_digits=15, decimal_places=2, default=0, verbose_name="Минимальная цена")
+    min_price_value = models.DecimalField(max_digits=15, blank=True, decimal_places=2, default=0, verbose_name="Минимальная цена")
 
-    buy_price_value = models.DecimalField(max_digits=15, decimal_places=2, default=0, verbose_name="Закупочная цена")
+    buy_price_value = models.DecimalField(max_digits=15, blank=True, decimal_places=2, default=0, verbose_name="Закупочная цена")
 
     # Связанные объекты (названия)
-    product_folder_name = models.CharField(max_length=255, blank=True, verbose_name="Название группы")
+    product_folder_name = models.CharField(max_length=255, default="Основная", blank=True, verbose_name="Название группы")
     product_folder_description = models.TextField(blank=True, verbose_name="Описание группы")
     country_name = models.CharField(max_length=100, blank=True, verbose_name="Страна")
 
@@ -48,7 +48,7 @@ class MoyskladProduct(Persistent):
     supplier_phone = models.CharField(max_length=50, blank=True, verbose_name="Телефон поставщика")
 
     # Изображения (храним как JSON)
-    images = models.JSONField(default=list, verbose_name="Изображения")
+    images = models.JSONField(default=list, blank=True, verbose_name="Изображения")
 
     class Meta:
         verbose_name = "Товар МойСклад"
