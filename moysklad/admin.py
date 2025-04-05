@@ -38,30 +38,78 @@ class DateModelForm(forms.ModelForm):
 @admin.register(MoyskladProduct)
 class MoyskladProductAdmin(ModelAdmin):
     form = DateModelForm
-    list_display = ("name", "article", "code", "price_value", "vat", "country_name", "is_active", "image_preview")
+    list_display = (
+        "name",
+        "article",
+        "code",
+        "price_value",
+        "vat",
+        "country_name",
+        "is_active",
+        "image_preview",
+    )
     list_display_links = ("name", "code", "article")
     search_fields = ("name", "article", "code", "description")
-    list_filter = ("vat_enabled", "effective_vat_enabled", "archived", "country_name", "price_type", "product_folder_name")
+    list_filter = (
+        "vat_enabled",
+        "effective_vat_enabled",
+        "archived",
+        "country_name",
+        "price_type",
+        "product_folder_name",
+    )
     readonly_fields = ("get_main_image_preview",)
     ordering = ("name", "price_value")
     filter_horizontal = ()
 
     fieldsets = (
-        ("Основная информация", {"fields": ("name", "description", ("article", "code", "external_code"))}),
-        ("Цены", {"fields": ("price_value", "price_type", "min_price_value", "buy_price_value")}),
-        ("Налоги и статус", {"fields": (("vat", "effective_vat"), ("vat_enabled", "effective_vat_enabled", "archived"))}),
-        ("Характеристики", {"fields": (("weight", "volume"), "minimum_balance", "barcodes")}),
+        (
+            "Основная информация",
+            {"fields": ("name", "description", ("article", "code", "external_code"))},
+        ),
+        (
+            "Цены",
+            {
+                "fields": (
+                    "price_value",
+                    "price_type",
+                    "min_price_value",
+                    "buy_price_value",
+                )
+            },
+        ),
+        (
+            "Налоги и статус",
+            {
+                "fields": (
+                    ("vat", "effective_vat"),
+                    ("vat_enabled", "effective_vat_enabled", "archived"),
+                )
+            },
+        ),
+        (
+            "Характеристики",
+            {"fields": (("weight", "volume"), "minimum_balance", "barcodes")},
+        ),
         (
             "Классификация",
             {
-                "fields": ("product_folder_name", "product_folder_description", "country_name"),
+                "fields": (
+                    "product_folder_name",
+                    "product_folder_description",
+                    "country_name",
+                ),
                 "classes": ("collapse",),
             },
         ),
         (
             "Поставщик",
             {
-                "fields": ("supplier_legal_title", "supplier_actual_address", "supplier_phone"),
+                "fields": (
+                    "supplier_legal_title",
+                    "supplier_actual_address",
+                    "supplier_phone",
+                ),
                 "classes": ("collapse",),
             },
         ),
@@ -99,7 +147,14 @@ class MoyskladProductAdmin(ModelAdmin):
                 )
             )
 
-        return format_html('<div style="display: flex; flex-wrap: wrap;">{}</div>', mark_safe("".join(images_html))) if images_html else "Нет корректных изображений"
+        return (
+            format_html(
+                '<div style="display: flex; flex-wrap: wrap;">{}</div>',
+                mark_safe("".join(images_html)),
+            )
+            if images_html
+            else "Нет корректных изображений"
+        )
 
     get_main_image_preview.short_description = "Все изображения товара"
 
@@ -107,7 +162,9 @@ class MoyskladProductAdmin(ModelAdmin):
         if obj.images:
             img_url = obj.images[0].get("medium") or obj.images[0].get("thumbnail")
             if img_url:
-                return format_html('<img src="{}" style="height: 50px; border-radius: 5px;"/>', img_url)
+                return format_html(
+                    '<img src="{}" style="height: 50px; border-radius: 5px;"/>', img_url
+                )
         return "-"
 
     image_preview.short_description = "Миниатюра"
@@ -121,7 +178,9 @@ class MoyskladProductAdmin(ModelAdmin):
     def clean_image_url(self):
         url = self.cleaned_data.get("image_url")
         if url and not url.lower().endswith((".jpg", ".jpeg", ".png", ".webp")):
-            raise ValidationError("Неподдерживаемый формат изображения. Используйте JPG, PNG или WebP.")
+            raise ValidationError(
+                "Неподдерживаемый формат изображения. Используйте JPG, PNG или WebP."
+            )
         return url
 
     def save_model(self, request, obj, form, change):
@@ -129,7 +188,11 @@ class MoyskladProductAdmin(ModelAdmin):
 
         if image_url:
 
-            new_image = {"original": image_url, "medium": image_url, "thumbnail": image_url}
+            new_image = {
+                "original": image_url,
+                "medium": image_url,
+                "thumbnail": image_url,
+            }
 
             if not obj.images:
                 obj.images = [new_image]

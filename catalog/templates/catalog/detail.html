@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{{ object.name }}{% endblock %}
+{% block content %}
+   <div class="row">
+      <div class="col-md-6">
+         {% if object.get_main_image_url %}
+            <img src="{{ object.get_main_image_url }}"
+                 class="img-fluid rounded"
+                 alt="{{ object.name }}" />
+         {% endif %}
+      </div>
+      <div class="col-md-6">
+         <h1>{{ object.name }}</h1>
+         <p>
+            <strong>Артикул:</strong> {{ object.article }}
+         </p>
+         <p>
+            <strong>Цена:</strong> {{ object.sale_price }} руб.
+         </p>
+         {% if object.description %}
+            <div class="mt-4">
+               <h4>Описание</h4>
+               <p>{{ object.description }}</p>
+            </div>
+         {% endif %}
+         <button class="btn btn-success mt-3" id="buy-button">Купить</button>
+      </div>
+   </div>
+   {% block extra_js %}
+      <script>
+	document.getElementById('buy-button').addEventListener('click', function () {
+		alert('Товар {{ object.name }} добавлен в корзину!');
+		// Здесь можно добавить логику AJAX-запроса к бэкенду
+	});
+	
+      </script>
+   {% endblock %}
+{% endblock %}

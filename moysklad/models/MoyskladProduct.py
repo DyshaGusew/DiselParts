@@ -8,13 +8,19 @@ class MoyskladProduct(Persistent):
     name = models.CharField(max_length=255, verbose_name="Название")
     code = models.CharField(max_length=100, blank=True, verbose_name="Код")
     article = models.CharField(max_length=100, blank=True, verbose_name="Артикул")
-    external_code = models.CharField(max_length=100, blank=True, verbose_name="Внешний код")
+    external_code = models.CharField(
+        max_length=100, blank=True, verbose_name="Внешний код"
+    )
     description = models.TextField(blank=True, verbose_name="Описание")
 
     # Налоговая информация
     vat = models.IntegerField(default=0, verbose_name="НДС")
-    effective_vat = models.IntegerField(default=0, blank=True, verbose_name="Эффективный НДС")
-    effective_vat_enabled = models.BooleanField(default=False, verbose_name="Эффективный НДС включен")
+    effective_vat = models.IntegerField(
+        default=0, blank=True, verbose_name="Эффективный НДС"
+    )
+    effective_vat_enabled = models.BooleanField(
+        default=False, verbose_name="Эффективный НДС включен"
+    )
     vat_enabled = models.BooleanField(default=False, verbose_name="НДС включен")
 
     # Статус
@@ -23,29 +29,57 @@ class MoyskladProduct(Persistent):
     # Физические характеристики
     weight = models.FloatField(default=0.0, blank=True, verbose_name="Вес")
     volume = models.FloatField(default=0.0, blank=True, verbose_name="Объем")
-    minimum_balance = models.FloatField(default=0.0, blank=True, verbose_name="Минимальный остаток")
+    minimum_balance = models.FloatField(
+        default=0.0, blank=True, verbose_name="Минимальный остаток"
+    )
 
     # Идентификаторы
     barcodes = models.JSONField(default=list, blank=True, verbose_name="Штрихкоды")
-    payment_item_type = models.CharField(max_length=50, default="GOOD", verbose_name="Тип оплаты")
+    payment_item_type = models.CharField(
+        max_length=50, default="GOOD", verbose_name="Тип оплаты"
+    )
 
     # Цены
-    price_value = models.DecimalField(max_digits=15, decimal_places=2, default=0, verbose_name="Цена")
+    price_value = models.DecimalField(
+        max_digits=15, decimal_places=2, default=0, verbose_name="Цена"
+    )
     price_type = models.CharField(max_length=100, blank=True, verbose_name="Тип цены")
 
-    min_price_value = models.DecimalField(max_digits=15, blank=True, decimal_places=2, default=0, verbose_name="Минимальная цена")
+    min_price_value = models.DecimalField(
+        max_digits=15,
+        blank=True,
+        decimal_places=2,
+        default=0,
+        verbose_name="Минимальная цена",
+    )
 
-    buy_price_value = models.DecimalField(max_digits=15, blank=True, decimal_places=2, default=0, verbose_name="Закупочная цена")
+    buy_price_value = models.DecimalField(
+        max_digits=15,
+        blank=True,
+        decimal_places=2,
+        default=0,
+        verbose_name="Закупочная цена",
+    )
 
     # Связанные объекты (названия)
-    product_folder_name = models.CharField(max_length=255, default="Основная", blank=True, verbose_name="Название группы")
-    product_folder_description = models.TextField(blank=True, verbose_name="Описание группы")
+    product_folder_name = models.CharField(
+        max_length=255, default="Основная", blank=True, verbose_name="Название группы"
+    )
+    product_folder_description = models.TextField(
+        blank=True, verbose_name="Описание группы"
+    )
     country_name = models.CharField(max_length=100, blank=True, verbose_name="Страна")
 
     # Поставщик
-    supplier_legal_title = models.CharField(max_length=255, blank=True, verbose_name="Юр. название поставщика")
-    supplier_actual_address = models.TextField(blank=True, verbose_name="Фактический адрес поставщика")
-    supplier_phone = models.CharField(max_length=50, blank=True, verbose_name="Телефон поставщика")
+    supplier_legal_title = models.CharField(
+        max_length=255, blank=True, verbose_name="Юр. название поставщика"
+    )
+    supplier_actual_address = models.TextField(
+        blank=True, verbose_name="Фактический адрес поставщика"
+    )
+    supplier_phone = models.CharField(
+        max_length=50, blank=True, verbose_name="Телефон поставщика"
+    )
 
     # Изображения (храним как JSON)
     images = models.JSONField(default=list, blank=True, verbose_name="Изображения")

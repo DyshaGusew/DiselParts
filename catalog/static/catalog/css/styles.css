@@ -1,0 +1,9 @@
+.card-img-top {
+	max-height: 200px;
+	object-fit: contain;
+}
+
+#buy-button {
+	width: 100%;
+	padding: 10px;
+}
