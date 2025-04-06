@@ -1,9 +1,70 @@
-.card-img-top {
-	max-height: 200px;
-	object-fit: contain;
+.icon-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  background: rgba(var(--bs-primary-rgb), 0.1);
+  margin: 0 auto 1rem;
 }
 
-#buy-button {
-	width: 100%;
-	padding: 10px;
+/* Контейнер для логотипа */
+.partner-logo-container {
+    padding: 1.5rem;
+    height: 150px; /* Фиксированная высота для всех контейнеров */
+}
+
+/* Стили для самих логотипов */
+.partner-logo {
+    max-width: 100%;
+    max-height: 80px; /* Максимальная высота лого */
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+    filter: grayscale(100%);
+}
+
+.partner-logo:hover {
+    opacity: 1;
+    filter: grayscale(0%);
+    transform: scale(1.05);
+}
+
+/* Адаптация для разных экранов */
+@media (max-width: 768px) {
+    .partner-logo-container {
+        height: 120px;
+        padding: 1rem;
+    }
+    .partner-logo {
+        max-height: 60px;
+    }
+}
+
+.hero-section h1 {
+    animation: fadeInUp 1s ease-out;
+}
+.hero-section p {
+    animation: fadeInUp 1s ease-out 0.3s forwards;
+    opacity: 0;
+}
+.hero-section .btn {
+    animation: fadeInUp 1s ease-out 0.6s forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.letter-spacing-2 {
+    letter-spacing: 2px;
+}
+.company-name::before, .company-name::after {
+    content: "•";
+    margin: 0 10px;
+    color: var(--bs-primary);
 }
