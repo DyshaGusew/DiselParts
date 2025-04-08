@@ -1,14 +1,23 @@
 from .models import MoyskladProduct
+from catalog.models import ProductForSale
 import requests
 from django.conf import settings
 import re
 from django.db.models import Q
+from django.db import transaction
 
 
 def fetch_products() -> dict:
     """Получение товаров из API МойСклад"""
     try:
-        response = requests.get("https://api.moysklad.ru/api/remap/1.2/entity/product", headers={"Authorization": f"Bearer {settings.MOYSKLAD_TOKEN}", "Accept-Encoding": "gzip"}, timeout=15)
+        response = requests.get(
+            "https://api.moysklad.ru/api/remap/1.2/entity/product",
+            headers={
+                "Authorization": f"Bearer {settings.MOYSKLAD_TOKEN}",
+                "Accept-Encoding": "gzip",
+            },
+            timeout=15,
+        )
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
@@ -19,7 +28,14 @@ def fetch_products() -> dict:
 def fetch_additional_data(url: str) -> dict:
     """Получение дополнительных данных по ссылке из МойСклад"""
     try:
-        response = requests.get(url, headers={"Authorization": f"Bearer {settings.MOYSKLAD_TOKEN}", "Accept-Encoding": "gzip"}, timeout=10)
+        response = requests.get(
+            url,
+            headers={
+                "Authorization": f"Bearer {settings.MOYSKLAD_TOKEN}",
+                "Accept-Encoding": "gzip",
+            },
+            timeout=10,
+        )
         response.raise_for_status()
         return response.json()
     except Exception as e:
@@ -56,7 +72,10 @@ def get_product_folder_info(folder_id: str) -> dict:
     url = f"https://api.moysklad.ru/api/remap/1.2/entity/productfolder/{folder_id}"
     data = fetch_additional_data(url)
 
-    return {"name": data.get("name", "Основная"), "description": data.get("description", "")}
+    return {
+        "name": data.get("name", "Основная"),
+        "description": data.get("description", ""),
+    }
 
 
 def get_country_info(country_id: str) -> str:
@@ -73,13 +92,26 @@ def get_product_images(product_id: str) -> list:
     """Получение изображений товара"""
     url = f"https://api.moysklad.ru/api/remap/1.2/entity/product/{product_id}/images"
     try:
-        response = requests.get(url, headers={"Authorization": f"Bearer {settings.MOYSKLAD_TOKEN}", "Accept-Encoding": "gzip"}, timeout=10)
+        response = requests.get(
+            url,
+            headers={
+                "Authorization": f"Bearer {settings.MOYSKLAD_TOKEN}",
+                "Accept-Encoding": "gzip",
+            },
+            timeout=10,
+        )
         response.raise_for_status()
         images_data = response.json()
 
         images = []
         for img in images_data.get("rows", []):
-            images.append({"original": img["meta"]["downloadHref"], "medium": img.get("miniature", {}).get("downloadHref", ""), "thumbnail": img.get("tiny", {}).get("href", "")})
+            images.append(
+                {
+                    "original": img["meta"]["downloadHref"],
+                    "medium": img.get("miniature", {}).get("downloadHref", ""),
+                    "thumbnail": img.get("tiny", {}).get("href", ""),
+                }
+            )
         return images
 
     except Exception as e:
@@ -95,7 +127,11 @@ def get_supplier_info(supplier_id: str) -> dict:
     url = f"https://api.moysklad.ru/api/remap/1.2/entity/organization/{supplier_id}"
     data = fetch_additional_data(url)
 
-    return {"legal_title": data.get("legalTitle", ""), "actual_address": data.get("actualAddress", ""), "phone": data.get("phone", "")}
+    return {
+        "legal_title": data.get("legalTitle", ""),
+        "actual_address": data.get("actualAddress", ""),
+        "phone": data.get("phone", ""),
+    }
 
 
 def extract_article_number(name: str) -> str:
@@ -178,7 +214,9 @@ def extract_product_defaults(product_data: dict) -> dict:
         "volume": product_data.get("volume", 0.0),
         "minimum_balance": product_data.get("minimumBalance", 0.0),
         # Идентификаторы
-        "barcodes": [b.get("ean13") for b in product_data.get("barcodes", []) if b.get("ean13")],
+        "barcodes": [
+            b.get("ean13") for b in product_data.get("barcodes", []) if b.get("ean13")
+        ],
         "payment_item_type": product_data.get("paymentItemType", "GOOD"),
         # Цены
         "price_value": price_value / 100,
@@ -217,10 +255,27 @@ def sync_products_with_moysklad() -> bool:
                 print(f"Товар {product_data.get('id')} не имеет цен, пропускаем")
                 continue
 
-            defaults = extract_product_defaults(product_data)
+            with transaction.atomic():
+                # Обновляем или создаем товар в MoyskladProduct
+                defaults = extract_product_defaults(product_data)
+                moysklad_product, created = MoyskladProduct.objects.update_or_create(
+                    id=product_data["id"], defaults=defaults
+                )
 
-            MoyskladProduct.objects.update_or_create(id=product_data["id"], defaults=defaults)
-            success_count += 1
+                # Обновляем или создаем связанный ProductForSale
+                product_for_sale_defaults = {
+                    'name': moysklad_product.name,
+                    'article': moysklad_product.article,
+                    'description': moysklad_product.description,
+                    'sale_price': moysklad_product.price_value,
+                }
+
+                ProductForSale.objects.update_or_create(
+                    moysklad_product=moysklad_product,
+                    defaults=product_for_sale_defaults,
+                )
+
+                success_count += 1
 
         except Exception as e:
             error_count += 1

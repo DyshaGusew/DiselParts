@@ -1,38 +1,57 @@
 {% extends "base.html" %}
 {% block title %}{{ object.name }}{% endblock %}
 {% block content %}
-   <div class="row">
-      <div class="col-md-6">
-         {% if object.get_main_image_url %}
-            <img src="{{ object.get_main_image_url }}"
-                 class="img-fluid rounded"
-                 alt="{{ object.name }}" />
-         {% endif %}
-      </div>
-      <div class="col-md-6">
-         <h1>{{ object.name }}</h1>
-         <p>
-            <strong>Артикул:</strong> {{ object.article }}
-         </p>
-         <p>
-            <strong>Цена:</strong> {{ object.sale_price }} руб.
-         </p>
-         {% if object.description %}
-            <div class="mt-4">
-               <h4>Описание</h4>
-               <p>{{ object.description }}</p>
+   <div class="container mt-5">
+      <div class="row">
+         <div class="col-lg-6">
+            <div class="card shadow-sm">
+               {% if object.get_main_image_url %}
+                  <img src="{{ object.get_main_image_url }}"
+                       class="card-img-top rounded"
+                       alt="{{ object.name }}"
+                       style="object-fit: cover;
+                              max-height: 400px">
+               {% else %}
+                  {% load static %}
+                  <img src="{% static 'catalog/images/placeholder-detail.png' %}"
+                       class="card-img-top rounded"
+                       alt="Нет изображения"
+                       style="object-fit: cover;
+                              max-height: 400px">
+                  <div class="card-body">
+                     <p class="card-text text-muted">Изображение отсутствует</p>
+                  </div>
+               {% endif %}
             </div>
-         {% endif %}
-         <button class="btn btn-success mt-3" id="buy-button">Купить</button>
+         </div>
+         <div class="col-lg-6">
+            <div class="p-4">
+               <h1 class="display-4">{{ object.name }}</h1>
+               <p class="lead">
+                  <strong>Артикул:</strong> {{ object.article }}
+               </p>
+               <h4 class="mb-3">
+                  <strong>Цена:</strong> <span class="badge bg-success">{{ object.sale_price }} руб.</span>
+               </h4>
+               {% if object.description %}
+                  <div class="mt-4">
+                     <h4 class="mb-3">Описание</h4>
+                     <p class="lead">{{ object.description }}</p>
+                  </div>
+               {% endif %}
+               <button class="btn btn-primary btn-lg mt-3" id="buy-button">
+                  <i class="bi bi-cart-plus me-2"></i> Купить
+               </button>
+            </div>
+         </div>
       </div>
    </div>
    {% block extra_js %}
       <script>
-	document.getElementById('buy-button').addEventListener('click', function () {
-		alert('Товар {{ object.name }} добавлен в корзину!');
-		// Здесь можно добавить логику AJAX-запроса к бэкенду
-	});
-	
+            document.getElementById('buy-button').addEventListener('click', function () {
+                alert('Товар "{{ object.name }}" добавлен в корзину!');
+                // Здесь можно добавить логику AJAX-запроса к бэкенду
+            });
       </script>
    {% endblock %}
 {% endblock %}
