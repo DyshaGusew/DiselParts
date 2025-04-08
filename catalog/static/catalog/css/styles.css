@@ -68,3 +68,37 @@
     margin: 0 10px;
     color: var(--bs-primary);
 }
+
+.timeline {
+    position: relative;
+    padding-left: 40px;
+}
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+}
+.timeline-year {
+    position: absolute;
+    left: -40px;
+    top: 0;
+    width: 30px;
+    height: 30px;
+    background: #0d6efd;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+.timeline-content {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+.text-white.text-decoration-none:hover {
+    color: var(--bs-primary) !important;
+    text-decoration: underline;
+}

@@ -2,7 +2,8 @@
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'catalog:product-list' %}">Каталог деталей</a>
+        <a class="navbar-brand fs-4 fw-bold opacity-75-hover"
+           href="{% url 'catalog:product-list' %}">Каталог деталей</a>
         <button class="navbar-toggler"
                 type="button"
                 data-bs-toggle="collapse"
@@ -12,10 +13,12 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <a class="nav-link active" href="{% url 'home' %}">Главная</a>
+              <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+                 href="{% url 'home' %}">Главная</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">О нас</a>
+              <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}"
+                 href="{% url 'about' %}">О нас</a>
             </li>
           </ul>
           <div class="d-flex">
