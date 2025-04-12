@@ -30,7 +30,12 @@ class ProductForSale(Persistent):
     )
     # Цена для продажи (может отличаться от цены в МойСклад)
     sale_price = models.DecimalField(
-        max_digits=15, blank=True, decimal_places=2, verbose_name="Цена продажи"
+        max_digits=15,
+        blank=True,
+        null=True,
+        decimal_places=2,
+        verbose_name="Цена продажи",
+        default=0.00,
     )
     markup_percent = models.DecimalField(
         max_digits=5,
