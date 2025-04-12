@@ -5,6 +5,19 @@ from .models import MoyskladProduct
 from unfold.admin import ModelAdmin
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
+from unfold.contrib.filters.admin import (
+    FieldTextFilter,
+    ChoicesDropdownFilter,
+    MultipleChoicesDropdownFilter,
+    MultipleRelatedDropdownFilter,
+    RangeDateFilter,
+    RangeDateTimeFilter,
+    RangeNumericFilter,
+    RelatedDropdownFilter,
+    SingleNumericFilter,
+    TextFilter,
+)
+from django.db.models import QuerySet
 
 
 class DateModelForm(forms.ModelForm):
@@ -17,15 +30,15 @@ class DateModelForm(forms.ModelForm):
                 "data-input-class": "peer",
                 "style": (
                     "background-color: transparent;"
-                    "border: 1px solid #454545;"  # Цвет границы (можно заменить на var(--unfold-border-color))
-                    "border-radius: 0.375rem;"  # Закругление углов
-                    "padding: 0.5rem 0.75rem;"  # Внутренние отступы
-                    "transition: border-color 0.2s;"  # Плавное изменение цвета
+                    "border: 1px solid #454545;"
+                    "border-radius: 0.375rem;"
+                    "padding: 0.5rem 0.75rem;"
+                    "transition: border-color 0.2s;"
                 ),
                 "placeholder": "Введите URL изображения",
             }
         ),
-        help_text="Форматы: JPG, PNG, WebP",  # Дополнительный текст подсказки
+        help_text="Форматы: JPG, PNG, WebP",
     )
 
     class Meta:
@@ -33,6 +46,13 @@ class DateModelForm(forms.ModelForm):
         widgets = {
             "date": forms.DateInput(attrs={"type": "date"}),
         }
+
+
+class LimitedMultipleChoicesDropdownFilter(MultipleChoicesDropdownFilter):
+    def get_choices(self, changelist: QuerySet) -> list:
+        choices = super().get_choices(changelist)
+        # Ограничиваем до 50 уникальных значений
+        return choices[:50]
 
 
 @admin.register(MoyskladProduct)
@@ -46,19 +66,19 @@ class MoyskladProductAdmin(ModelAdmin):
         "vat",
         "country_name",
         "is_active",
-        'moysklad_url_link',
+        "moysklad_url_link",
         "image_preview",
     )
     list_display_links = ("name", "code", "article")
     search_fields = ("name", "article", "code", "description")
-    list_filter = (
+    list_filter = [
         "vat_enabled",
-        "effective_vat_enabled",
         "archived",
-        "country_name",
         "price_type",
         "product_folder_name",
-    )
+        "country_name",
+        ("price_value", RangeNumericFilter),
+    ]
     readonly_fields = ("get_main_image_preview",)
     ordering = ("name", "price_value")
     filter_horizontal = ()
@@ -203,7 +223,6 @@ class MoyskladProductAdmin(ModelAdmin):
         image_url = form.cleaned_data.get("image_url")
 
         if image_url:
-
             new_image = {
                 "original": image_url,
                 "medium": image_url,

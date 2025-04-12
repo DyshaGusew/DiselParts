@@ -6,7 +6,10 @@ from moysklad.models.MoyskladProduct import MoyskladProduct
 class ProductForSale(Persistent):
     # Связь с оригинальным товаром
     moysklad_product = models.OneToOneField(
-        MoyskladProduct, on_delete=models.CASCADE, related_name="for_sale"
+        MoyskladProduct,
+        on_delete=models.CASCADE,
+        related_name="for_sale",
+        verbose_name="Продукт из МойСклад",
     )
 
     # Основные поля (дублируем только нужные)

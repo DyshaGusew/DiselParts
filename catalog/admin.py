@@ -5,6 +5,18 @@ from .models import ProductForSale
 from unfold.admin import ModelAdmin
 from django.utils.safestring import mark_safe
 from django.db.models import Q
+from unfold.contrib.filters.admin import (
+    FieldTextFilter,
+    ChoicesDropdownFilter,
+    MultipleChoicesDropdownFilter,
+    MultipleRelatedDropdownFilter,
+    RangeDateFilter,
+    RangeDateTimeFilter,
+    RangeNumericFilter,
+    RelatedDropdownFilter,
+    SingleNumericFilter,
+    TextFilter,
+)
 
 
 class ProductForSaleForm(forms.ModelForm):
@@ -21,17 +33,19 @@ class ProductForSaleAdmin(ModelAdmin):
         'name',
         'article',
         'price_info',
-        'markup_info',
+        'markup_percent',
         'is_active',
     )
     list_display_links = ('name', 'article')
     search_fields = ('name', 'article', 'moysklad_product__code')
-    list_filter = (
-        'is_active',
-        'group',
-        'country',
-        # ('markup_percent', admin.RangeFilter),
-    )
+    list_filter = [
+        "is_active",
+        "group",
+        "country",
+        ("sale_price", RangeNumericFilter),
+        ('markup_percent', RangeNumericFilter),
+    ]
+
     readonly_fields = (
         'get_images_preview',
         'get_moysklad_link',

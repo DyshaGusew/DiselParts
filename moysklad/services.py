@@ -286,6 +286,14 @@ def sync_products_with_moysklad() -> bool:
                     moysklad_product=moysklad_product
                 )
 
+                # Устанавливаем markup_percent
+                if pf_created:
+                    product_for_sale_defaults['markup_percent'] = Decimal('0.00')
+                else:
+                    product_for_sale_defaults['markup_percent'] = (
+                        product_for_sale.markup_percent or Decimal('0.00')
+                    )
+
                 current_markup = product_for_sale.markup_percent or Decimal('0')
                 calculated_price = Decimal(str(base_price)) * (
                     Decimal('1') + current_markup / Decimal('100')
