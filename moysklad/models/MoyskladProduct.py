@@ -6,6 +6,12 @@ class MoyskladProduct(Persistent):
     # Основные поля
     id = models.CharField(primary_key=True, max_length=255, verbose_name="ID")
     name = models.CharField(max_length=255, verbose_name="Название")
+    moysklad_url = models.URLField(
+        "Ссылка в МойСклад",
+        max_length=500,
+        blank=True,
+        help_text="Прямая ссылка на товар в интерфейсе МойСклад",
+    )
     code = models.CharField(max_length=100, blank=True, verbose_name="Код")
     article = models.CharField(max_length=100, blank=True, verbose_name="Артикул")
     external_code = models.CharField(
@@ -104,8 +110,14 @@ class MoyskladProduct(Persistent):
             display_name += f" ({self.code})"
         return display_name
 
-    def get_main_image_url(self):
+    def get_medium_image_url(self):
         """Возвращает URL основного изображения или None"""
         if self.images and len(self.images) > 0:
-            return self.images[0].get("medium") or self.images[0].get("original")
+            return self.images[0].get("medium")
+        return None
+
+    def get_original_image_url(self):
+        """Возвращает URL основного изображения или None"""
+        if self.images and len(self.images) > 0:
+            return self.images[0].get("original") or self.images[0].get("medium")
         return None

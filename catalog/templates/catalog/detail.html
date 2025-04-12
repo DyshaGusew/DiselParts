@@ -5,8 +5,8 @@
       <div class="row">
          <div class="col-lg-6">
             <div class="card shadow-sm">
-               {% if object.get_main_image_url %}
-                  <img src="{{ object.get_main_image_url }}"
+               {% if object.get_original_image_url %}
+                  <img src="{{ object.get_original_image_url }}"
                        class="card-img-top rounded"
                        alt="{{ object.name }}"
                        style="object-fit: cover;

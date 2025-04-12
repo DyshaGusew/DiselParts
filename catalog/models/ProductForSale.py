@@ -13,10 +13,27 @@ class ProductForSale(Persistent):
     name = models.CharField(max_length=255, verbose_name="Название")
     article = models.CharField(max_length=100, blank=True, verbose_name="Артикул")
     description = models.TextField(blank=True, verbose_name="Описание")
+    group = models.CharField(max_length=255, blank=True, verbose_name="Группа")
+    country = models.CharField(max_length=255, blank=True, verbose_name="Страна")
+    supplier_legal_title = models.CharField(
+        max_length=255, blank=True, verbose_name="Производитель"
+    )
 
+    sale_price_moy_sklad = models.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        verbose_name="Цена продажи мойсклад",
+        default=0.00,
+    )
     # Цена для продажи (может отличаться от цены в МойСклад)
     sale_price = models.DecimalField(
-        max_digits=15, decimal_places=2, verbose_name="Цена продажи"
+        max_digits=15, blank=True, decimal_places=2, verbose_name="Цена продажи"
+    )
+    markup_percent = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        verbose_name="Процент наценки",
+        default=0.00,
     )
 
     # Дополнительные поля для продажи
@@ -34,6 +51,10 @@ class ProductForSale(Persistent):
     def __str__(self):
         return f"{self.name} ({self.article}) - {self.sale_price} руб."
 
-    def get_main_image_url(self):
+    def get_medium_image_url(self):
         """Делегируем метод оригинальной модели"""
-        return self.moysklad_product.get_main_image_url()
+        return self.moysklad_product.get_medium_image_url()
+
+    def get_original_image_url(self):
+        """Делегируем метод оригинальной модели"""
+        return self.moysklad_product.get_original_image_url()

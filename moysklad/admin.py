@@ -46,6 +46,7 @@ class MoyskladProductAdmin(ModelAdmin):
         "vat",
         "country_name",
         "is_active",
+        'moysklad_url_link',
         "image_preview",
     )
     list_display_links = ("name", "code", "article")
@@ -65,7 +66,13 @@ class MoyskladProductAdmin(ModelAdmin):
     fieldsets = (
         (
             "Основная информация",
-            {"fields": ("name", "description", ("article", "code", "external_code"))},
+            {
+                "fields": (
+                    ("name", "moysklad_url"),
+                    "description",
+                    ("article", "code", "external_code"),
+                )
+            },
         ),
         (
             "Цены",
@@ -182,6 +189,15 @@ class MoyskladProductAdmin(ModelAdmin):
                 "Неподдерживаемый формат изображения. Используйте JPG, PNG или WebP."
             )
         return url
+
+    def moysklad_url_link(self, obj):
+        if obj.moysklad_url:
+            return format_html(
+                '<a href="{}" target="_blank">Открыть в МойСклад</a>', obj.moysklad_url
+            )
+        return "-"
+
+    moysklad_url_link.short_description = "Ссылка"
 
     def save_model(self, request, obj, form, change):
         image_url = form.cleaned_data.get("image_url")

@@ -5,6 +5,7 @@ from django.conf import settings
 import re
 from django.db.models import Q
 from django.db import transaction
+from decimal import Decimal
 
 
 def fetch_products() -> dict:
@@ -173,6 +174,7 @@ def get_or_create_article(product_data: dict) -> dict:
 def extract_product_defaults(product_data: dict) -> dict:
     """Извлекает и преобразует данные товара в формат для модели"""
     product_id = product_data["id"]
+    moysklad_url = product_data.get("meta", {}).get("uuidHref", "")
     images = get_product_images(product_id)
     main_price = product_data.get("salePrices", [{}])[0]
     min_price = product_data.get("minPrice", {})
@@ -195,6 +197,9 @@ def extract_product_defaults(product_data: dict) -> dict:
 
     # Обрабатываем артикул
     product_data = get_or_create_article(product_data)
+
+    # Генерируем URL для веб-интерфейса
+    meta_data = product_data.get('meta', {})
     return {
         # Основная информация
         "name": product_data.get("name", ""),
@@ -232,6 +237,7 @@ def extract_product_defaults(product_data: dict) -> dict:
         "supplier_phone": supplier_info["phone"],
         # Изображение
         "images": images,
+        "moysklad_url": moysklad_url,
     }
 
 
@@ -262,21 +268,45 @@ def sync_products_with_moysklad() -> bool:
                     id=product_data["id"], defaults=defaults
                 )
 
-                # Обновляем или создаем связанный ProductForSale
+                # Подготовка данных для ProductForSale
+                base_price = moysklad_product.price_value
                 product_for_sale_defaults = {
                     'name': moysklad_product.name,
                     'article': moysklad_product.article,
                     'description': moysklad_product.description,
-                    'sale_price': moysklad_product.price_value,
+                    'group': moysklad_product.product_folder_name,
+                    'country': moysklad_product.country_name,
+                    'supplier_legal_title': moysklad_product.supplier_legal_title,
+                    'sale_price_moy_sklad': base_price,
+                    'markup_percent': 0.00,
                 }
 
-                ProductForSale.objects.update_or_create(
-                    moysklad_product=moysklad_product,
-                    defaults=product_for_sale_defaults,
+                # Получаем или создаем ProductForSale
+                product_for_sale, pf_created = ProductForSale.objects.get_or_create(
+                    moysklad_product=moysklad_product
                 )
 
-                success_count += 1
+                current_markup = product_for_sale.markup_percent or Decimal('0')
+                calculated_price = Decimal(str(base_price)) * (
+                    Decimal('1') + current_markup / Decimal('100')
+                )
+                calculated_price = max(Decimal('0'), calculated_price)
 
+                # Условия обновления sale_price
+                price_changed = product_for_sale.sale_price_moy_sklad != base_price
+
+                if pf_created or not product_for_sale.sale_price or price_changed:
+                    product_for_sale_defaults['sale_price'] = calculated_price
+                    if price_changed:
+                        print(
+                            f"Обновлена цена для {moysklad_product.article}: {calculated_price}"
+                        )
+
+                for field, value in product_for_sale_defaults.items():
+                    setattr(product_for_sale, field, value)
+
+                product_for_sale.save()
+                success_count += 1
         except Exception as e:
             error_count += 1
             print(f"Ошибка обработки товара {product_data.get('article')}: {str(e)}")
