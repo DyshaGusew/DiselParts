@@ -1,10 +1,15 @@
+from decimal import Decimal
 from django.contrib import admin
 from django import forms
 from django.utils.html import format_html
+from regex import P
 from .models import ProductForSale
 from unfold.admin import ModelAdmin
 from django.utils.safestring import mark_safe
 from django.db.models import Q
+from django.contrib import messages
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
 from unfold.contrib.filters.admin import (
     FieldTextFilter,
     ChoicesDropdownFilter,
@@ -32,19 +37,25 @@ class ProductForSaleAdmin(ModelAdmin):
         'image_preview',
         'name',
         'article',
+        'supplier_legal_title',
         'price_info',
         'markup_percent',
         'is_active',
     )
-    list_display_links = ('name', 'article')
+    list_display_links = ('image_preview', 'name', 'article')
     search_fields = ('name', 'article', 'moysklad_product__code')
     list_filter = [
         "is_active",
         "group",
         "country",
+        'supplier_legal_title',
         ("sale_price", RangeNumericFilter),
         ('markup_percent', RangeNumericFilter),
     ]
+
+    list_filter_submit = True
+    list_filter_sheet = False
+    list_fullwidth = True
 
     readonly_fields = (
         'get_images_preview',
@@ -52,9 +63,7 @@ class ProductForSaleAdmin(ModelAdmin):
         'calculated_price_info',
     )
     ordering = ('name',)
-    list_per_page = 25
     list_select_related = ('moysklad_product',)
-    filter_horizontal = ()
 
     fieldsets = (
         (
@@ -241,3 +250,64 @@ class ProductForSaleAdmin(ModelAdmin):
             obj.sale_price = obj.sale_price_moy_sklad * (1 + obj.markup_percent / 100)
 
         super().save_model(request, obj, form, change)
+
+    actions = ['apply_markup', 'activate_selected', 'deactivate_selected']
+
+    @admin.action(description="Активировать выбранные товары")
+    def activate_selected(self, request, queryset):
+        updated = queryset.update(is_active=True)
+        self.message_user(request, f"{updated} товаров активировано", messages.SUCCESS)
+
+    @admin.action(description="Деактивировать выбранные товары")
+    def deactivate_selected(self, request, queryset):
+        updated = queryset.update(is_active=False)
+        self.message_user(
+            request, f"{updated} товаров деактивировано", messages.SUCCESS
+        )
+
+    @admin.action(description="Применить наценку к выбранным товарам")
+    def apply_markup(self, request, queryset):
+        if 'apply' in request.POST:
+            try:
+                # Получаем выбранные товары из POST-данных
+                selected_ids = request.POST.getlist('_selected_action')
+                queryset = self.get_queryset(request).filter(pk__in=selected_ids)
+
+                markup = float(request.POST.get('markup', 0))
+                updated = 0
+                for product in queryset:
+                    product.markup_percent = markup
+                    product.sale_price = product.sale_price_moy_sklad * Decimal(
+                        1.0 + markup / 100.0
+                    )
+                    product.save()
+                    updated += 1
+
+                self.message_user(
+                    request,
+                    f"Наценка {markup}% применена к {updated} товарам",
+                    messages.SUCCESS,
+                )
+                return HttpResponseRedirect(request.get_full_path())
+            except ValueError:
+                self.message_user(
+                    request,
+                    "Ошибка: введите корректное число для наценки",
+                    messages.ERROR,
+                )
+                return HttpResponseRedirect(request.get_full_path())
+
+        # Показываем промежуточную страницу
+        return render(
+            request,
+            'catalog/apply_markup_intermediate.html',
+            context={
+                'title': "Применить наценку",
+                'products': queryset,
+                'opts': self.model._meta,
+                'action': 'apply_markup',
+                'back_url': request.get_full_path(),
+                # Добавляем скрытые поля с выбранными объектами
+                'selected_ids': request.POST.getlist('_selected_action'),
+            },
+        )

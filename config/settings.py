@@ -44,6 +44,7 @@ UNFOLD = {
     "SITE_HEADER": "Админ-панель",
     "SITE_URL": "/",
     "THEME": "dark",
+    "FILTERS_FORM_CLASS": "unfold.contrib.filters.forms.SubmitForm",
 }
 
 MIDDLEWARE = [

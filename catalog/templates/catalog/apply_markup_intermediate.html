@@ -1,0 +1,48 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+    <div style="padding: 20px;
+                background-color: #2c2c2c;
+                color: #f5f5f5;
+                border-radius: 8px">
+        <h1 style="color: #ffffff;">Применить наценку к {{ products|length }} товарам</h1>
+        <form method="post" style="margin-top: 20px;">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="apply_markup">
+            <input type="hidden" name="post" value="yes">
+            <!-- Добавляем скрытые поля с выбранными ID -->
+            {% for id in selected_ids %}<input type="hidden" name="_selected_action" value="{{ id }}">{% endfor %}
+            <div style="margin-bottom: 15px;">
+                <label for="markup" style="display: block;">Введите наценку в %:</label>
+                <input type="number"
+                       name="markup"
+                       id="markup"
+                       step="0.01"
+                       style="padding: 10px;
+                              border: 1px solid #555;
+                              border-radius: 4px;
+                              background-color: #444;
+                              color: #f5f5f5;
+                              margin-left: 10px"
+                       placeholder="10 или -5 для скидки"
+                       required>
+            </div>
+            <div>
+                <button type="submit"
+                        name="apply"
+                        style="padding: 10px 20px;
+                               background: #417690;
+                               color: white;
+                               border: none;
+                               border-radius: 4px;
+                               cursor: pointer">Применить</button>
+                <a href="{{ back_url }}"
+                   style="padding: 10px 20px;
+                          margin-left: 10px;
+                          background: #777;
+                          color: white;
+                          text-decoration: none;
+                          border-radius: 4px">Отмена</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

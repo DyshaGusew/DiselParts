@@ -36,6 +36,7 @@ class DateModelForm(forms.ModelForm):
                     "transition: border-color 0.2s;"
                 ),
                 "placeholder": "Введите URL изображения",
+                "readonly": "readonly",  # Делаем поле только для чтения
             }
         ),
         help_text="Форматы: JPG, PNG, WebP",
@@ -44,14 +45,13 @@ class DateModelForm(forms.ModelForm):
     class Meta:
         fields = "__all__"
         widgets = {
-            "date": forms.DateInput(attrs={"type": "date"}),
+            "date": forms.DateInput(attrs={"type": "date", "readonly": "readonly"}),
         }
 
 
 class LimitedMultipleChoicesDropdownFilter(MultipleChoicesDropdownFilter):
     def get_choices(self, changelist: QuerySet) -> list:
         choices = super().get_choices(changelist)
-        # Ограничиваем до 50 уникальных значений
         return choices[:50]
 
 
@@ -71,19 +71,85 @@ class MoyskladProductAdmin(ModelAdmin):
     )
     list_display_links = ("name", "code", "article")
     search_fields = ("name", "article", "code", "description")
+
     list_filter = [
         "vat_enabled",
         "archived",
         "price_type",
         "product_folder_name",
+        'supplier_legal_title',
         "country_name",
         ("price_value", RangeNumericFilter),
     ]
-    readonly_fields = ("get_main_image_preview",)
+
+    list_filter_submit = True
+    list_filter_sheet = False
+    list_fullwidth = True
+
+    # Делаем все поля только для чтения
+    readonly_fields = (
+        "name",
+        "moysklad_url",
+        "description",
+        "article",
+        "code",
+        "external_code",
+        "price_value",
+        "price_type",
+        "min_price_value",
+        "buy_price_value",
+        "vat",
+        "effective_vat",
+        "vat_enabled",
+        "effective_vat_enabled",
+        "archived",
+        "weight",
+        "volume",
+        "minimum_balance",
+        "barcodes",
+        "product_folder_name",
+        "product_folder_description",
+        "country_name",
+        "supplier_legal_title",
+        "supplier_actual_address",
+        "supplier_phone",
+        "images",
+        "get_main_image_preview",
+    )
     ordering = ("name", "price_value")
     filter_horizontal = ()
 
     fieldsets = (
+        (
+            None,
+            {
+                "fields": (),
+                "description": format_html(
+                    """
+            <div style="
+                padding: 16px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                background-color: var(--background-muted);
+                color: var(--foreground-muted);
+                font-size: 14px;
+                line-height: 1.6;
+            ">
+                <strong style="display: block; margin-bottom: 8px; color: var(--foreground-default);">
+                    Внимание:
+                </strong>
+                Редактирование исходного товара доступно только в сервисе
+                <a href="https://www.moysklad.ru/" target="_blank" style="color: var(--primary); font-weight: 500; text-decoration: underline;">
+                    МойСклад</a>.<br>
+                Для работы с товарами, доступными к продаже, перейдите в
+                <a href="/admin/catalog/productforsale/" style="color: var(--primary); font-weight: 500; text-decoration: underline;">
+                    раздел товаров для продажи
+                </a>.
+            </div>
+            """
+                ),
+            },
+        ),
         (
             "Основная информация",
             {
@@ -220,18 +286,13 @@ class MoyskladProductAdmin(ModelAdmin):
     moysklad_url_link.short_description = "Ссылка"
 
     def save_model(self, request, obj, form, change):
-        image_url = form.cleaned_data.get("image_url")
+        # Переопределяем метод, чтобы предотвратить сохранение изменений
+        pass
 
-        if image_url:
-            new_image = {
-                "original": image_url,
-                "medium": image_url,
-                "thumbnail": image_url,
-            }
+    def has_add_permission(self, request):
+        # Запрещаем добавление новых записей
+        return False
 
-            if not obj.images:
-                obj.images = [new_image]
-            else:
-                obj.images.append(new_image)
-
-        super().save_model(request, obj, form, change)
+    def has_delete_permission(self, request, obj=None):
+        # Запрещаем удаление записей
+        return False

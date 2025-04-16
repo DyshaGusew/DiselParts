@@ -3,6 +3,10 @@ from django.urls import path, include
 from love_page.views import LoveDariaView
 from config.views import HomeView, AboutView
 
+admin.site.site_title = "Дизельпартс админпанель"
+admin.site.site_header = "Панель администрирования ДИЗЕЛЬПАРТС"
+admin.site.index_title = "Панель администрирования ДИЗЕЛЬПАРТС"
+
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path("admin/", admin.site.urls),

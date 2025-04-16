@@ -123,14 +123,14 @@ def get_product_images(product_id: str) -> list:
 def get_supplier_info(supplier_id: str) -> dict:
     """Получение информации о поставщике"""
     if not supplier_id:
-        return {"legal_title": "", "actual_address": "", "phone": ""}
+        return {"legal_title": "", "companyType": "", "phone": ""}
 
-    url = f"https://api.moysklad.ru/api/remap/1.2/entity/organization/{supplier_id}"
+    url = f"https://api.moysklad.ru/api/remap/1.2/entity/counterparty/{supplier_id}"
     data = fetch_additional_data(url)
 
     return {
         "legal_title": data.get("legalTitle", ""),
-        "actual_address": data.get("actualAddress", ""),
+        "companyType": data.get("companyType", ""),
         "phone": data.get("phone", ""),
     }
 
@@ -233,7 +233,6 @@ def extract_product_defaults(product_data: dict) -> dict:
         "product_folder_description": product_folder_info["description"],
         "country_name": country_name,
         "supplier_legal_title": supplier_info["legal_title"],
-        "supplier_actual_address": supplier_info["actual_address"],
         "supplier_phone": supplier_info["phone"],
         # Изображение
         "images": images,
@@ -281,12 +280,10 @@ def sync_products_with_moysklad() -> bool:
                     'markup_percent': 0.00,
                 }
 
-                # Получаем или создаем ProductForSale
                 product_for_sale, pf_created = ProductForSale.objects.get_or_create(
                     moysklad_product=moysklad_product
                 )
 
-                # Устанавливаем markup_percent
                 if pf_created:
                     product_for_sale_defaults['markup_percent'] = Decimal('0.00')
                 else:
