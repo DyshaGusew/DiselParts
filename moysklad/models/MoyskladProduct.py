@@ -119,5 +119,7 @@ class MoyskladProduct(Persistent):
     def get_original_image_url(self):
         """Возвращает URL основного изображения или None"""
         if self.images and len(self.images) > 0:
-            return self.images[0].get("original") or self.images[0].get("medium")
+            #! Вонючее фото надо еще сделать оригинальным
+            return self.images[0].get("medium")
+            # return self.images[0].get("original")
         return None

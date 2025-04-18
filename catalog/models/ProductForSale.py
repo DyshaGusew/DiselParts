@@ -1,6 +1,8 @@
 from django.db import models
 from config.models.persistent import Persistent
 from moysklad.models.MoyskladProduct import MoyskladProduct
+import re
+from urllib.parse import quote
 
 
 class ProductForSale(Persistent):

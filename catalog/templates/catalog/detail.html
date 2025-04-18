@@ -3,38 +3,57 @@
 {% block content %}
    <div class="container mt-5">
       <div class="row">
+         <!-- Изображение товара -->
          <div class="col-lg-6">
             <div class="card shadow-sm">
-               {% if object.get_original_image_url %}
-                  <img src="{{ object.get_original_image_url }}?v={{ object.updated_at.timestamp }}"
+               {% if product.get_original_image_url %}
+                  <img src="{{ product.get_original_image_url }}?v={{ product.updated_at.timestamp }}"
                        class="card-img-top rounded"
                        alt="{{ object.name }}"
                        style="object-fit: contain;
                               max-height: 500px;
-                              background:rgb(177, 177, 177)">
+                              background: #f8f9fa">
                {% else %}
                   {% load static %}
                   <img src="{% static 'catalog/images/placeholder-detail.jpg' %}"
                        class="card-img-top rounded"
                        alt="Нет изображения"
-                       style="object-fit: cover;
+                       style="object-fit: contain;
                               max-height: 500px;
-                              background:rgb(177, 177, 177)">
+                              background: #f8f9fa">
                {% endif %}
             </div>
          </div>
+         <!-- Информация о товаре -->
          <div class="col-lg-6">
             <div class="p-4">
-               <h1 class="display-4">{{ object.name }}</h1>
-               <p class="lead">
-                  <strong>Артикул:</strong> {{ object.article }}
-               </p>
-               <h4 class="mb-3">
-                  <strong>Цена:</strong> <span class="badge bg-success">{{ object.sale_price }} руб.</span>
+               <h1 class="display-5">{{ object.name }}</h1>
+               <div class="mb-4">
+                  <p class="mb-1">
+                     <strong>Артикул:</strong> {{ object.article }}
+                  </p>
+                  {% if object.country %}
+                     <p class="mb-1">
+                        <strong>Страна:</strong> {{ object.country }}
+                     </p>
+                  {% endif %}
+                  {% if object.supplier_legal_title %}
+                     <p class="mb-1">
+                        <strong>Производитель:</strong> {{ object.supplier_legal_title }}
+                     </p>
+                  {% endif %}
+                  {% if object.group %}
+                     <p class="mb-1">
+                        <strong>Группа:</strong> {{ object.group }}
+                     </p>
+                  {% endif %}
+               </div>
+               <h4 class="mb-4">
+                  <strong>Цена:</strong> <span class="badge bg-success fs-4">{{ object.sale_price }} руб.</span>
                </h4>
                {% if object.description %}
-                  <div class="mt-4">
-                     <h4 class="mb-3">Описание</h4>
+                  <div class="mt-4 mb-4">
+                     <h4>Описание</h4>
                      <p class="lead">{{ object.description }}</p>
                   </div>
                {% endif %}
@@ -47,10 +66,10 @@
    </div>
    {% block extra_js %}
       <script>
-            document.getElementById('buy-button').addEventListener('click', function () {
-                alert('Товар "{{ object.name }}" добавлен в корзину!');
-                // Здесь можно добавить логику AJAX-запроса к бэкенду
-            });
+    document.getElementById('buy-button').addEventListener('click', function() {
+        alert('Товар "{{ object.name }}" добавлен в корзину!');
+        // Здесь можно добавить AJAX-запрос к бэкенду
+    });
       </script>
    {% endblock %}
 {% endblock %}

@@ -2,43 +2,165 @@
 {% load static %}
 {% block title %}Каталог деталей{% endblock %}
 {% block content %}
-   <h1 class="mb-4">Детали для техники</h1>
-   <div class="row row-cols-1 row-cols-md-3 g-4">
-      {% for product in products %}
-         <div class="col">
-            <div class="card h-100 shadow-sm">
-               {% if product.get_medium_image_url %}
-                  <img src="{{ product.get_medium_image_url }}"
-                       class="card-img-top"
-                       alt="{{ product.name }}"
-                       style="object-fit: cover;
-                              height: 250px">
-               {% else %}
-                  <img src="{% static 'catalog/images/placeholder-detail.jpg' %}"
-                       class="card-img-top"
-                       alt="Нет изображения"
-                       style="object-fit: contain;
-                              height: 250px">
-               {% endif %}
-               <div class="card-body">
-                  <h5 class="card-title">{{ product.name }}</h5>
-                  <p class="card-text">
-                     <strong>Артикул:</strong> {{ product.article }}
-                     <br />
-                     <strong>Цена:</strong> {{ product.sale_price }} руб.
-                  </p>
-                  <div class="d-flex justify-content-between align-items-center">
-                     <a href="{% url 'catalog:product-detail' product.pk %}"
-                        class="btn btn-outline-primary btn-sm">Подробнее</a>
-                     <small class="text-muted">Просмотров: {{ product.views }}</small>
+   <div class="container mt-4">
+      <h1 class="mb-4">Детали для техники</h1>
+      <!-- Панель фильтров и сортировки -->
+      <div class="card mb-4 shadow-sm">
+         <div class="card-body">
+            <form method="get" class="row g-3">
+               <!-- Поиск -->
+               <div class="col-md-4">
+                  <input type="text"
+                         name="search"
+                         class="form-control"
+                         placeholder="Поиск по названию или артикулу"
+                         value="{{ search_query }}">
+               </div>
+               <!-- Фильтр по стране -->
+               <div class="col-md-3">
+                  <select name="country" class="form-select">
+                     <option value="">Все страны</option>
+                     {% for country in countries %}
+                        <option value="{{ country }}"
+                                {% if selected_country == country %}selected{% endif %}>{{ country }}</option>
+                     {% endfor %}
+                  </select>
+               </div>
+               <!-- Фильтр по производителю -->
+               <div class="col-md-3">
+                  <select name="manufacturer" class="form-select">
+                     <option value="">Все производители</option>
+                     {% for manufacturer in manufacturers %}
+                        <option value="{{ manufacturer }}"
+                                {% if selected_manufacturer == manufacturer %}selected{% endif %}>
+                           {{ manufacturer }}
+                        </option>
+                     {% endfor %}
+                  </select>
+               </div>
+               <!-- Фильтр по группе -->
+               <div class="col-md-3">
+                  <select name="group" class="form-select">
+                     <option value="">Все группы</option>
+                     {% for group in groups %}
+                        <option value="{{ group }}"
+                                {% if selected_group == group %}selected{% endif %}>{{ group }}</option>
+                     {% endfor %}
+                  </select>
+               </div>
+               <!-- Сортировка -->
+               <div class="col-md-2">
+                  <select name="sort" class="form-select">
+                     {% for option in sort_options %}
+                        <option value="{{ option.value }}"
+                                {% if selected_sort == option.value %}selected{% endif %}>{{ option.label }}</option>
+                     {% endfor %}
+                  </select>
+               </div>
+               <div class="col-12">
+                  <button type="submit" class="btn btn-primary me-2">
+                     <i class="bi bi-funnel"></i> Применить
+                  </button>
+                  <a href="?" class="btn btn-outline-secondary">
+                     <i class="bi bi-arrow-counterclockwise"></i> Сбросить
+                  </a>
+               </div>
+            </form>
+         </div>
+      </div>
+      <!-- Список товаров -->
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+         {% for product in products %}
+            <div class="col">
+               <div class="card h-100 shadow-sm">
+                  <!-- Изображение товара -->
+                  <div style="height: 200px; overflow: hidden; background: #f8f9fa;">
+                     {% if product.get_medium_image_url %}
+                        <img src="{{ product.get_medium_image_url }}?v={{ product.updated_at.timestamp }}"
+                             class="card-img-top h-100 w-100"
+                             alt="{{ product.name }}"
+                             style="object-fit: cover">
+                     {% else %}
+                        <img src="{% static 'catalog/images/placeholder-detail.jpg' %}"
+                             class="card-img-top h-100 w-100"
+                             alt="Нет изображения"
+                             style="object-fit: contain;
+                                    background:#ffffff">
+                     {% endif %}
+                  </div>
+                  <!-- Информация о товаре -->
+                  <div class="card-body">
+                     <h5 class="card-title">{{ product.name }}</h5>
+                     <p class="card-text text-muted small mb-1">
+                        <strong>Артикул:</strong> {{ product.article }}
+                     </p>
+                     {% if product.country %}
+                        <p class="card-text text-muted small mb-1">
+                           <strong>Страна:</strong> {{ product.country }}
+                        </p>
+                     {% endif %}
+                     {% if product.supplier_legal_title %}
+                        <p class="card-text text-muted small mb-2">
+                           <strong>Производитель:</strong> {{ product.supplier_legal_title }}
+                        </p>
+                     {% endif %}
+                     <h5 class="text-success mb-3">{{ product.sale_price }} руб.</h5>
+                     <div class="d-flex justify-content-between align-items-center">
+                        <a href="{% url 'catalog:product-detail' product.pk %}"
+                           class="btn btn-outline-primary btn-sm">
+                           <i class="bi bi-eye"></i> Подробнее
+                        </a>
+                        <small class="text-muted">
+                           <i class="bi bi-eye"></i> {{ product.views }}
+                        </small>
+                     </div>
                   </div>
                </div>
             </div>
-         </div>
-      {% empty %}
-         <div class="col-12">
-            <div class="alert alert-info">Товары не найдены.</div>
-         </div>
-      {% endfor %}
+         {% empty %}
+            <div class="col-12">
+               <div class="alert alert-info">Товары не найдены. Попробуйте изменить параметры поиска.</div>
+            </div>
+         {% endfor %}
+      </div>
+      <!-- Пагинация -->
+      {% if is_paginated %}
+         <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+               {% if page_obj.has_previous %}
+                  <li class="page-item">
+                     <a class="page-link"
+                        href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_country %}&country={{ selected_country }}{% endif %}{% if selected_group %}&group={{ selected_group }}{% endif %}{% if selected_manufacturer %}&manufacturer={{ selected_manufacturer }}{% endif %}&sort={{ selected_sort }}">Первая</a>
+                  </li>
+                  <li class="page-item">
+                     <a class="page-link"
+                        href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_country %}&country={{ selected_country }}{% endif %}{% if selected_group %}&group={{ selected_group }}{% endif %}{% if selected_manufacturer %}&manufacturer={{ selected_manufacturer }}{% endif %}&sort={{ selected_sort }}">Назад</a>
+                  </li>
+               {% endif %}
+               {% for num in page_obj.paginator.page_range %}
+                  {% if page_obj.number == num %}
+                     <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                     </li>
+                  {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                     <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_country %}&country={{ selected_country }}{% endif %}{% if selected_group %}&group={{ selected_group }}{% endif %}{% if selected_manufacturer %}&manufacturer={{ selected_manufacturer }}{% endif %}&sort={{ selected_sort }}">{{ num }}</a>
+                     </li>
+                  {% endif %}
+               {% endfor %}
+               {% if page_obj.has_next %}
+                  <li class="page-item">
+                     <a class="page-link"
+                        href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_country %}&country={{ selected_country }}{% endif %}{% if selected_group %}&group={{ selected_group }}{% endif %}{% if selected_manufacturer %}&manufacturer={{ selected_manufacturer }}{% endif %}&sort={{ selected_sort }}">Вперед</a>
+                  </li>
+                  <li class="page-item">
+                     <a class="page-link"
+                        href="?page={{ page_obj.paginator.num_pages }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_country %}&country={{ selected_country }}{% endif %}{% if selected_group %}&group={{ selected_group }}{% endif %}{% if selected_manufacturer %}&manufacturer={{ selected_manufacturer }}{% endif %}&sort={{ selected_sort }}">Последняя</a>
+                  </li>
+               {% endif %}
+            </ul>
+         </nav>
+      {% endif %}
    </div>
 {% endblock %}
