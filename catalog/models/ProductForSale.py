@@ -3,6 +3,9 @@ from config.models.persistent import Persistent
 from moysklad.models.MoyskladProduct import MoyskladProduct
 import re
 from urllib.parse import quote
+from django.http import HttpResponse
+import requests
+from django.conf import settings
 
 
 class ProductForSale(Persistent):

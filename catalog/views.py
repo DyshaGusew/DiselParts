@@ -3,6 +3,76 @@ from django.views.generic import ListView, DetailView
 from .models import ProductForSale
 from django.views.generic import ListView
 from django.db.models import Q
+from django.http import HttpResponse
+from django.conf import settings
+import requests
+
+
+def get_product_images(product_id: str) -> list:
+    """Получение изображений товара"""
+    url = f"https://api.moysklad.ru/api/remap/1.2/entity/product/{product_id}/images"
+    try:
+        response = requests.get(
+            url,
+            headers={
+                "Authorization": f"Bearer {settings.MOYSKLAD_TOKEN}",
+                "Accept-Encoding": "gzip",
+            },
+            timeout=10,
+        )
+        response.raise_for_status()
+        images_data = response.json()
+
+        images = []
+        for img in images_data.get("rows", []):
+            images.append(
+                {
+                    "original": img["meta"]["downloadHref"],
+                    "medium": img.get("miniature", {}).get("downloadHref", ""),
+                    "thumbnail": img.get("tiny", {}).get("href", ""),
+                }
+            )
+        return images
+
+    except Exception as e:
+        print(f"Ошибка получения изображений для товара {product_id}: {str(e)}")
+        return []
+
+
+def proxy_product_image(request, product_id, image_index=0):
+    """Проксирует оригинальное изображение из МойСклад"""
+    # Получаем изображения для товара
+    images = get_product_images(product_id)
+
+    if not images or len(images) <= image_index:
+        return HttpResponse(status=404)  # Изображение не найдено
+
+    image_url = images[image_index].get("original")
+    if not image_url:
+        return HttpResponse(status=404)
+
+    try:
+        # Запрашиваем изображение с авторизацией
+        response = requests.get(
+            image_url,
+            headers={
+                "Authorization": f"Bearer {settings.MOYSKLAD_TOKEN}",
+                "Accept-Encoding": "gzip",
+            },
+            timeout=10,
+            stream=True,
+        )
+        response.raise_for_status()
+
+        # Возвращаем изображение клиенту
+        content_type = response.headers.get("content-type", "image/jpeg")
+        response = HttpResponse(response.content, content_type=content_type)
+        response['Cache-Control'] = 'public, max-age=604800'  # Кэш на 7 дней
+        return response
+
+    except requests.exceptions.RequestException as e:
+        print(f"Ошибка загрузки изображения: {str(e)}")
+        return HttpResponse(status=500)
 
 
 class ProductListView(ListView):

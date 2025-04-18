@@ -6,10 +6,12 @@
          <!-- Изображение товара -->
          <div class="col-lg-6">
             <div class="card shadow-sm">
-               {% if product.get_original_image_url %}
-                  <img src="{{ product.get_original_image_url }}?v={{ product.updated_at.timestamp }}"
-                       class="card-img-top rounded"
-                       alt="{{ object.name }}"
+               {% if product.moysklad_product.images %}
+                  <img src="{{ product.moysklad_product.get_medium_image_url }}"
+                       data-src="{% url 'catalog:proxy_product_image' product_id=product.moysklad_product.id image_index=0 %}?size=original"
+                       class="card-img-top rounded lazy-load"
+                       alt="{{ product.name }}"
+                       loading="lazy"
                        style="object-fit: contain;
                               max-height: 500px;
                               background: #f8f9fa">
@@ -22,6 +24,24 @@
                               max-height: 500px;
                               background: #f8f9fa">
                {% endif %}
+               <script>
+                  document.addEventListener('DOMContentLoaded', () => {
+                     const images = document.querySelectorAll('.lazy-load');
+                     images.forEach(img => {
+                        if (img.dataset.src) {
+                              const highRes = new Image();
+                              highRes.src = img.dataset.src;
+                              highRes.onload = () => {
+                                 img.src = highRes.src;
+                                 img.classList.add('loaded');
+                              };
+                              highRes.onerror = () => {
+                                 console.error('Ошибка загрузки оригинального изображения:', img.dataset.src);
+                              };
+                        }
+                     });
+                  });
+               </script>
             </div>
          </div>
          <!-- Информация о товаре -->
