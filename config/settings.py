@@ -172,3 +172,5 @@ CSRF_COOKIE_SAMESITE = 'Lax'
 LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'accounts:profile'
 LOGOUT_REDIRECT_URL = 'accounts:login'
+
+AUTH_USER_MODEL = 'accounts.Buyer'
