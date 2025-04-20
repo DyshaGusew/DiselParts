@@ -1,6 +1,7 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def profile_view(request):
-    if request.user.is_active:
-        return render(request, 'accounts/profile.html')
+    return render(request, 'accounts/profile.html')

@@ -167,3 +167,8 @@ MOYSKLAD_TOKEN = os.getenv("MOYSKLAD_TOKEN")
 # Cookies
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SAMESITE = 'Lax'
+
+# Login
+LOGIN_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = 'accounts:profile'
+LOGOUT_REDIRECT_URL = 'accounts:login'
