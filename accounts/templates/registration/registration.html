@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Вход{% endblock %}
+{% block title %}Регистрация{% endblock %}
 {% block content %}
     <div class="container mt-5">
         <!-- Page Header -->
-        <h1 class="mb-4 text-center text-primary">Вход в аккаунт</h1>
-        <!-- Login Form -->
+        <h1 class="mb-4 text-center text-primary">Регистрация</h1>
+        <!-- Registration Form -->
         <div class="card shadow-lg border-0 rounded-3 mx-auto"
              style="max-width: 500px">
             <div class="card-body p-4">
                 <h5 class="text-secondary mb-4">
-                    <i class="bi bi-box-arrow-in-right me-2"></i>Авторизация
+                    <i class="bi bi-person-plus me-2"></i>Создать аккаунт
                 </h5>
                 <form method="post">
                     {% csrf_token %}
@@ -23,8 +23,32 @@
                     </div>
                     <div class="mb-3">
                         <div class="form-floating">
-                            {{ form.password }}
-                            <label for="{{ form.password.id_for_label }}">Пароль</label>
+                            {{ form.email }}
+                            <label for="{{ form.email.id_for_label }}">Email</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            {{ form.phone }}
+                            <label for="{{ form.phone.id_for_label }}">Телефон</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            {{ form.delivery_address }}
+                            <label for="{{ form.delivery_address.id_for_label }}">Адрес доставки</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            {{ form.password1 }}
+                            <label for="{{ form.password1.id_for_label }}">Пароль</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            {{ form.password2 }}
+                            <label for="{{ form.password2.id_for_label }}">Подтверждение пароля</label>
                         </div>
                     </div>
                     <!-- Form Errors -->
@@ -40,18 +64,14 @@
                     {% endif %}
                     <!-- Submit Button -->
                     <button type="submit" class="btn btn-primary w-100">
-                        <i class="bi bi-check-circle me-2"></i>Войти
+                        <i class="bi bi-check-circle me-2"></i>Зарегистрироваться
                     </button>
                 </form>
                 <!-- Additional Links -->
                 <div class="mt-3 text-center">
                     <p class="text-muted small">
-                        Нет аккаунта?
-                        <a href="{% url 'accounts:register' %}" class="text-primary">Зарегистрироваться</a>
-                    </p>
-                    <p class="text-muted small">
-                        Забыли пароль?
-                        <a href="" class="text-primary">Сбросить пароль</a>
+                        Уже есть аккаунт?
+                        <a href="{% url 'accounts:login' %}" class="text-primary">Войти</a>
                     </p>
                 </div>
             </div>
