@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "config",
     "moysklad",
     "love_page",
+    "accounts",
     "catalog",
 ]
 

@@ -78,7 +78,7 @@ class MoyskladProduct(Persistent):
 
     # Поставщик
     supplier_legal_title = models.CharField(
-        max_length=255, blank=True, verbose_name="Юр. название поставщика"
+        max_length=255, blank=True, verbose_name="Поставщик"
     )
     supplier_actual_address = models.TextField(
         blank=True, verbose_name="Фактический адрес поставщика"
@@ -111,15 +111,13 @@ class MoyskladProduct(Persistent):
         return display_name
 
     def get_medium_image_url(self):
-        """Возвращает URL основного изображения или None"""
+        """Возвращает URL доп изображения"""
         if self.images and len(self.images) > 0:
             return self.images[0].get("medium")
         return None
 
     def get_original_image_url(self):
-        """Возвращает URL основного изображения или None"""
+        """Возвращает URL основного изображения"""
         if self.images and len(self.images) > 0:
-            #! Вонючее фото надо еще сделать оригинальным
             return self.images[0].get("original")
-            # return self.images[0].get("original")
         return None

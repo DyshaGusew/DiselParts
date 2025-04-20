@@ -59,17 +59,18 @@ class LimitedMultipleChoicesDropdownFilter(MultipleChoicesDropdownFilter):
 class MoyskladProductAdmin(ModelAdmin):
     form = DateModelForm
     list_display = (
+        "image_preview",
         "name",
         "article",
         "code",
         "price_value",
         "vat",
         "country_name",
+        "supplier_legal_title",
         "is_active",
         "moysklad_url_link",
-        "image_preview",
     )
-    list_display_links = ("name", "code", "article")
+    list_display_links = ("name", "code", "article", "image_preview")
     search_fields = ("name", "article", "code", "description")
 
     list_filter = [
@@ -84,7 +85,7 @@ class MoyskladProductAdmin(ModelAdmin):
 
     list_filter_submit = True
     list_filter_sheet = False
-    list_fullwidth = True
+    list_fullwidth = False
 
     # Делаем все поля только для чтения
     readonly_fields = (
@@ -260,7 +261,7 @@ class MoyskladProductAdmin(ModelAdmin):
                 )
         return "-"
 
-    image_preview.short_description = "Миниатюра"
+    image_preview.short_description = "Фото"
 
     def is_active(self, obj):
         return not obj.archived

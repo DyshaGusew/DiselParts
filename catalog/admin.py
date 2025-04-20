@@ -37,25 +37,26 @@ class ProductForSaleAdmin(ModelAdmin):
         'image_preview',
         'name',
         'article',
-        'supplier_legal_title',
         'price_info',
         'markup_percent',
+        'supplier_legal_title',
+        'country',
         'is_active',
     )
     list_display_links = ('image_preview', 'name', 'article')
     search_fields = ('name', 'article', 'moysklad_product__code')
     list_filter = [
-        "is_active",
-        "group",
-        "country",
+        'is_active',
+        'group',
+        'country',
         'supplier_legal_title',
-        ("sale_price", RangeNumericFilter),
+        ('sale_price', RangeNumericFilter),
         ('markup_percent', RangeNumericFilter),
     ]
 
     list_filter_submit = True
     list_filter_sheet = False
-    list_fullwidth = True
+    list_fullwidth = False
 
     readonly_fields = (
         'get_images_preview',
