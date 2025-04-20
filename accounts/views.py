@@ -1,11 +1,9 @@
-from winreg import CreateKey
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.views.generic import FormView
 
 from accounts.forms import RegisterForm
-from accounts.models import Buyer
 
 
 @login_required
