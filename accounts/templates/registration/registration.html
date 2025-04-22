@@ -17,38 +17,32 @@
                     <!-- Form Fields -->
                     <div class="mb-3">
                         <div class="form-floating">
-                            {{ form.username }}
-                            <label for="{{ form.username.id_for_label }}">Имя пользователя</label>
+                            <input type="email"
+                                   name="email"
+                                   id="id_email"
+                                   class="form-control"
+                                   value="{{ form.email.value|default_if_none:'' }}">
+                            <label for="id_email">Email</label>
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="form-floating">
-                            {{ form.email }}
-                            <label for="{{ form.email.id_for_label }}">Email</label>
+                            <input type="password"
+                                   name="password1"
+                                   id="id_password1"
+                                   class="form-control"
+                                   required>
+                            <label for="id_password1">Пароль</label>
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="form-floating">
-                            {{ form.phone }}
-                            <label for="{{ form.phone.id_for_label }}">Телефон</label>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-floating">
-                            {{ form.delivery_address }}
-                            <label for="{{ form.delivery_address.id_for_label }}">Адрес доставки</label>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-floating">
-                            {{ form.password1 }}
-                            <label for="{{ form.password1.id_for_label }}">Пароль</label>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-floating">
-                            {{ form.password2 }}
-                            <label for="{{ form.password2.id_for_label }}">Подтверждение пароля</label>
+                            <input type="password"
+                                   name="password2"
+                                   id="id_password2"
+                                   class="form-control"
+                                   required>
+                            <label for="id_password2">Подтверждение пароля</label>
                         </div>
                     </div>
                     <!-- Form Errors -->
@@ -57,7 +51,7 @@
                             <ul class="mb-0">
                                 {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
                                 {% for field in form %}
-                                    {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
+                                    {% for error in field.errors %}<li>{{ field.label }}: {{ error }}</li>{% endfor %}
                                 {% endfor %}
                             </ul>
                         </div>

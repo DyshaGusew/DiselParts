@@ -6,14 +6,13 @@ from .models import Buyer, Order, OrderItem
 @admin.register(Buyer)
 class BuyerAdmin(ModelAdmin):
     list_display = (
-        "username",
         "email",
         "phone",
         "is_staff",
         "is_superuser",
         "date_joined",
     )
-    search_fields = ("username", "email", "phone")
+    search_fields = ("email", "phone")
     list_filter = [
         "is_staff",
         "is_superuser",

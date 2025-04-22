@@ -17,24 +17,33 @@
                     <!-- Form Fields -->
                     <div class="mb-3">
                         <div class="form-floating">
-                            {{ form.username }}
-                            <label for="{{ form.username.id_for_label }}">Имя пользователя</label>
+                            <input type="email"
+                                   name="username"
+                                   id="id_username"
+                                   class="form-control"
+                                   value="{{ form.username.value|default_if_none:'' }}"
+                                   required
+                                   autofocus>
+                            <label for="id_username">Email</label>
                         </div>
+                        {% if form.username.errors %}<div class="text-danger small mt-1">{{ form.username.errors }}</div>{% endif %}
                     </div>
                     <div class="mb-3">
                         <div class="form-floating">
-                            {{ form.password }}
-                            <label for="{{ form.password.id_for_label }}">Пароль</label>
+                            <input type="password"
+                                   name="password"
+                                   id="id_password"
+                                   class="form-control"
+                                   required>
+                            <label for="id_password">Пароль</label>
                         </div>
+                        {% if form.password.errors %}<div class="text-danger small mt-1">{{ form.password.errors }}</div>{% endif %}
                     </div>
-                    <!-- Form Errors -->
-                    {% if form.errors %}
+                    <!-- Non-field Errors -->
+                    {% if form.non_field_errors %}
                         <div class="alert alert-danger">
                             <ul class="mb-0">
                                 {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
-                                {% for field in form %}
-                                    {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
-                                {% endfor %}
                             </ul>
                         </div>
                     {% endif %}
