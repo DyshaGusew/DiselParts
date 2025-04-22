@@ -83,9 +83,9 @@ class MoyskladProductAdmin(ModelAdmin):
         ("price_value", RangeNumericFilter),
     ]
 
-    list_filter_submit = False
+    list_filter_submit = True
     list_filter_sheet = False
-    list_fullwidth = True
+    list_fullwidth = False
 
     # Делаем все поля только для чтения
     readonly_fields = (

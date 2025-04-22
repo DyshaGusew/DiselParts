@@ -1,6 +1,28 @@
 from django.db import models
 from .Buyer import Buyer
 from catalog.models import ProductForSale
+from django.utils import timezone
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
+
+
+def update_order_total(order):
+    """Общая функция для обновления суммы заказа"""
+    order.total = sum(
+        item.quantity * item.Product.sale_price
+        for item in order.items.select_related('Product').all()
+    )
+    order.save(update_fields=['total'])
+
+
+@receiver(post_save, sender='accounts.OrderItem')
+def order_item_saved(sender, instance, **kwargs):
+    update_order_total(instance.Order)
+
+
+@receiver(post_delete, sender='accounts.OrderItem')
+def order_item_deleted(sender, instance, **kwargs):
+    update_order_total(instance.Order)
 
 
 class Order(models.Model):
@@ -18,15 +40,11 @@ class Order(models.Model):
         max_length=50, default='Обрабатывается', verbose_name='Статус'
     )
 
-    def __str__(self):
-        return f"Заказ #{self.id} от {self.User.username}"
+    def get_date(self):
+        return timezone.localtime(self.order_date).strftime('%d.%m.%Y %H:%M')
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        self.total = sum(
-            item.quantity * item.order_items.sale_price for item in self.items.all()
-        )
-        super().save(update_fields=['total'])
+    def __str__(self):
+        return f"Заказ {self.get_date()} от {self.User.username}"
 
     class Meta:
         verbose_name = 'Заказ'

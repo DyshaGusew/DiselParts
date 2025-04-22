@@ -1,7 +1,7 @@
 from django.db import models
 from .Order import Order
 from catalog.models import ProductForSale
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MinValueValidator
 
 
 class OrderItem(models.Model):
@@ -18,11 +18,11 @@ class OrderItem(models.Model):
         verbose_name='Продукт',
     )
     quantity = models.PositiveIntegerField(
-        default=1, validators=[MinValueValidator(1)], verbose_name='Количество'
+        default=1, validators=[MinValueValidator(1)], verbose_name='Кол-во'
     )
 
     def __str__(self):
-        return f"{self.Product.name} x{self.quantity} в заказе #{self.Order.id}"
+        return f"{self.Product.name} x{self.quantity} в {self.Order}"
 
     class Meta:
         verbose_name = 'Элемент заказа'
