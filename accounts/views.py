@@ -34,7 +34,7 @@ def register_success(request):
 class RegisterView(FormView):
     form_class = RegisterForm
     template_name = 'registration/registration.html'
-    success_url = reverse_lazy("accounts:profile")
+    success_url = reverse_lazy("accounts:register_success")
 
     def form_valid(self, form):
         email = form.cleaned_data["email"]
