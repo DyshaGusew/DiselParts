@@ -50,11 +50,9 @@ class RegisterView(FormView):
             token = EmailToken.objects.create(buyer=buyer)
             uid = urlsafe_base64_encode(force_bytes(buyer.pk))
 
-            confirm_url = self.request.build_absolute_uri(
-                reverse(
-                    'accounts:register_confirm',
-                    kwargs={'uidb64': uid, 'token': token.token},
-                )
+            confirm_url = settings.DOMAIN + reverse(
+                'accounts:register_confirm',
+                kwargs={'uidb64': uid, 'token': token.token},
             )
 
             try:
