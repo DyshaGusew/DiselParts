@@ -174,3 +174,13 @@ LOGIN_REDIRECT_URL = 'accounts:profile'
 LOGOUT_REDIRECT_URL = 'accounts:login'
 
 AUTH_USER_MODEL = 'accounts.Buyer'
+
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'GyshaG@yandex.ru'
+EMAIL_HOST_PASSWORD = 'neiflsximwxgtqdg'
+DEFAULT_FROM_EMAIL = 'GyshaG@yandex.ru'
