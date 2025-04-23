@@ -1,4 +1,3 @@
-import email
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
@@ -15,7 +14,7 @@ from django.contrib.auth import login
 from .utils import generate_password
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_bytes
-
+from django.contrib.auth.views import PasswordChangeDoneView
 from django.contrib import messages
 import logging
 

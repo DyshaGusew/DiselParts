@@ -8,6 +8,7 @@ class BuyerAdmin(ModelAdmin):
     list_display = (
         "email",
         "phone",
+        "is_active",
         "is_staff",
         "is_superuser",
         "date_joined",
@@ -16,6 +17,7 @@ class BuyerAdmin(ModelAdmin):
     list_filter = [
         "is_staff",
         "is_superuser",
+        "is_active",
     ]
     ordering = ("date_joined",)
 
