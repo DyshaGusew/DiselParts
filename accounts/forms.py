@@ -2,7 +2,13 @@ from click import confirmation_option
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from accounts.models import Buyer
-from django.db import models
+from django import forms
+
+
+class CustomUserChangeForm(forms.ModelForm):
+    class Meta:
+        model = Buyer
+        fields = ('username', 'email', 'phone', 'delivery_address')
 
 
 class RegisterForm(forms.Form):

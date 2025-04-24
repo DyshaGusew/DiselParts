@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView
 
-from accounts.forms import RegisterForm
+from accounts.forms import RegisterForm, CustomUserChangeForm
 from accounts.models import Buyer, EmailToken
 from config import settings
 from django.utils.http import urlsafe_base64_encode
@@ -14,7 +14,6 @@ from django.contrib.auth import login
 from .utils import generate_password
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_bytes
-from django.contrib.auth.views import PasswordChangeDoneView
 from django.contrib import messages
 import logging
 
@@ -112,3 +111,16 @@ def register_confirm(request, uidb64, token):
         request, ("Ваш аккаунт активирован! Используйте пароль из письма для входа.")
     )
     return redirect('accounts:profile')
+
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        form = CustomUserChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('accounts:profile')
+    else:
+        form = CustomUserChangeForm(instance=request.user)
+
+    return render(request, 'accounts/edit_profile.html', {'form': form})

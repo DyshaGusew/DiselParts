@@ -26,5 +26,6 @@ urlpatterns = [
         ),
         name='password_change_done',
     ),
+    path('edit-profile/', views.edit_profile, name='edit_profile'),
     path('', include("django.contrib.auth.urls")),
 ]

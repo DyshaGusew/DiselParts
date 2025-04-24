@@ -1,6 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import RegexValidator
+
+phone_validator = RegexValidator(
+    r'^\d+$', 'Телефон должен содержать только цифры. Формат ввода 87776665544'
+)
 
 
 class Buyer(AbstractUser):
@@ -31,7 +36,9 @@ class Buyer(AbstractUser):
     REQUIRED_FIELDS = []
 
     delivery_address = models.TextField(blank=True, verbose_name='Адрес доставки')
-    phone = models.CharField(max_length=20, blank=True, verbose_name='Телефон')
+    phone = models.CharField(
+        max_length=20, blank=True, verbose_name='Телефон', validators=[phone_validator]
+    )
 
     def __str__(self):
         return self.email
