@@ -1,6 +1,5 @@
 from django.db import models
-from .Buyer import Buyer
-from catalog.models import ProductForSale
+from accounts.models.Buyer import Buyer
 from django.utils import timezone
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
@@ -15,12 +14,12 @@ def update_order_total(order):
     order.save(update_fields=['total'])
 
 
-@receiver(post_save, sender='accounts.OrderItem')
+@receiver(post_save, sender='order.OrderItem')
 def order_item_saved(sender, instance, **kwargs):
     update_order_total(instance.Order)
 
 
-@receiver(post_delete, sender='accounts.OrderItem')
+@receiver(post_delete, sender='order.OrderItem')
 def order_item_deleted(sender, instance, **kwargs):
     update_order_total(instance.Order)
 
@@ -44,7 +43,7 @@ class Order(models.Model):
         return timezone.localtime(self.order_date).strftime('%d.%m.%Y %H:%M')
 
     def __str__(self):
-        return f"Заказ {self.get_date()} от {self.User.username}"
+        return f"Заказ {self.get_date()} от {self.User.email}"
 
     class Meta:
         verbose_name = 'Заказ'

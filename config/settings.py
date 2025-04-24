@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "moysklad",
     "love_page",
     "catalog",
+    "order",
 ]
 
 UNFOLD = {
