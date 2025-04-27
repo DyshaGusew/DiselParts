@@ -21,6 +21,9 @@ class BasketItem(models.Model):
         default=1, validators=[MinValueValidator(1)], verbose_name='Кол-во'
     )
 
+    def get_sum(self):
+        return self.Product.sale_price * self.quantity
+
     def __str__(self):
         return f"{self.Product.name} x{self.quantity} в {self.Basket}"
 

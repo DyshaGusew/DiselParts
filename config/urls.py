@@ -14,4 +14,5 @@ urlpatterns = [
     path("catalog/", include(("catalog.urls", "catalog"), namespace="catalog")),
     path('about/', AboutView.as_view(), name='about'),
     path('accounts/', include('accounts.urls')),
+    path("order/", include(("order.urls", "order"), namespace="order")),
 ]

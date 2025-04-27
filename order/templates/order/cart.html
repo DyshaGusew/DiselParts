@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Корзина{% endblock %}
+{% block content %}
+    <div class="container mt-4">
+        <!-- Page Header -->
+        <h1 class="mb-4 text-center text-primary">Ваша корзина</h1>
+        {% if basket.items.all %}
+            <!-- Cart Summary -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="text-secondary mb-0">
+                            <i class="bi bi-cart3 me-2"></i>Товаров: {{ basket.products_count }}
+                        </h5>
+                        <h4 class="text-primary mb-0">Итого: {{ basket.total|floatformat:2 }} ₽</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- Cart Items Table -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 100px;">Фото</th>
+                            <th>Товар</th>
+                            <th style="width: 120px;">Цена</th>
+                            <th style="width: 200px;">Количество</th>
+                            <th style="width: 100px;">Сумма</th>
+                            <th style="width: 40px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in basket.items.all %}
+                            <tr>
+                                <!-- Product Image -->
+                                <td>
+                                    <div style="width: 80px;
+                                                height: 60px;
+                                                overflow: hidden;
+                                                background: #f8f9fa">
+                                        {% if item.Product.get_medium_image_url %}
+                                            <img src="{{ item.Product.get_medium_image_url }}?v={{ item.Product.updated_at.timestamp }}"
+                                                 class="h-100 w-100"
+                                                 alt="{{ item.Product.name }}"
+                                                 style="object-fit: cover">
+                                        {% else %}
+                                            <img src="{% static 'catalog/images/placeholder-detail.jpg' %}"
+                                                 class="h-100 w-100"
+                                                 alt="Нет изображения"
+                                                 style="object-fit: contain;
+                                                        background:#ffffff">
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                <!-- Product Info -->
+                                <td>
+                                    <h6 class="mb-1">{{ item.Product.name }}</h6>
+                                    <p class="text-muted small mb-0">
+                                        <strong>Артикул:</strong> {{ item.Product.article|default:"-" }}
+                                    </p>
+                                    {% if item.Product.country %}
+                                        <p class="text-muted small mb-0">
+                                            <strong>Страна:</strong> {{ item.Product.country }}
+                                        </p>
+                                    {% endif %}
+                                </td>
+                                <!-- Price -->
+                                <td class="text-nowrap">{{ item.Product.sale_price|floatformat:2 }} ₽</td>
+                                <!-- Quantity Controls -->
+                                <td>
+                                    <form method="post"
+                                          action="{% url 'order:update-quantity' item.id %}"
+                                          class="d-inline">
+                                        {% csrf_token %}
+                                        <div class="input-group input-group-sm" style="width: 140px;">
+                                            <button type="submit"
+                                                    name="action"
+                                                    value="decrease"
+                                                    class="btn btn-outline-secondary"
+                                                    {% if item.quantity <= 1 %}disabled{% endif %}>
+                                                <i class="bi bi-dash"></i>
+                                            </button>
+                                            <input type="number"
+                                                   name="quantity"
+                                                   class="form-control text-center"
+                                                   value="{{ item.quantity }}"
+                                                   min="1"
+                                                   style="max-width: 100px">
+                                            <button type="submit"
+                                                    name="action"
+                                                    value="increase"
+                                                    class="btn btn-outline-secondary">
+                                                <i class="bi bi-plus"></i>
+                                            </button>
+                                            <button type="submit" class="btn btn-outline-danger" value="update">
+                                                <i class="bi bi-arrow-repeat"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </td>
+                                <!-- Item Total -->
+                                <td class="text-nowrap">
+                                    <strong>{{ item.get_sum|floatformat:2 }} ₽</strong>
+                                </td>
+                                <!-- Remove -->
+                                <td class="text-end">
+                                    <form action="{% url 'order:remove_from_cart' item.id %}"
+                                          method="post"
+                                          style="display: inline">
+                                        {% csrf_token %}
+                                        <button type="submit"
+                                                class="btn btn-link text-danger p-0"
+                                                title="Удалить"
+                                                onclick="return confirm('Удалить товар из корзины?')">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- Checkout Panel -->
+            <div class="card shadow-sm mt-4">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <a href="{% url 'catalog:product-list' %}"
+                               class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>Продолжить покупки
+                            </a>
+                        </div>
+                        <div class="text-end">
+                            <h4 class="text-primary mb-2">Итого к оплате: {{ basket.total|floatformat:2 }} ₽</h4>
+                            <button class="btn btn-primary btn-lg" type="button">
+                                <i class="bi bi-credit-card me-2"></i>Оформить заказ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <!-- Empty Cart -->
+            <div class="card shadow-lg border-0 rounded-3 text-center py-5">
+                <div class="card-body">
+                    <i class="bi bi-cart-x text-muted" style="font-size: 5rem;"></i>
+                    <h3 class="text-secondary mt-3">Ваша корзина пуста</h3>
+                    <p class="text-muted">Добавьте товары, чтобы продолжить покупки</p>
+                    <a href="{% url 'catalog:product-list' %}" class="btn btn-primary mt-3">
+                        <i class="bi bi-arrow-left me-2"></i>Вернуться в каталог
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
