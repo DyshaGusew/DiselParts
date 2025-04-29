@@ -319,3 +319,17 @@ def sync_products_with_moysklad() -> bool:
 
     print(f"\nСинхронизация завершена. Успешно: {success_count}, Ошибок: {error_count}")
     return error_count == 0
+
+
+def clear_db_products() -> bool:
+    try:
+        ProductForSale.objects.all().delete()
+    except Exception as e:
+        print(f"Ошибка очистки БД с товароми на продажу: {str(e)}")
+
+
+def clear_db_moysklad() -> bool:
+    try:
+        MoyskladProduct.objects.all().delete()
+    except Exception as e:
+        print(f"Ошибка очистки БД с товароми из мойсклад: {str(e)}")
