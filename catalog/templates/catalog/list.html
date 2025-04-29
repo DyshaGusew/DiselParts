@@ -123,30 +123,51 @@
                      {% endif %}
                   </div>
                   <!-- Информация о товаре -->
-                  <div class="card-body">
-                     <h5 class="card-title">{{ product.name }}</h5>
-                     <p class="card-text text-muted small mb-1">
-                        <strong>Артикул:</strong> {{ product.article }}
-                     </p>
-                     {% if product.country %}
-                        <p class="card-text text-muted small mb-1">
-                           <strong>Страна:</strong> {{ product.country }}
+                  <div class="card-body d-flex flex-column">
+                     <h5 class="card-title text-truncate">{{ product.name }}</h5>
+                     <div class="small text-muted mb-2">
+                        <p class="mb-1">
+                           <strong>Арт.:</strong> {{ product.article }}
                         </p>
-                     {% endif %}
-                     {% if product.supplier_legal_title %}
-                        <p class="card-text text-muted small mb-2">
-                           <strong>Производитель:</strong> {{ product.supplier_legal_title }}
-                        </p>
-                     {% endif %}
-                     <h5 class="text-success mb-3">{{ product.sale_price }} руб.</h5>
-                     <div class="d-flex justify-content-between align-items-center">
-                        <a href="{% url 'catalog:product-detail' product.pk %}"
-                           class="btn btn-outline-primary btn-sm">
-                           <i class="bi bi-eye"></i> Подробнее
-                        </a>
-                        <small class="text-muted">
-                           <i class="bi bi-eye"></i> {{ product.views }}
-                        </small>
+                        {% if product.country %}
+                           <p class="mb-1">
+                              <strong>Страна:</strong> {{ product.country }}
+                           </p>
+                        {% endif %}
+                        {% if product.supplier_legal_title %}
+                           <p class="mb-0 text-truncate">
+                              <strong>Произв.:</strong> {{ product.supplier_legal_title }}
+                           </p>
+                        {% endif %}
+                     </div>
+                     <div class="mt-auto">
+                        <h5 class="text-success mb-3 fs-5">{{ product.sale_price }} руб.</h5>
+                        <div class="d-flex justify-content-between align-items-center  gap-1">
+                           <a href="{% url 'catalog:product-detail' product.pk %}"
+                              class="btn btn-outline-primary btn-sm px-2 py-1 flex-grow-1">Подробно</a>
+                           <div class="d-flex align-items-center">
+                              <div class="input-group input-group-sm flex-nowrap" style="width: 110px;">
+                                 <button class="btn btn-outline-secondary minus-btn"
+                                         type="button"
+                                         data-id="{{ product.id }}">
+                                    <i class="bi bi-dash"></i>
+                                 </button>
+                                 <input type="text"
+                                        class="form-control text-center quantity-input"
+                                        value="1"
+                                        data-id="{{ product.id }}">
+                                 <button class="btn btn-outline-secondary plus-btn"
+                                         type="button"
+                                         data-id="{{ product.id }}">
+                                    <i class="bi bi-plus"></i>
+                                 </button>
+                              </div>
+                              <button class="btn btn-success btn-sm add-to-cart "
+                                      data-id="{{ product.id }}">
+                                 <i class="bi bi-cart-plus"></i>
+                              </button>
+                           </div>
+                        </div>
                      </div>
                   </div>
                </div>
@@ -197,4 +218,37 @@
          </nav>
       {% endif %}
    </div>
+   {% block extra_js %}
+      <script>
+         document.addEventListener('DOMContentLoaded', function() {
+            // Обработчики для кнопок +/-
+            document.querySelectorAll('.plus-btn').forEach(btn => {
+               btn.addEventListener('click', function() {
+                     const productId = this.dataset.id;
+                     const input = document.querySelector(`.quantity-input[data-id="${productId}"]`);
+                     input.value = parseInt(input.value) + 1;
+               });
+            });
+
+            document.querySelectorAll('.minus-btn').forEach(btn => {
+               btn.addEventListener('click', function() {
+                     const productId = this.dataset.id;
+                     const input = document.querySelector(`.quantity-input[data-id="${productId}"]`);
+                     if (parseInt(input.value) > 1) {
+                        input.value = parseInt(input.value) - 1;
+                     }
+               });
+            });
+
+            // Обработчики для кнопок добавления в корзину
+            document.querySelectorAll('.add-to-cart').forEach(btn => {
+               btn.addEventListener('click', function() {
+                     const productId = this.dataset.id;
+                     const quantity = document.querySelector(`.quantity-input[data-id="${productId}"]`).value;
+                     alert('Товар "{{ productId }}" (количество: ' + quantity + ') добавлен в корзину!');
+            });
+         });
+      });
+      </script>
+   {% endblock %}
 {% endblock %}

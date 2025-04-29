@@ -324,12 +324,16 @@ def sync_products_with_moysklad() -> bool:
 def clear_db_products() -> bool:
     try:
         ProductForSale.objects.all().delete()
+        return True
     except Exception as e:
         print(f"Ошибка очистки БД с товароми на продажу: {str(e)}")
+        return False
 
 
 def clear_db_moysklad() -> bool:
     try:
         MoyskladProduct.objects.all().delete()
+        return True
     except Exception as e:
         print(f"Ошибка очистки БД с товароми из мойсклад: {str(e)}")
+        return False

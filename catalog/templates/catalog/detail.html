@@ -77,19 +77,45 @@
                      <p class="lead">{{ object.description }}</p>
                   </div>
                {% endif %}
-               <button class="btn btn-primary btn-lg mt-3" id="buy-button">
-                  <i class="bi bi-cart-plus me-2"></i> Купить
-               </button>
+               <!-- Блок управления количеством и добавлением в корзину -->
+               <div class="d-flex align-items-center gap-3 mt-4">
+                  <div class="input-group" style="width: 150px;">
+                     <button class="btn btn-outline-secondary minus-btn" type="button">
+                        <i class="bi bi-dash"></i>
+                     </button>
+                     <input type="text" class="form-control text-center quantity-input" value="1">
+                     <button class="btn btn-outline-secondary plus-btn" type="button">
+                        <i class="bi bi-plus"></i>
+                     </button>
+                  </div>
+                  <button class="btn btn-primary btn-lg flex-grow-1" id="buy-button">
+                     <i class="bi bi-cart-plus me-2"></i> Купить
+                  </button>
+               </div>
             </div>
          </div>
       </div>
    </div>
    {% block extra_js %}
       <script>
-    document.getElementById('buy-button').addEventListener('click', function() {
-        alert('Товар "{{ object.name }}" добавлен в корзину!');
-        // Здесь можно добавить AJAX-запрос к бэкенду
-    });
+         document.getElementById('buy-button').addEventListener('click', function() {
+            const quantity = document.querySelector('.quantity-input').value;
+            alert('Товар "{{ object.name }}" (количество: ' + quantity + ') добавлен в корзину!');
+            // Здесь можно добавить AJAX-запрос к бэкенду с передачей quantity
+         });
+         
+         // Обработчики для кнопок +/-
+         document.querySelector('.plus-btn').addEventListener('click', function() {
+            const input = document.querySelector('.quantity-input');
+            input.value = parseInt(input.value) + 1;
+         });
+         
+         document.querySelector('.minus-btn').addEventListener('click', function() {
+            const input = document.querySelector('.quantity-input');
+            if (parseInt(input.value) > 1) {
+               input.value = parseInt(input.value) - 1;
+            }
+         });
       </script>
    {% endblock %}
 {% endblock %}
