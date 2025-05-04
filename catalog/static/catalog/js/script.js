@@ -1,5 +1,4 @@
 function initCartActions() {
-    // Обработчики для кнопок +/-
     document.querySelectorAll('.plus-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const input = this.closest('.input-group').querySelector('.quantity-input');
@@ -16,20 +15,40 @@ function initCartActions() {
         });
     });
 
-    // Обработчик отправки формы
+
     document.querySelectorAll('.add-to-cart-form').forEach(form => {
         form.addEventListener('submit', function(e) {
-            e.preventDefault(); // Предотвращаем стандартную отправку
-            this.submit(); // Отправляем форму
+            e.preventDefault();
+
+
+            const scrollPosition = window.scrollY || window.pageYOffset;
+            localStorage.setItem('scrollPosition', scrollPosition);
+
+            this.submit();
         });
     });
 }
 
-document.addEventListener('DOMContentLoaded', initCartActions);
+// Восстанавливаем позицию скролла при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-            const toasts = document.querySelectorAll('.toast');
-            toasts.forEach(toast => {
-               const bsToast = new bootstrap.Toast(toast);
-               bsToast.show();
-            });
-         });
+    const savedScrollPosition = localStorage.getItem('scrollPosition');
+    if (savedScrollPosition !== null) {
+        window.scrollTo({
+            top: parseInt(savedScrollPosition),
+            behavior: 'instant'
+        });
+
+        localStorage.removeItem('scrollPosition');
+    }
+
+
+    const toasts = document.querySelectorAll('.toast');
+    toasts.forEach(toast => {
+        const bsToast = new bootstrap.Toast(toast, {
+            animation: false
+        });
+        bsToast.show();
+    });
+
+    initCartActions();
+});
