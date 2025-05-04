@@ -129,23 +129,28 @@
             <div class="col">
                <div class="card h-100 shadow-sm">
                   <!-- Изображение товара -->
-                  <div style="height: 200px; overflow: hidden; background: #f8f9fa;">
-                     {% if product.get_medium_image_url %}
-                        <img src="{{ product.get_medium_image_url }}?v={{ product.updated_at.timestamp }}"
-                             class="card-img-top h-100 w-100"
-                             alt="{{ product.name }}"
-                             style="object-fit: cover">
-                     {% else %}
-                        <img src="{% static 'catalog/images/placeholder-detail.jpg' %}"
-                             class="card-img-top h-100 w-100"
-                             alt="Нет изображения"
-                             style="object-fit: contain;
-                                    background:#ffffff">
-                     {% endif %}
-                  </div>
+                  <a href="{% url 'catalog:product-detail' product.pk %}">
+                     <div style="height: 200px; overflow: hidden; background: #f8f9fa;">
+                        {% if product.get_medium_image_url %}
+                           <img src="{{ product.get_medium_image_url }}?v={{ product.updated_at.timestamp }}"
+                                class="card-img-top h-100 w-100"
+                                alt="{{ product.name }}"
+                                style="object-fit: cover">
+                        {% else %}
+                           <img src="{% static 'catalog/images/placeholder-detail.jpg' %}"
+                                class="card-img-top h-100 w-100"
+                                alt="Нет изображения"
+                                style="object-fit: contain;
+                                       background:#ffffff">
+                        {% endif %}
+                     </div>
+                  </a>
                   <!-- Информация о товаре -->
                   <div class="card-body d-flex flex-column">
-                     <h5 class="card-title text-truncate">{{ product.name }}</h5>
+                     <a class="name-link"
+                        href="{% url 'catalog:product-detail' product.pk %}">
+                        <h5 class="card-title text-truncate">{{ product.name }}</h5>
+                     </a>
                      <div class="small text-muted mb-2">
                         <p class="mb-1">
                            <strong>Арт.:</strong> {{ product.article }}

@@ -18,5 +18,10 @@ urlpatterns = [
         views.update_quantity_from_list,
         name='update-quantity-list',
     ),
+    path(
+        'update-quantity-product/<int:item_id>/',
+        views.update_quantity_from_product,
+        name='update-quantity-product',
+    ),
     path('missing_cart', views.MissingCartView.as_view(), name='missing-cart'),
 ]

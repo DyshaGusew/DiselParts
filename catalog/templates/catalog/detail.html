@@ -2,6 +2,27 @@
 {% block title %}{{ object.name }}{% endblock %}
 {% block content %}
    <div class="container mt-5">
+      {% if messages %}
+         <div class="toast-container position-fixed top-0 end-0 p-3"
+              style="z-index: 1055">
+            {% for message in messages %}
+               <div class="toast align-items-center text-white {% if message.tags == 'success' %}bg-success{% else %}bg-danger{% endif %} border-0 fade-out-toast"
+                    role="alert"
+                    aria-live="assertive"
+                    aria-atomic="true"
+                    data-bs-autohide="true"
+                    data-bs-delay="3000">
+                  <div class="d-flex">
+                     <div class="toast-body">{{ message }}</div>
+                     <button type="button"
+                             class="btn-close btn-close-white me-2 m-auto"
+                             data-bs-dismiss="toast"
+                             aria-label="Close"></button>
+                  </div>
+               </div>
+            {% endfor %}
+         </div>
+      {% endif %}
       <div class="row">
          <!-- Изображение товара -->
          <div class="col-lg-6">
@@ -79,25 +100,33 @@
                {% endif %}
                <!-- Блок управления количеством и добавлением в корзину -->
                <div class="d-flex align-items-center gap-3 mt-4">
-                  <div class="input-group" style="width: 150px;">
-                     <button class="btn btn-outline-secondary minus-btn" type="button">
-                        <i class="bi bi-dash"></i>
-                     </button>
-                     <input type="text" class="form-control text-center quantity-input" value="1">
-                     <button class="btn btn-outline-secondary plus-btn" type="button">
-                        <i class="bi bi-plus"></i>
-                     </button>
-                  </div>
-                  <form method="post"
-                        action="{% url 'order:update_quantity' object.id %}"
-                        class="d-inline">
+                  <form action="{% url 'order:update-quantity-product' product.id %}"
+                        method="post"
+                        class="add-to-cart-form d-flex align-items-center gap-3">
                      {% csrf_token %}
-                     <button class="btn btn-primary btn-lg flex-grow-1"
-                             id="buy-button"
-                             type="submit"
-                             name="action"
-                             value="update">
-                        <i class="bi bi-cart-plus me-2"></i> Купить
+                     <input type="hidden" name="action" value="add">
+                     <input type="hidden"
+                            name="current_params"
+                            value="{{ request.GET.urlencode }}">
+                     <!-- Блок с кнопками +/- -->
+                     <div class="input-group" style="width: 200px;">
+                        <button type="button" class="btn btn-outline-secondary minus-btn px-3 py-2">
+                           <i class="bi bi-dash fs-5"></i>
+                        </button>
+                        <input type="number"
+                               name="quantity"
+                               class="form-control text-center quantity-input fs-5"
+                               value="1"
+                               min="1"
+                               style="height: auto">
+                        <button type="button" class="btn btn-outline-secondary plus-btn px-3 py-2">
+                           <i class="bi bi-plus fs-5"></i>
+                        </button>
+                     </div>
+                     <!-- Основная кнопка добавления -->
+                     <button type="submit" class="btn btn-success py-2 px-4">
+                        <i class="bi bi-cart-plus fs-5 me-2"></i>
+                        Добавить в корзину
                      </button>
                   </form>
                </div>
@@ -106,19 +135,6 @@
       </div>
    </div>
    {% block extra_js %}
-      <script>
-         // Обработчики для кнопок +/-
-         document.querySelector('.plus-btn').addEventListener('click', function() {
-            const input = document.querySelector('.quantity-input');
-            input.value = parseInt(input.value) + 1;
-         });
-         
-         document.querySelector('.minus-btn').addEventListener('click', function() {
-            const input = document.querySelector('.quantity-input');
-            if (parseInt(input.value) > 1) {
-               input.value = parseInt(input.value) - 1;
-            }
-         });
-      </script>
+      <script src="{% static 'catalog/js/script.js' %}"></script>
    {% endblock %}
 {% endblock %}

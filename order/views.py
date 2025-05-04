@@ -111,5 +111,39 @@ def update_quantity_from_list(request, item_id):
     return redirect('catalog:product-list')
 
 
+@login_required
+def update_quantity_from_product(request, item_id):
+    if request.method == 'POST':
+        try:
+            basket = request.user.basket.first()
+            if not basket:
+                basket = Basket.objects.create(user=request.user)
+
+            product = get_object_or_404(ProductForSale, pk=item_id)
+
+            basket_item, created = BasketItem.objects.get_or_create(
+                Basket=basket, Product=product, defaults={'quantity': 0}
+            )
+
+            if request.POST.get('action') == 'add':
+                quantity = int(request.POST.get('quantity', 1))
+                basket_item.quantity += quantity
+                basket_item.save()
+
+                messages.success(
+                    request, f'Добавлено "{product.name}" ({quantity} шт.) в корзину.'
+                )
+
+            return redirect('catalog:product-detail', pk=product.id)
+
+        except ValueError:
+            messages.error(request, 'Некорректное количество')
+        except Exception as e:
+            messages.error(request, f'Ошибка: {str(e)}')
+            print(f'Ошибка: {str(e)}')
+
+    return redirect('catalog:product-list')
+
+
 class MissingCartView(TemplateView):
     template_name = 'order/missing_cart.html'
