@@ -29,9 +29,24 @@
               <a href="{% url 'accounts:login' %}" class="btn btn-outline-light me-2">Войти</a>
             {% endif %}
             {% if request.user.is_authenticated %}
-              <a href="{% url 'order:cart-view' %}" class="btn btn-primary">Корзина <span class="badge bg-danger">0</span></a>
+              {% with basket=request.user.basket.first %}
+                <a href="{% url 'orders:cart-view' %}"
+                   class="btn btn-primary position-relative">
+                  Корзина
+                  {% if basket and basket.products_count > 0 %}
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      {{ basket.products_count }}
+                      <span class="visually-hidden">товаров в корзине</span>
+                    </span>
+                  {% endif %}
+                </a>
+              {% endwith %}
             {% else %}
-              <a href="{% url 'order:missing-cart' %}" class="btn btn-primary">Корзина <span class="badge bg-danger">0</span></a>
+              <a href="{% url 'orders:missing-cart' %}"
+                 class="btn btn-primary position-relative">
+                Корзина
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+              </a>
             {% endif %}
           </div>
         </div>

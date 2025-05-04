@@ -30,7 +30,7 @@ class Basket(models.Model):
     User = models.ForeignKey(
         Buyer,
         on_delete=models.CASCADE,
-        related_name='busket',
+        related_name='basket',
         verbose_name='Покупатель',
     )
     total = models.DecimalField(
