@@ -7,6 +7,7 @@ from catalog.models import ProductForSale
 from django.db import transaction
 from django.views.generic import TemplateView
 from django.contrib import messages
+from django.urls import reverse
 
 
 @login_required
@@ -76,8 +77,9 @@ def update_quantity_from_cart(request, item_id):
 def update_quantity_from_list(request, item_id):
     if request.method == 'POST':
         try:
-            basket = request.user.basket.first()
+            current_params = request.POST.get('current_params', '')
 
+            basket = request.user.basket.first()
             if not basket:
                 basket = Basket.objects.create(user=request.user)
 
@@ -92,13 +94,18 @@ def update_quantity_from_list(request, item_id):
                 basket_item.quantity += quantity
                 basket_item.save()
 
-                messages.success(request, f'Товар "{product.name}" добавлен в корзину')
-            else:
-                messages.error(request, 'Неизвестное действие')
+                messages.success(
+                    request, f'Добавлено "{product.name}" ({quantity} шт.) в корзину.'
+                )
+
+            base_url = reverse('catalog:product-list')
+            redirect_url = f"{base_url}?{current_params}"
+            return redirect(redirect_url)
 
         except ValueError:
             messages.error(request, 'Некорректное количество')
         except Exception as e:
+            messages.error(request, f'Ошибка: {str(e)}')
             print(f'Ошибка: {str(e)}')
 
     return redirect('catalog:product-list')

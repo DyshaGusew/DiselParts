@@ -20,15 +20,16 @@ function initCartActions() {
     document.querySelectorAll('.add-to-cart-form').forEach(form => {
         form.addEventListener('submit', function(e) {
             e.preventDefault(); // Предотвращаем стандартную отправку
-            
-            // Показываем уведомление
-            const quantity = this.querySelector('.quantity-input').value;
-            alert(`Товар добавлен в корзину (количество: ${quantity})`);
-            
-            // Отправляем форму
-            this.submit();
+            this.submit(); // Отправляем форму
         });
     });
 }
 
 document.addEventListener('DOMContentLoaded', initCartActions);
+document.addEventListener('DOMContentLoaded', function() {
+            const toasts = document.querySelectorAll('.toast');
+            toasts.forEach(toast => {
+               const bsToast = new bootstrap.Toast(toast);
+               bsToast.show();
+            });
+         });
