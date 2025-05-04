@@ -143,7 +143,3 @@ def update_quantity_from_product(request, item_id):
             print(f'Ошибка: {str(e)}')
 
     return redirect('catalog:product-list')
-
-
-class MissingCartView(TemplateView):
-    template_name = 'order/missing_cart.html'
