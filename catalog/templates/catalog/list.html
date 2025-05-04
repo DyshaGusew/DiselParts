@@ -15,7 +15,7 @@
                   </h5>
                   <div class="row g-3">
                      <!-- Поиск -->
-                     <div class="col-md-4">
+                     <div class="col-lg-4">
                         <div class="form-floating">
                            <input type="text"
                                   name="search"
@@ -219,36 +219,6 @@
       {% endif %}
    </div>
    {% block extra_js %}
-      <script>
-         document.addEventListener('DOMContentLoaded', function() {
-            // Обработчики для кнопок +/-
-            document.querySelectorAll('.plus-btn').forEach(btn => {
-               btn.addEventListener('click', function() {
-                     const productId = this.dataset.id;
-                     const input = document.querySelector(`.quantity-input[data-id="${productId}"]`);
-                     input.value = parseInt(input.value) + 1;
-               });
-            });
-
-            document.querySelectorAll('.minus-btn').forEach(btn => {
-               btn.addEventListener('click', function() {
-                     const productId = this.dataset.id;
-                     const input = document.querySelector(`.quantity-input[data-id="${productId}"]`);
-                     if (parseInt(input.value) > 1) {
-                        input.value = parseInt(input.value) - 1;
-                     }
-               });
-            });
-
-            // Обработчики для кнопок добавления в корзину
-            document.querySelectorAll('.add-to-cart').forEach(btn => {
-               btn.addEventListener('click', function() {
-                     const productId = this.dataset.id;
-                     const quantity = document.querySelector(`.quantity-input[data-id="${productId}"]`).value;
-                     alert('Товар "{{ productId }}" (количество: ' + quantity + ') добавлен в корзину!');
-            });
-         });
-      });
-      </script>
+      <script src="{% static 'catalog/js/script.js' %}"></script>
    {% endblock %}
 {% endblock %}

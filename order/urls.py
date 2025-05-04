@@ -9,7 +9,7 @@ urlpatterns = [
     path('minus/<int:item_id>/', views.minus_to_cart, name='minus_to_cart'),
     path('remove/<int:item_id>/', views.remove_from_cart, name='remove_from_cart'),
     path(
-        'update-quantity/<int:item_id>/', views.update_quantity, name='update-quantity'
+        'update-zquantity/<int:item_id>/', views.update_quantity, name='update-quantity'
     ),
     path('missing_cart', views.MissingCartView.as_view(), name='missing-cart'),
 ]

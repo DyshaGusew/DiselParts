@@ -88,9 +88,18 @@
                         <i class="bi bi-plus"></i>
                      </button>
                   </div>
-                  <button class="btn btn-primary btn-lg flex-grow-1" id="buy-button">
-                     <i class="bi bi-cart-plus me-2"></i> Купить
-                  </button>
+                  <form method="post"
+                        action="{% url 'order:update_quantity' object.id %}"
+                        class="d-inline">
+                     {% csrf_token %}
+                     <button class="btn btn-primary btn-lg flex-grow-1"
+                             id="buy-button"
+                             type="submit"
+                             name="action"
+                             value="update">
+                        <i class="bi bi-cart-plus me-2"></i> Купить
+                     </button>
+                  </form>
                </div>
             </div>
          </div>
@@ -98,12 +107,6 @@
    </div>
    {% block extra_js %}
       <script>
-         document.getElementById('buy-button').addEventListener('click', function() {
-            const quantity = document.querySelector('.quantity-input').value;
-            alert('Товар "{{ object.name }}" (количество: ' + quantity + ') добавлен в корзину!');
-            // Здесь можно добавить AJAX-запрос к бэкенду с передачей quantity
-         });
-         
          // Обработчики для кнопок +/-
          document.querySelector('.plus-btn').addEventListener('click', function() {
             const input = document.querySelector('.quantity-input');
