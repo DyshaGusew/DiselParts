@@ -107,7 +107,10 @@
                                         {% for order in orders %}
                                             <tr>
                                                 <td class="ps-4 fw-bold">#{{ order.id }}</td>
-                                                <td>{{ order.order_date|date:"d.m.Y" }}</td>
+                                                <td>
+                                                    <div>{{ order.order_date|date:"d.m.Y" }}</div>
+                                                    <div class="text-muted small">{{ order.order_date|date:"H:i" }}</div>
+                                                </td>
                                                 <td>{{ order.total }} руб.</td>
                                                 <td>
                                                     <span class="badge rounded-pill py-2 px-3 {% if order.status == 'Pending' %}bg-warning text-dark {% elif order.status == 'Completed' %}bg-success {% elif order.status == 'Cancelled' %}bg-danger {% else %}bg-secondary{% endif %}">
@@ -115,8 +118,7 @@
                                                     </span>
                                                 </td>
                                                 <td class="text-end pe-4">
-                                                    <a href="{% url 'catalog:order-detail' order.id %}"
-                                                       class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                                    <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-3">
                                                         <i class="bi bi-eye me-1"></i> Подробнее
                                                     </a>
                                                 </td>
@@ -134,6 +136,10 @@
                                 <a href="{% url 'catalog:product-list' %}"
                                    class="btn btn-primary rounded-pill px-4">
                                     <i class="bi bi-arrow-right me-2"></i>Перейти в каталог
+                                </a>
+                                <a href="{% url 'order:cart-view' %}"
+                                   class="btn btn-primary rounded-pill px-4">
+                                    <i class="bi bi-arrow-right me-2"></i>Перейти в корзину
                                 </a>
                             </div>
                         {% endif %}

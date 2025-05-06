@@ -1,14 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
-from django.http import JsonResponse
+
 
 from .models import Basket, BasketItem, OrderItem, Order
 from catalog.models import ProductForSale
 from django.db import transaction
-from django.views.generic import TemplateView
 from django.contrib import messages
-from django.urls import reverse
 
 
 @login_required
@@ -157,6 +156,29 @@ def create_order(request):
             messages.error(request, 'Ваша корзина пуста')
             return redirect('order:cart-view')
 
+        missing_fields = []
+        if (
+            not request.user.delivery_address
+            or request.user.delivery_address.strip() == ''
+        ):
+            missing_fields.append('адрес доставки')
+        if not request.user.phone or request.user.phone.strip() == '':
+            missing_fields.append('номер телефона')
+        if not request.user.email or request.user.email.strip() == '':
+            missing_fields.append('email')
+
+        if missing_fields:
+            from django.utils.safestring import mark_safe
+
+            fields_str = ", ".join(missing_fields)
+            messages.error(
+                request,
+                mark_safe(
+                    f'Для оформления заказа необходимо указать в <a href="{reverse("accounts:edit_profile")}" class="alert-link">профиле</a>: {fields_str}'
+                ),
+            )
+            return redirect('order:cart-view')
+
         # Создаем новый заказ
         with transaction.atomic():
             order = Order.objects.create(User=request.user, status='Обрабатывается')
@@ -166,13 +188,12 @@ def create_order(request):
                     Product=basket_item.Product,
                     quantity=basket_item.quantity,
                 )
-
             basket.items.all().delete()
             basket.total = 0
             basket.products_count = 0
             basket.save()
 
-            messages.success(request, 'Заказ успешно создан!')
+            messages.success(request, f'Заказ на сумму {order.total} успешно создан!')
             return redirect('accounts:profile')
 
     except Basket.DoesNotExist:
@@ -181,5 +202,7 @@ def create_order(request):
         return redirect('order:cart-view')
     except Exception as e:
         print(f"Ошибка при создании заказа: {str(e)}")
-        messages.error(request, 'Произошла ошибка при создании заказа')
+        messages.error(
+            request, 'Произошла ошибка при создании заказа позвоните в поддежку'
+        )
         return redirect('order:cart-view')

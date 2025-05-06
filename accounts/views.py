@@ -11,18 +11,23 @@ from django.utils.http import urlsafe_base64_encode
 
 from django.utils.encoding import force_str
 from django.contrib.auth import login
+
+from order.models import Order
 from .utils import generate_password
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib import messages
-import logging
-
-logger = logging.getLogger(__name__)
 
 
 @login_required
 def profile_view(request):
-    return render(request, 'accounts/profile.html')
+    orders = Order.objects.filter(User=request.user).all()
+
+    context = {
+        'orders': orders,
+    }
+
+    return render(request, 'accounts/profile.html', context)
 
 
 def register_success(request):
@@ -67,9 +72,7 @@ class RegisterView(FormView):
                     recipient_list=[email],
                     fail_silently=False,
                 )
-                logger.info(f"Email sent to {email}")
             except Exception as e:
-                logger.error(f"Failed to send email to {email}: {str(e)}")
                 messages.error(
                     self.request, ("Ошибка при отправке письма. Попробуйте позже.")
                 )
