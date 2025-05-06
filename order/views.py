@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
-from .models import Basket, BasketItem
+
+from .models import Basket, BasketItem, OrderItem, Order
 from catalog.models import ProductForSale
 from django.db import transaction
 from django.views.generic import TemplateView
@@ -143,3 +144,42 @@ def update_quantity_from_product(request, item_id):
             print(f'Ошибка: {str(e)}')
 
     return redirect('catalog:product-list')
+
+
+@login_required
+def create_order(request):
+    try:
+        # Получаем корзину пользователя
+        basket, create = Basket.objects.get_or_create(User=request.user)
+        basket_items = basket.items.all()
+
+        if not basket_items.exists():
+            messages.error(request, 'Ваша корзина пуста')
+            return redirect('order:cart-view')
+
+        # Создаем новый заказ
+        with transaction.atomic():
+            order = Order.objects.create(User=request.user, status='Обрабатывается')
+            for basket_item in basket_items:
+                OrderItem.objects.create(
+                    Order=order,
+                    Product=basket_item.Product,
+                    quantity=basket_item.quantity,
+                )
+
+            basket.items.all().delete()
+            basket.total = 0
+            basket.products_count = 0
+            basket.save()
+
+            messages.success(request, 'Заказ успешно создан!')
+            return redirect('accounts:profile')
+
+    except Basket.DoesNotExist:
+        print(f"Ошибка: Корзина не найдена для пользователя {request.user.email}")
+        messages.error(request, 'Корзина не найдена')
+        return redirect('order:cart-view')
+    except Exception as e:
+        print(f"Ошибка при создании заказа: {str(e)}")
+        messages.error(request, 'Произошла ошибка при создании заказа')
+        return redirect('order:cart-view')

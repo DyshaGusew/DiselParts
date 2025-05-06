@@ -3,6 +3,27 @@
 {% block title %}Корзина{% endblock %}
 {% block content %}
     <div class="container mt-4">
+        {% if messages %}
+            <div class="toast-container position-fixed top-0 end-0 p-3"
+                 style="z-index: 1055">
+                {% for message in messages %}
+                    <div class="toast align-items-center text-white {% if message.tags == 'success' %}bg-success{% else %}bg-danger{% endif %} border-0 fade-out-toast"
+                         role="alert"
+                         aria-live="assertive"
+                         aria-atomic="true"
+                         data-bs-autohide="true"
+                         data-bs-delay="3000">
+                        <div class="d-flex">
+                            <div class="toast-body">{{ message }}</div>
+                            <button type="button"
+                                    class="btn-close btn-close-white me-2 m-auto"
+                                    data-bs-dismiss="toast"
+                                    aria-label="Close"></button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
         <h1 class="mb-4 text-center text-primary">Ваша корзина</h1>
         {% if basket.items.all %}
             <div class="card shadow-sm mb-4">
@@ -126,6 +147,7 @@
                         </div>
                         <div class="text-end">
                             <h4 class="text-primary mb-2">Итого к оплате: {{ basket.total|floatformat:2 }} ₽</h4>
+                            <a href="{% url 'order:create-order' %}">dfdsfdssdfs</a>
                             <button class="btn btn-primary btn-lg" type="button">
                                 <i class="bi bi-credit-card me-2"></i>Оформить заказ
                             </button>

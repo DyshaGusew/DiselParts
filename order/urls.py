@@ -23,4 +23,5 @@ urlpatterns = [
         views.update_quantity_from_product,
         name='update-quantity-product',
     ),
+    path('create-order', views.create_order, name='create-order'),
 ]
