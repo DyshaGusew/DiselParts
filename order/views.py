@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.contrib.auth.decorators import login_required
-
+from django.core.mail import send_mail
+from config import settings
+from django.utils import timezone
 
 from .models import Basket, BasketItem, OrderItem, Order
 from catalog.models import ProductForSale
@@ -192,6 +194,37 @@ def create_order(request):
             basket.total = 0
             basket.products_count = 0
             basket.save()
+
+            order_items = []
+            for order_item in order.items.all():
+                item_total = order_item.quantity * order_item.Product.sale_price
+                order_items.append(
+                    f"• {order_item.Product.name} - "
+                    f"{order_item.quantity} шт. x {order_item.Product.sale_price} ₽ = "
+                    f"{item_total} ₽"
+                )
+
+            order_date = timezone.localtime(order.order_date).strftime(
+                '%d.%m.%Y в %H:%M'
+            )
+
+            send_mail(
+                subject=f"Новый заказ №{order.id} от {order_date}",
+                message=(
+                    f"Детали заказа:\n"
+                    f"Клиент: {order.User.email}\n"
+                    f"Дата: {order_date}\n"
+                    f"Сумма заказа: {order.total} ₽\n\n"
+                    "Состав заказа:\n"
+                    + "\n".join(order_items)
+                    + "\n\n"
+                    + f"Адрес доставки: {request.user.delivery_address}\n"
+                    f"Телефон: {request.user.phone}"
+                ),
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[settings.DEFAULT_TO_EMAIL],
+                fail_silently=False,
+            )
 
             messages.success(request, f'Заказ на сумму {order.total} успешно создан!')
             return redirect('accounts:profile')
