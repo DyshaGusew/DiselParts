@@ -21,6 +21,9 @@ class OrderItem(models.Model):
         default=1, validators=[MinValueValidator(1)], verbose_name='Кол-во'
     )
 
+    def get_sum(self):
+        return self.quantity * self.Product.sale_price
+
     def __str__(self):
         return f"{self.Product.name} x{self.quantity} в {self.Order}"
 

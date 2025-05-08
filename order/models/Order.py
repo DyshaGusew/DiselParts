@@ -25,6 +25,13 @@ def order_item_deleted(sender, instance, **kwargs):
 
 
 class Order(models.Model):
+    STATUS_CHOICES = [
+        ('Обрабатывается', 'Обрабатывается'),
+        ('Отправлен', 'Отправлен'),
+        ('Доставлен', 'Доставлен'),
+        ('Отменен', 'Отменен'),
+        ('Другое', 'Другое'),
+    ]
     User = models.ForeignKey(
         Buyer,
         on_delete=models.CASCADE,
@@ -36,8 +43,12 @@ class Order(models.Model):
         max_digits=10, decimal_places=2, default=0, verbose_name='Сумма'
     )
     status = models.CharField(
-        max_length=50, default='Обрабатывается', verbose_name='Статус'
+        max_length=255,
+        choices=STATUS_CHOICES,
+        default='Обрабатывается',
+        verbose_name='Статус',
     )
+    other_info = models.TextField(blank=True, verbose_name="Дополнительная информация")
 
     def get_date(self):
         return timezone.localtime(self.order_date).strftime('%d.%m.%Y %H:%M')

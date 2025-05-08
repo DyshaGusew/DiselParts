@@ -148,6 +148,16 @@ def update_quantity_from_product(request, item_id):
 
 
 @login_required
+def order_view(request, item_id):
+    order = Order.objects.get(pk=item_id)
+
+    context = {
+        'order': order,
+    }
+    return render(request, 'order/order_details.html', context)
+
+
+@login_required
 def create_order(request):
     try:
         # Получаем корзину пользователя
