@@ -236,7 +236,10 @@ def create_order(request):
                 fail_silently=False,
             )
 
-            messages.success(request, f'Заказ на сумму {order.total} успешно создан!')
+            messages.success(
+                request,
+                f'Заказ на сумму {order.total} успешно оформлен! С вами свяжутся.',
+            )
             return redirect('accounts:profile')
 
     except Basket.DoesNotExist:

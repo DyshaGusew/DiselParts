@@ -18,6 +18,15 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib import messages
 
+from django.contrib.auth.views import LoginView
+
+
+class CustomLoginView(LoginView):
+    def dispatch(self, request, *args, **kwargs):
+        if 'next' in request.GET:
+            messages.info(request, 'Сначала необходимо войти или зарегистрироваться.')
+        return super().dispatch(request, *args, **kwargs)
+
 
 @login_required
 def profile_view(request):
