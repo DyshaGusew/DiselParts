@@ -20,6 +20,10 @@
               <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}"
                  href="{% url 'about' %}">О нас</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.url_name == 'sert' %}active{% endif %}"
+                 href="{% url 'sert' %}">Сертификаты</a>
+            </li>
           </ul>
           <div class="d-flex">
             {% if request.user.is_authenticated %}

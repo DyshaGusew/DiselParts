@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from love_page.views import LoveDariaView
-from config.views import HomeView, AboutView
+from config.views import HomeView, AboutView, SertView
 
 admin.site.site_title = "Дизельпартс админпанель"
 admin.site.site_header = "Панель администрирования ДИЗЕЛЬПАРТС"
@@ -13,6 +13,7 @@ urlpatterns = [
     path("love-daria/", LoveDariaView.as_view(), name="love-daria"),
     path("catalog/", include(("catalog.urls", "catalog"), namespace="catalog")),
     path('about/', AboutView.as_view(), name='about'),
+    path('sert/', SertView.as_view(), name='sert'),
     path('accounts/', include('accounts.urls')),
     path("order/", include(("order.urls", "order"), namespace="order")),
 ]
