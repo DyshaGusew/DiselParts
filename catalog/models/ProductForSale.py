@@ -6,6 +6,7 @@ from urllib.parse import quote
 from django.http import HttpResponse
 import requests
 from django.conf import settings
+from django.utils.text import slugify
 
 
 class ProductForSale(Persistent):
@@ -15,7 +16,7 @@ class ProductForSale(Persistent):
         related_name="for_sale",
         verbose_name="Продукт из МойСклад",
     )
-
+    slug = models.SlugField(max_length=255, unique=True, blank=True, null=True)
     name = models.CharField(max_length=255, verbose_name="Название")
     article = models.CharField(max_length=100, blank=True, verbose_name="Артикул")
     description = models.TextField(blank=True, verbose_name="Описание")
@@ -66,3 +67,20 @@ class ProductForSale(Persistent):
 
     def get_original_image_url(self):
         return self.moysklad_product.get_original_image_url()
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            # Генерируем базовый slug из name
+            base_slug = slugify(
+                f"{self.name}-{self.article}"
+                if self.name and self.article
+                else self.name
+            )
+            slug = base_slug
+            counter = 1
+            # Проверяем уникальность slug
+            while ProductForSale.objects.filter(slug=slug).exclude(id=self.id).exists():
+                slug = f"{base_slug}-{counter}"  # Добавляем суффикс, если slug занят
+                counter += 1
+            self.slug = slug
+        super().save(*args, **kwargs)

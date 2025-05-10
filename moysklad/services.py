@@ -6,6 +6,7 @@ import re
 from django.db.models import Q
 from django.db import transaction
 from decimal import Decimal
+from django.utils.text import slugify
 
 
 def fetch_products() -> dict:
@@ -279,6 +280,18 @@ def sync_products_with_moysklad() -> bool:
                     'sale_price_moy_sklad': base_price,
                     'markup_percent': 0.00,
                 }
+                # Генерируем slug
+                base_slug = slugify(
+                    f"{moysklad_product.name}-{moysklad_product.article}"
+                    if moysklad_product.name and moysklad_product.article
+                    else moysklad_product.name
+                )
+                slug = base_slug
+                counter = 1
+                while ProductForSale.objects.filter(slug=slug).exists():
+                    slug = f"{base_slug}-{counter}"
+                    counter += 1
+                product_for_sale_defaults['slug'] = slug
 
                 product_for_sale, pf_created = ProductForSale.objects.get_or_create(
                     moysklad_product=moysklad_product
