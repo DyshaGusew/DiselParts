@@ -291,7 +291,8 @@ def sync_products_with_moysklad() -> bool:
                 while ProductForSale.objects.filter(slug=slug).exists():
                     slug = f"{base_slug}-{counter}"
                     counter += 1
-                product_for_sale_defaults['slug'] = slug
+
+                product_for_sale_defaults['slug'] = "null" if slug == "" else slug
 
                 product_for_sale, pf_created = ProductForSale.objects.get_or_create(
                     moysklad_product=moysklad_product

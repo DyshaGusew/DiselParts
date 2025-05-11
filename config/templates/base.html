@@ -2,80 +2,100 @@
 <!DOCTYPE html>
 <html lang="ru">
    <head>
+      <!-- Мета-теги для SEO и адаптивности -->
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta name="google-site-verification"
             content="-afcy8XFTKi8Fi8pEDSROqOdmhogjNR3eHhD_7ESJq0" />
       <meta name="yandex-verification" content="b821bec763c721ac" />
       <meta property="og:title"
-            content="ООО ДИЗЕЛЬПАРТС - Запчасти для тяжелой техники">
+            content="ООО ДИЗЕЛЬПАРТС - Запчасти для тяжелой техники" />
       <meta property="og:description"
-            content="Поставка оригинальных запчастей для строительной и горной техники по всей России.">
+            content="Поставка оригинальных запчастей для строительной и горной техники по всей России." />
       <meta property="og:image"
-            content="{% static 'config/images/hero-bg.jpg' %}">
+            content="{% static 'config/images/hero-bg.webp' %}" />
+      <!-- Оптимизация загрузки критических ресурсов -->
+      <link rel="preload"
+            href="{% static 'config/css/bootstrap.min.css' %}"
+            as="style" />
+      <link rel="stylesheet" href="{% static 'config/css/bootstrap.min.css' %}" />
+      <!-- Динамические и дополнительные стили -->
+      {% block extra_css %}
+         {% comment %} Объединяем CSS для уменьшения запросов {% endcomment %}
+         <link rel="stylesheet" href="{% static 'catalog/css/styles.css' %}" />
+         <link rel="stylesheet" href="{% static 'accounts/css/styles.css' %}" />
+      {% endblock %}
+      <!-- Шрифты и иконки -->
+      <link rel="stylesheet" href="{% static 'config/css/bootstrap-icons.css' %}" />
+      <link rel="icon"
+            href="{% static 'config/images/favicon.ico' %}"
+            type="image/x-icon" />
+      <link rel="shortcut icon"
+            href="{% static 'config/images/favicon.ico' %}?v=1"
+            type="image/x-icon" />
+      <!-- Заголовок страницы -->
       <title>
          {% block title %}Каталог деталей{% endblock %}
       </title>
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-            rel="stylesheet" />
-      {% block extra_css %}
-         <link rel="stylesheet" href="{% static 'catalog/css/styles.css' %}" />
-      {% endblock %}
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-            rel="stylesheet">
-      <link rel="shortcut icon"
-            href="{% static 'config/images/favicon.ico' %}"
-            type="image/x-icon">
-      <link rel="stylesheet" href="{% static 'accounts/css/styles.css' %}">
    </head>
    <body>
+      <!-- Кэшируемый хедер -->
+      {% load cache %}
+      {% cache 3600 header %}
       {% include "includes/header.html" %}
-      {% if messages %}
-         <div class="toast-container position-fixed top-0 end-0 p-3"
-              style="z-index: 1055">
-            {% for message in messages %}
-               <div class="toast align-items-center text-white {% if message.tags == 'success' %}bg-success{% else %}bg-danger{% endif %} border-0 fade-out-toast"
-                    role="alert"
-                    aria-live="assertive"
-                    aria-atomic="true"
-                    data-bs-autohide="true"
-                    data-bs-delay="3000">
-                  <div class="d-flex">
-                     <div class="toast-body">{{ message }}</div>
-                     <button type="button"
-                             class="btn-close btn-close-white me-2 m-auto"
-                             data-bs-dismiss="toast"
-                             aria-label="Close"></button>
-                  </div>
+   {% endcache %}
+   <!-- Уведомления (оптимизация JS убрана) -->
+   {% if messages %}
+      <div class="toast-container position-fixed top-0 end-0 p-3"
+           style="z-index: 1055">
+         {% for message in messages %}
+            <div class="toast align-items-center text-white {% if message.tags == 'success' %}bg-success{% else %}bg-danger{% endif %} border-0"
+                 role="alert"
+                 aria-live="assertive"
+                 aria-atomic="true"
+                 data-bs-autohide="true"
+                 data-bs-delay="3000">
+               <div class="d-flex">
+                  <div class="toast-body">{{ message }}</div>
+                  <button type="button"
+                          class="btn-close btn-close-white me-2 m-auto"
+                          data-bs-dismiss="toast"
+                          aria-label="Close"></button>
                </div>
-            {% endfor %}
-         </div>
-      {% endif %}
-      <div class="container mt-4">
-         {% block content %}{% endblock %}
+            </div>
+         {% endfor %}
       </div>
-      {% include "includes/footer.html" %}
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-      <script>
-        // Инициализация toast
-        function initToasts() {
-            const toasts = document.querySelectorAll('.toast');
-            toasts.forEach(toast => {
-                if (!toast.classList.contains('toast-initialized')) {
-                    const bsToast = new bootstrap.Toast(toast, {
-                        animation: false,
-                        autohide: true,
-                        delay: 3000
-                    });
-                    toast.classList.add('toast-initialized');
-                    bsToast.show();
-                }
-            });
-        }
+   {% endif %}
+   <!-- Основной контент -->
+   <div class="container mt-4">
+      {% block content %}{% endblock %}
+   </div>
+   <!-- Кэшируемый футер -->
+   {% cache 3600 footer %}
+   {% include "includes/footer.html" %}
+{% endcache %}
+<!-- Скрипты -->
+<script defer src="{% static 'config/js/bootstrap.bundle.min.js' %}"></script>
+<script>
+   // Инициализация toast
+   function initToasts() {
+       const toasts = document.querySelectorAll('.toast');
+       toasts.forEach(toast => {
+           if (!toast.classList.contains('toast-initialized')) {
+               const bsToast = new bootstrap.Toast(toast, {
+                   animation: false,
+                   autohide: true,
+                   delay: 3000
+               });
+               toast.classList.add('toast-initialized');
+               bsToast.show();
+           }
+       });
+   }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            initToasts();
-        });
-      </script>
-   </body>
+   document.addEventListener('DOMContentLoaded', function() {
+       initToasts();
+   });
+</script>
+</body>
 </html>

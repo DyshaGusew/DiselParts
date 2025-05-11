@@ -4,7 +4,7 @@
 {% block content %}
     <!-- Hero-секция с фоновым изображением -->
     <section class="hero-section bg-dark text-white py-5"
-             style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{% static 'config/images/hero-bg.jpg' %}');
+             style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{% static 'config/images/hero-bg.webp' %}');
                     background-size: cover;
                     background-position: center">
         <div class="container py-5">
@@ -73,20 +73,23 @@
                         <!-- Левая колонка с двумя вертикальными изображениями -->
                         <div class="col-md-6">
                             <div class="d-flex flex-column h-100">
-                                <img src="{% static 'config/images/about-1.png' %}"
+                                <img src="{% static 'config/images/about-1.webp' %}"
                                      alt="Склад"
-                                     class="img-fluid rounded shadow mb-3 h-100">
-                                <img src="{% static 'config/images/about-3.jpg' %}"
+                                     class="img-fluid rounded shadow mb-3 h-100"
+                                     loading="lazy">
+                                <img src="{% static 'config/images/about-3.webp' %}"
                                      alt="Техника"
-                                     class="img-fluid rounded shadow h-70">
+                                     class="img-fluid rounded shadow h-70"
+                                     loading="lazy">
                             </div>
                         </div>
                         <!-- Правая колонка с одним большим изображением -->
                         <div class="col-md-6">
-                            <img src="{% static 'config/images/about-2.jpeg' %}"
+                            <img src="{% static 'config/images/about-2.webp' %}"
                                  alt="Техника"
                                  class="img-fluid rounded shadow h-100"
-                                 style="object-fit: cover">
+                                 style="object-fit: cover"
+                                 loading="lazy">
                         </div>
                     </div>
                 </div>
@@ -164,36 +167,40 @@
                 <div class="col-6 col-md-4 col-lg-3">
                     <div class="partner-logo-container d-flex justify-content-center align-items-center h-100">
                         <a href="https://www.caterpillar.com/ru.html" target="_blank">
-                            <img src="{% static 'config/images/partner-1.jpg' %}"
+                            <img src="{% static 'config/images/partner-1.webp' %}"
                                  alt="Caterpillar"
-                                 class="partner-logo img-fluid grayscale">
+                                 class="partner-logo img-fluid grayscale"
+                                 loading="lazy">
                         </a>
                     </div>
                 </div>
                 <div class="col-6 col-md-4 col-lg-3">
                     <div class="partner-logo-container d-flex justify-content-center align-items-center h-100">
                         <a href="https://www.komatsu.ru/" target="_blank">
-                            <img src="{% static 'config/images/partner-2.png' %}"
+                            <img src="{% static 'config/images/partner-2.webp' %}"
                                  alt="Komatsu"
-                                 class="partner-logo img-fluid grayscale">
+                                 class="partner-logo img-fluid grayscale"
+                                 loading="lazy">
                         </a>
                     </div>
                 </div>
                 <div class="col-6 col-md-4 col-lg-3">
                     <div class="partner-logo-container d-flex justify-content-center align-items-center h-100">
                         <a href="https://www.hitachi.com/en/" target="_blank">
-                            <img src="{% static 'config/images/partner-3.png' %}"
+                            <img src="{% static 'config/images/partner-3.webp' %}"
                                  alt="Hitachi"
-                                 class="partner-logo img-fluid grayscale">
+                                 class="partner-logo img-fluid grayscale"
+                                 loading="lazy">
                         </a>
                     </div>
                 </div>
                 <div class="col-6 col-md-4 col-lg-3">
                     <div class="partner-logo-container d-flex justify-content-center align-items-center h-100">
                         <a href="https://www.liebherr.com" target="_blank">
-                            <img src="{% static 'config/images/partner-4.jpeg' %}"
+                            <img src="{% static 'config/images/partner-4.webp' %}"
                                  alt="Liebherr"
-                                 class="partner-logo img-fluid grayscale">
+                                 class="partner-logo img-fluid grayscale"
+                                 loading="lazy">
                         </a>
                     </div>
                 </div>
