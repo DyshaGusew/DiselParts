@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 {% load static %}
+{% load cache %}
 {% block extra_head %}
-   <meta property="og:title" content="{{ object.name }} - ООО ДИЗЕЛЬПАРТС">
+   <!-- Мета-теги для SEO -->
+   <meta property="og:title" content="{{ object.name }} - ООО ДИЗЕЛЬПАРТС" />
    <meta property="og:description"
-         content="Купить {{ object.name }} (артикул: {{ object.article }}) за {{ object.sale_price }} руб. Оригинальные запчасти с доставкой по России.">
+         content="Купить {{ object.name }} (артикул: {{ object.article }}) за {{ object.sale_price }} руб. Оригинальные запчасти с доставкой по России." />
    <meta property="og:image"
-         content="{% if product.moysklad_product.images %}{{ product.moysklad_product.get_medium_image_url }}{% else %}{% static 'catalog/images/placeholder-detail.jpg' %}{% endif %}">
-   <meta property="og:url" content="{{ request.build_absolute_uri }}">
+         content="{% if product.moysklad_product.images %}{{ product.moysklad_product.get_medium_image_url }}{% else %}{% static 'catalog/images/placeholder-detail.jpg' %}{% endif %}" />
+   <meta property="og:url" content="{{ request.build_absolute_uri }}" />
 {% endblock %}
 {% block title %}{{ object.name }}{% endblock %}
 {% block content %}
@@ -20,37 +22,19 @@
                        data-src="{% url 'catalog:proxy_product_image' product_id=product.moysklad_product.id image_index=0 %}?size=original"
                        class="card-img-top rounded lazy-load"
                        alt="{{ product.name }}"
-                       loading="lazy"
                        style="object-fit: contain;
                               max-height: 500px;
-                              background: #f8f9fa">
+                              background: #f8f9fa"
+                       loading="lazy">
                {% else %}
-                  {% load static %}
                   <img src="{% static 'catalog/images/placeholder-detail.jpg' %}"
-                       class="card-img-top rounded"
+                       class="card-img-top rounded lazy-load"
                        alt="Нет изображения"
                        style="object-fit: contain;
                               max-height: 500px;
-                              background: #f8f9fa">
+                              background: #f8f9fa"
+                       loading="lazy">
                {% endif %}
-               <script>
-                  document.addEventListener('DOMContentLoaded', () => {
-                     const images = document.querySelectorAll('.lazy-load');
-                     images.forEach(img => {
-                        if (img.dataset.src) {
-                              const highRes = new Image();
-                              highRes.src = img.dataset.src;
-                              highRes.onload = () => {
-                                 img.src = highRes.src;
-                                 img.classList.add('loaded');
-                              };
-                              highRes.onerror = () => {
-                                 console.error('Ошибка загрузки оригинального изображения:', img.dataset.src);
-                              };
-                        }
-                     });
-                  });
-               </script>
             </div>
          </div>
          <!-- Информация о товаре -->
@@ -97,10 +81,10 @@
                         method="post"
                         class="add-to-cart-form d-flex align-items-center gap-3">
                      {% csrf_token %}
-                     <input type="hidden" name="action" value="add">
+                     <input type="hidden" name="action" value="add" />
                      <input type="hidden"
                             name="current_params"
-                            value="{{ request.GET.urlencode }}">
+                            value="{{ request.GET.urlencode }}" />
                      <!-- Блок с кнопками +/- -->
                      <div class="input-group" style="width: 200px;">
                         <button type="button" class="btn btn-outline-secondary minus-btn px-3 py-2">
@@ -111,15 +95,14 @@
                                class="form-control text-center quantity-input fs-5"
                                value="1"
                                min="1"
-                               style="height: auto">
+                               style="height: auto" />
                         <button type="button" class="btn btn-outline-secondary plus-btn px-3 py-2">
                            <i class="bi bi-plus fs-5"></i>
                         </button>
                      </div>
                      <!-- Основная кнопка добавления -->
                      <button type="submit" class="btn btn-success py-2 px-4">
-                        <i class="bi bi-cart-plus fs-5 me-2"></i>
-                        Добавить в корзину
+                        <i class="bi bi-cart-plus fs-5 me-2"></i> Добавить в корзину
                      </button>
                   </form>
                </div>
@@ -128,31 +111,60 @@
       </div>
    </div>
    {% block extra_js %}
-      <script src="{% static 'catalog/js/script.js' %}"></script>
+      <!-- Скрипт для последовательной загрузки изображений -->
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const images = document.querySelectorAll('.lazy-load');
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            const highRes = new Image();
+                            highRes.src = img.dataset.src;
+                            highRes.onload = () => {
+                                img.src = highRes.src;
+                                img.classList.add('loaded');
+                            };
+                            highRes.onerror = () => {
+                                console.error('Ошибка загрузки оригинального изображения:', img.dataset.src);
+                            };
+                        }
+                        observer.unobserve(img);
+                    }
+                });
+            }, { rootMargin: '50px' });
+
+            images.forEach(img => observer.observe(img));
+        });
+      </script>
+      <!-- Основной JS с defer -->
+      <script defer src="{% static 'catalog/js/script.js' %}"></script>
+      <!-- Структурированные данные для SEO -->
       <script type="application/ld+json">
-         {
-             "@context": "https://schema.org",
-             "@type": "Product",
-             "name": "{{ object.name }}",
-             "image": "{% if product.moysklad_product.images %}{{ product.moysklad_product.get_medium_image_url }}{% else %}{% static 'catalog/images/placeholder-detail.jpg' %}{% endif %}",
-             "description": "{{ object.description|default:'Оригинальная запчасть для тяжелой техники' }}",
-             "sku": "{{ object.article }}",
-             "brand": {
-                 "@type": "Brand",
-                 "name": "{{ object.supplier_legal_title|default:'Не указан' }}"
-             },
-             "offers": {
-                 "@type": "Offer",
-                 "url": "{{ request.build_absolute_uri }}",
-                 "priceCurrency": "RUB",
-                 "price": "{{ object.sale_price }}",
-                 "availability": "https://schema.org/InStock",
-                 "seller": {
-                     "@type": "Organization",
-                     "name": "ООО ДИЗЕЛЬПАРТС"
-                 }
-             }
-         }
+    {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "{{ object.name }}",
+        "image": "{% if product.moysklad_product.images %}{{ product.moysklad_product.get_medium_image_url }}{% else %}{% static 'catalog/images/placeholder-detail.jpg' %}{% endif %}",
+        "description": "{{ object.description|default:'Оригинальная запчасть для тяжелой техники' }}",
+        "sku": "{{ object.article }}",
+        "brand": {
+            "@type": "Brand",
+            "name": "{{ object.supplier_legal_title|default:'Не указан' }}"
+        },
+        "offers": {
+            "@type": "Offer",
+            "url": "{{ request.build_absolute_uri }}",
+            "priceCurrency": "RUB",
+            "price": "{{ object.sale_price }}",
+            "availability": "https://schema.org/InStock",
+            "seller": {
+                "@type": "Organization",
+                "name": "ООО ДИЗЕЛЬПАРТС"
+            }
+        }
+    }
       </script>
    {% endblock %}
 {% endblock %}
