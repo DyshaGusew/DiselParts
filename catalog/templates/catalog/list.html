@@ -197,11 +197,11 @@
                {% if page_obj.has_previous %}
                   <li class="page-item">
                      <a class="page-link"
-                        href="?page=1{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">Первая</a>
+                        href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_country %}&country={{ selected_country }}{% endif %}{% if selected_group %}&group={{ selected_group }}{% endif %}{% if selected_manufacturer %}&manufacturer={{ selected_manufacturer }}{% endif %}&sort={{ selected_sort }}">Первая</a>
                   </li>
                   <li class="page-item">
                      <a class="page-link"
-                        href="?page={{ page_obj.previous_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">Назад</a>
+                        href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_country %}&country={{ selected_country }}{% endif %}{% if selected_group %}&group={{ selected_group }}{% endif %}{% if selected_manufacturer %}&manufacturer={{ selected_manufacturer }}{% endif %}&sort={{ selected_sort }}">Назад</a>
                   </li>
                {% endif %}
                {% for num in page_obj.paginator.page_range %}
@@ -212,18 +212,18 @@
                   {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
                      <li class="page-item">
                         <a class="page-link"
-                           href="?page={{ num }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">{{ num }}</a>
+                           href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_country %}&country={{ selected_country }}{% endif %}{% if selected_group %}&group={{ selected_group }}{% endif %}{% if selected_manufacturer %}&manufacturer={{ selected_manufacturer }}{% endif %}&sort={{ selected_sort }}">{{ num }}</a>
                      </li>
                   {% endif %}
                {% endfor %}
                {% if page_obj.has_next %}
                   <li class="page-item">
                      <a class="page-link"
-                        href="?page={{ page_obj.next_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">Вперед</a>
+                        href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_country %}&country={{ selected_country }}{% endif %}{% if selected_group %}&group={{ selected_group }}{% endif %}{% if selected_manufacturer %}&manufacturer={{ selected_manufacturer }}{% endif %}&sort={{ selected_sort }}">Вперед</a>
                   </li>
                   <li class="page-item">
                      <a class="page-link"
-                        href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">Последняя</a>
+                        href="?page={{ page_obj.paginator.num_pages }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_country %}&country={{ selected_country }}{% endif %}{% if selected_group %}&group={{ selected_group }}{% endif %}{% if selected_manufacturer %}&manufacturer={{ selected_manufacturer }}{% endif %}&sort={{ selected_sort }}">Последняя</a>
                   </li>
                {% endif %}
             </ul>

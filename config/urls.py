@@ -4,6 +4,8 @@ from love_page.views import LoveDariaView
 from config.views import HomeView, AboutView, SertView
 from .sitemaps import ProductSitemap, StaticSitemap
 from django.contrib.sitemaps.views import sitemap
+from django.conf import settings
+from django.conf.urls.static import static
 
 sitemaps = {
     'products': ProductSitemap,
@@ -24,4 +26,4 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path("order/", include(("order.urls", "order"), namespace="order")),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

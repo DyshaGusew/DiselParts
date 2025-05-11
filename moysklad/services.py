@@ -8,6 +8,12 @@ from django.db import transaction
 from decimal import Decimal
 from django.utils.text import slugify
 
+from django.core.files.base import ContentFile
+from django.core.files.base import ContentFile
+from PIL import Image
+import io
+import base64
+
 
 def fetch_products() -> dict:
     """Получение товаров из API МойСклад"""
@@ -90,30 +96,121 @@ def get_country_info(country_id: str) -> str:
     return data.get("name", "")
 
 
-def get_product_images(product_id: str) -> list:
-    """Получение изображений товара"""
-    url = f"https://api.moysklad.ru/api/remap/1.2/entity/product/{product_id}/images"
+def refresh_moysklad_token():
+    """
+    Обновление токена авторизации для API МойСклад.
+    Возвращает новый токен или None в случае ошибки.
+    """
+    # Подготавливаем учетные данные для Basic Authentication
+    credentials = f"{settings.MOYSKLAD_USERNAME}:{settings.MOYSKLAD_PASSWORD}"
+    # Кодируем учетные данные в Base64
+    encoded_credentials = base64.b64encode(credentials.encode()).decode()
+
+    headers = {
+        "Authorization": f"Basic {encoded_credentials}",
+        "Accept-Encoding": "gzip",
+    }
+
     try:
-        response = requests.get(
-            url,
-            headers={
-                "Authorization": f"Bearer {settings.MOYSKLAD_TOKEN}",
-                "Accept-Encoding": "gzip",
-            },
+        response = requests.post(
+            "https://api.moysklad.ru/api/remap/1.2/security/token",
+            headers=headers,
             timeout=10,
         )
+        response.raise_for_status()  # Проверяем, что запрос успешен (код 200)
+
+        # Парсим JSON-ответ
+        data = response.json()
+        new_token = data.get("access_token")
+        if not new_token:
+            raise ValueError("Токен не найден в ответе API")
+
+        # Обновляем токен в настройках (если это необходимо)
+        settings.MOYSKLAD_TOKEN = new_token
+        print(f"Токен успешно обновлён: {new_token}")
+        return new_token
+
+    except requests.exceptions.HTTPError as e:
+        print(f"Ошибка HTTP при обновлении токена: {str(e)}")
+        return None
+    except requests.exceptions.RequestException as e:
+        print(f"Ошибка запроса при обновлении токена: {str(e)}")
+        return None
+    except ValueError as e:
+        print(f"Ошибка обработки ответа API: {str(e)}")
+        return None
+    except Exception as e:
+        print(f"Неизвестная ошибка при обновлении токена: {str(e)}")
+        return None
+
+
+def get_product_images(product_id: str, moysklad_product: 'MoyskladProduct') -> list:
+    """Получение и сохранение изображений товара в WebP"""
+    url = f"https://api.moysklad.ru/api/remap/1.2/entity/product/{product_id}/images"
+    headers = {
+        "Authorization": f"Bearer {settings.MOYSKLAD_TOKEN}",
+        "Accept-Encoding": "gzip",
+    }
+
+    try:
+        # Получаем список изображений
+        response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
         images_data = response.json()
 
         images = []
         for img in images_data.get("rows", []):
-            images.append(
-                {
-                    "original": img["meta"]["downloadHref"],
-                    "medium": img.get("miniature", {}).get("downloadHref", ""),
-                    "thumbnail": img.get("tiny", {}).get("href", ""),
-                }
-            )
+            image_info = {
+                "original": img["meta"]["downloadHref"],
+                "medium": img.get("miniature", {}).get("downloadHref", ""),
+                "thumbnail": img.get("tiny", {}).get("href", ""),
+            }
+            images.append(image_info)
+
+            # Скачиваем и конвертируем изображения в WebP
+            for image_type, url in [
+                ("medium", image_info["medium"]),
+                ("original", image_info["original"]),
+            ]:
+                if url:
+                    try:
+                        # Пробуем скачать изображение
+                        image_response = requests.get(url, headers=headers, timeout=10)
+                        image_response.raise_for_status()
+                    except requests.exceptions.HTTPError as e:
+                        if image_response.status_code == 401:
+                            # Если ошибка 401, пробуем обновить токен и повторить запрос
+                            print(
+                                f"Ошибка 401 при скачивании {image_type} изображения для товара {product_id}. Пробуем обновить токен..."
+                            )
+                            new_token = refresh_moysklad_token()
+                            if new_token:
+                                headers["Authorization"] = f"Bearer {new_token}"
+                                image_response = requests.get(
+                                    url, headers=headers, timeout=10
+                                )
+                                image_response.raise_for_status()
+                            else:
+                                print(
+                                    f"Не удалось обновить токен, пропускаем скачивание {image_type} изображения"
+                                )
+                                continue
+                        else:
+                            raise e
+
+                    # Конвертация в WebP
+                    image = Image.open(io.BytesIO(image_response.content)).convert(
+                        'RGB'
+                    )
+                    buffer = io.BytesIO()
+                    image.save(buffer, format="WEBP", quality=80)
+                    image_file = ContentFile(buffer.getvalue())
+                    filename = f"{product_id}_{image_type}.webp"
+                    getattr(moysklad_product, f"{image_type}_image").save(
+                        filename, image_file, save=False
+                    )
+
+        moysklad_product.save()
         return images
 
     except Exception as e:
@@ -176,7 +273,8 @@ def extract_product_defaults(product_data: dict) -> dict:
     """Извлекает и преобразует данные товара в формат для модели"""
     product_id = product_data["id"]
     moysklad_url = product_data.get("meta", {}).get("uuidHref", "")
-    images = get_product_images(product_id)
+    moysklad_product = MoyskladProduct(id=product_id)
+    images = get_product_images(product_id, moysklad_product)
     main_price = product_data.get("salePrices", [{}])[0]
     min_price = product_data.get("minPrice", {})
     buy_price = product_data.get("buyPrice", {})
@@ -245,12 +343,8 @@ def sync_products_with_moysklad() -> bool:
     """Основная логика синхронизации товаров"""
     products_data = fetch_products()
 
-    if not products_data:
-        print("Не удалось получить данные из API")
-        return False
-
-    if "rows" not in products_data:
-        print("Некорректный формат ответа API: отсутствует ключ 'rows'")
+    if not products_data or "rows" not in products_data:
+        print("Не удалось получить данные из API или некорректный формат ответа")
         return False
 
     success_count, error_count = 0, 0
@@ -262,7 +356,7 @@ def sync_products_with_moysklad() -> bool:
                 continue
 
             with transaction.atomic():
-                # Обновляем или создаем товар в MoyskladProduct
+                # Обновляем или создаём товар в MoyskladProduct
                 defaults = extract_product_defaults(product_data)
                 moysklad_product, created = MoyskladProduct.objects.update_or_create(
                     id=product_data["id"], defaults=defaults
@@ -311,7 +405,6 @@ def sync_products_with_moysklad() -> bool:
                 )
                 calculated_price = max(Decimal('0'), calculated_price)
 
-                # Условия обновления sale_price
                 price_changed = product_for_sale.sale_price_moy_sklad != base_price
 
                 if pf_created or not product_for_sale.sale_price or price_changed:

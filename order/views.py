@@ -136,7 +136,7 @@ def update_quantity_from_product(request, item_id):
                     request, f'Добавлено "{product.name}" ({quantity} шт.) в корзину.'
                 )
 
-            return redirect('catalog:product-detail', pk=product.id)
+            return redirect('catalog:product-detail', slug=product.slug)
 
         except ValueError:
             messages.error(request, 'Некорректное количество')
