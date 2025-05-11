@@ -1,6 +1,5 @@
 from django.db import models
 from config.models.persistent import Persistent
-from django.core.cache import cache
 
 
 class MoyskladProduct(Persistent):
@@ -88,14 +87,8 @@ class MoyskladProduct(Persistent):
         max_length=50, blank=True, verbose_name="Телефон поставщика"
     )
 
+    # Изображения (храним как JSON)
     images = models.JSONField(default=list, blank=True, verbose_name="Изображения")
-
-    medium_image = models.ImageField(
-        upload_to='products/medium/', null=True, blank=True
-    )
-    original_image = models.ImageField(
-        upload_to='products/original/', null=True, blank=True
-    )
 
     class Meta:
         verbose_name = "Товар МойСклад"
@@ -118,29 +111,13 @@ class MoyskladProduct(Persistent):
         return display_name
 
     def get_medium_image_url(self):
-        """Возвращает URL локального среднего изображения с кэшированием"""
-        cache_key = f'medium_image_url_{self.id}'
-        image_url = cache.get(cache_key)
-        if image_url is None:
-            if self.medium_image:
-                image_url = self.medium_image.url
-            elif self.images and len(self.images) > 0:
-                image_url = self.images[0].get("medium")
-            else:
-                image_url = ''
-            cache.set(cache_key, image_url, 60 * 60 * 24)
-        return image_url or None
+        """Возвращает URL доп изображения"""
+        if self.images and len(self.images) > 0:
+            return self.images[0].get("medium")
+        return None
 
     def get_original_image_url(self):
-        """Возвращает URL локального оригинального изображения с кэшированием"""
-        cache_key = f'original_image_url_{self.id}'
-        image_url = cache.get(cache_key)
-        if image_url is None:
-            if self.original_image:
-                image_url = self.original_image.url
-            elif self.images and len(self.images) > 0:
-                image_url = self.images[0].get("original")
-            else:
-                image_url = ''
-            cache.set(cache_key, image_url, 60 * 60 * 24)
-        return image_url or None
+        """Возвращает URL основного изображения"""
+        if self.images and len(self.images) > 0:
+            return self.images[0].get("original")
+        return None
