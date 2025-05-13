@@ -5,6 +5,8 @@
       <!-- Мета-теги для SEO и адаптивности -->
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta name="description"
+            content="ООО ДИЗЕЛЬПАРТС – поставка запчастей для тяжелой техники Komatsu, Cat и других марок по всей России. Купить запчасти для спецтехники выгодно и быстро!" />
       <meta name="google-site-verification"
             content="-afcy8XFTKi8Fi8pEDSROqOdmhogjNR3eHhD_7ESJq0" />
       <meta name="yandex-verification" content="b821bec763c721ac" />
@@ -21,21 +23,20 @@
       <link rel="stylesheet" href="{% static 'config/css/bootstrap.min.css' %}" />
       <!-- Динамические и дополнительные стили -->
       {% block extra_css %}
-         {% comment %} Объединяем CSS для уменьшения запросов {% endcomment %}
          <link rel="stylesheet" href="{% static 'catalog/css/styles.css' %}" />
          <link rel="stylesheet" href="{% static 'accounts/css/styles.css' %}" />
       {% endblock %}
       <!-- Шрифты и иконки -->
       <link rel="stylesheet" href="{% static 'config/css/bootstrap-icons.css' %}" />
       <link rel="icon"
-            href="{% static 'config/images/favicon.ico' %}"
+            href="https://dizparts-anapa.ru/static/config/images/favicon.ico"
             type="image/x-icon" />
       <link rel="shortcut icon"
-            href="{% static 'config/images/favicon.ico' %}?v=1"
+            href="https://dizparts-anapa.ru/static/config/images/favicon.ico"
             type="image/x-icon" />
       <!-- Заголовок страницы -->
       <title>
-         {% block title %}Каталог деталей{% endblock %}
+         {% block title %}Запчасти для спецтехники{% endblock %}
       </title>
    </head>
    <body>
@@ -73,25 +74,27 @@
    <!-- Скрипты -->
    <script defer src="{% static 'config/js/bootstrap.bundle.min.js' %}"></script>
    <script>
-   // Инициализация toast
-   function initToasts() {
-       const toasts = document.querySelectorAll('.toast');
-       toasts.forEach(toast => {
-           if (!toast.classList.contains('toast-initialized')) {
-               const bsToast = new bootstrap.Toast(toast, {
-                   animation: false,
-                   autohide: true,
-                   delay: 3000
-               });
-               toast.classList.add('toast-initialized');
-               bsToast.show();
-           }
-       });
-   }
-
-   document.addEventListener('DOMContentLoaded', function() {
-       initToasts();
-   });
+         function initToasts() {
+             const toasts = document.querySelectorAll('.toast');
+             toasts.forEach(toast => {
+                 if (!toast.classList.contains('toast-initialized')) {
+                     const bsToast = new bootstrap.Toast(toast, { animation: false, autohide: true, delay: 3000 });
+                     toast.classList.add('toast-initialized');
+                     bsToast.show();
+                 }
+             });
+         }
+         document.addEventListener('DOMContentLoaded', function() { initToasts(); });
+   </script>
+   <!-- Schema Markup для всей базы -->
+   <script type="application/ld+json">
+      {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "ООО ДИЗЕЛЬПАРТС",
+          "url": "https://dizparts-anapa.ru",
+          "description": "Поставка запчастей для тяжелой техники Komatsu, Cat и других марок по всей России"
+      }
    </script>
 </body>
 </html>

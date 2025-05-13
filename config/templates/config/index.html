@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Запчасти для тяжелой техники{% endblock %}
+{% block title %}О нас | ООО 'ДИЗЕЛЬПАРТС' - Запчасти для Komatsu и Cat{% endblock %}
 {% block content %}
     <!-- Hero-секция с фоновым изображением -->
     <section class="hero-section bg-dark text-white py-5"
@@ -10,19 +10,12 @@
         <div class="container py-5">
             <div class="row align-items-center">
                 <div class="col-lg-8 mx-auto text-center">
-                    <h1 class="display-4 fw-bold mb-4">
-                        ООО "ДИЗЕЛЬПАРТС"
-                        <br>
-                        <br>
-                        Комплексные решения для тяжелой техники
-                    </h1>
-                    <p class="lead mb-4">
-                        Обеспечение запчастями для импортной тяжелой техники всех марок, в том числе для строительной, горной и сельскохозяйственной
-                    </p>
+                    <h1 class="display-4 fw-bold mb-4">Запчасти для спецтехники от ООО "ДИЗЕЛЬПАРТС"</h1>
+                    <p class="lead mb-4">Надежные запчасти для тяжелой техники Komatsu, Cat и других марок – поставки по всей России</p>
                     <div class="d-flex justify-content-center gap-3">
                         <a href="#services" class="btn btn-primary btn-lg px-4">Наши услуги</a>
                         <a href="{% url 'catalog:product-list' %}"
-                           class="btn btn-outline-light btn-lg px-4">Каталог</a>
+                           class="btn btn-outline-light btn-lg px-4">Купить запчасти</a>
                     </div>
                 </div>
             </div>
@@ -33,10 +26,10 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-4 mb-lg-0">
-                    <h2 class="mb-4">ДИЗЕЛЬПАРТС – надежный партнер</h2>
-                    <p class="lead">Более 12 лет на рынке поставок запчастей для спецтехники</p>
+                    <h2 class="mb-4">О компании ДИЗЕЛЬПАРТС – поставщик запчастей для Komatsu и Cat</h2>
+                    <p class="lead">Более 12 лет опыта в поставках запчастей для спецтехники</p>
                     <p>
-                        Мы специализируемся на комплексном обеспечении предприятий, работающих с тяжелой техникой. Наши клиенты - это крупные строительные компании, горнодобывающие предприятия и сельскохозяйственные холдинги.
+                        ООО "ДИЗЕЛЬПАРТС" – ваш надежный партнер в обеспечении запчастей для тяжелой техники. Мы поставляем комплектующие для Komatsu, Cat, Hitachi и других брендов строительной, горной и сельскохозяйственной техники. Наши клиенты – крупные компании по всей России, доверяющие нам качество и оперативность.
                     </p>
                     <div class="row mt-4">
                         <div class="col-6">
@@ -61,32 +54,31 @@
                                 </div>
                                 <div>
                                     <h6 class="mb-0 fw-bold">10 000+</h6>
-                                    <small class="text-muted">Позиций в ассортименте</small>
+                                    <small class="text-muted">Запчастей в наличии</small>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <a href="{% url 'about' %}" class="btn btn-outline-primary mt-3">Подробнее о компании</a>
+                    <a href="{% url 'catalog:product-list' %}"
+                       class="btn btn-outline-primary mt-3">Перейти в каталог запчастей</a>
                 </div>
                 <div class="col-lg-6">
                     <div class="row g-3 h-100">
-                        <!-- Левая колонка с двумя вертикальными изображениями -->
                         <div class="col-md-6">
                             <div class="d-flex flex-column h-100">
                                 <img src="{% static 'config/images/about-1.webp' %}"
-                                     alt="Склад"
+                                     alt="Склад запчастей для Komatsu и Cat"
                                      class="img-fluid rounded shadow mb-3 h-100"
                                      loading="lazy">
                                 <img src="{% static 'config/images/about-3.webp' %}"
-                                     alt="Техника"
+                                     alt="Запчасти для тяжелой техники"
                                      class="img-fluid rounded shadow h-70"
                                      loading="lazy">
                             </div>
                         </div>
-                        <!-- Правая колонка с одним большим изображением -->
                         <div class="col-md-6">
                             <img src="{% static 'config/images/about-2.webp' %}"
-                                 alt="Техника"
+                                 alt="Техника Komatsu и Cat"
                                  class="img-fluid rounded shadow h-100"
                                  style="object-fit: cover"
                                  loading="lazy">
@@ -100,11 +92,10 @@
     <section id="services" class="py-5 bg-light">
         <div class="container">
             <div class="text-center mb-5">
-                <h2>Наши преимущества</h2>
-                <p class="lead">Ключевые принципы нашей работы</p>
+                <h2>Преимущества покупки запчастей у нас</h2>
+                <p class="lead">Почему выбирают ДИЗЕЛЬПАРТС для спецтехники</p>
             </div>
             <div class="row g-4">
-                <!-- Карточка 1: Поставки запчастей -->
                 <div class="col-md-4">
                     <div class="card h-100 border-0 shadow-sm">
                         <div class="card-body text-center p-4">
@@ -113,15 +104,11 @@
                                         height: min(20vw, 70px)">
                                 <i class="bi bi-shield-check text-primary fs-2"></i>
                             </div>
-                            <h5 class="card-title">Прямые поставки</h5>
-                            <p class="card-text">
-                                Собственные таможенные операции и работа напрямую с производителями
-                                гарантируют подлинность и качество всех комплектующих
-                            </p>
+                            <h3 class="card-title">Прямые поставки</h3>
+                            <p class="card-text">Оригинальные запчасти для Komatsu и Cat напрямую от производителей – гарантия качества</p>
                         </div>
                     </div>
                 </div>
-                <!-- Карточка 2: Техническая поддержка -->
                 <div class="col-md-4">
                     <div class="card h-100 border-0 shadow-sm">
                         <div class="card-body text-center p-4">
@@ -130,12 +117,11 @@
                                         height: min(20vw, 70px)">
                                 <i class="bi bi-speedometer2 text-primary fs-2"></i>
                             </div>
-                            <h5 class="card-title">Скорость доставки</h5>
-                            <p class="card-text">Оперативная логистика в любой регион России, включая труднодоступные районы и срочные поставки</p>
+                            <h3 class="card-title">Быстрая доставка</h3>
+                            <p class="card-text">Срочная доставка запчастей для спецтехники по России</p>
                         </div>
                     </div>
                 </div>
-                <!-- Карточка 3: Логистика и доставка -->
                 <div class="col-md-4">
                     <div class="card h-100 border-0 shadow-sm">
                         <div class="card-body text-center p-4">
@@ -144,11 +130,8 @@
                                         height: min(20vw, 70px)">
                                 <i class="bi bi-currency-exchange text-primary fs-2"></i>
                             </div>
-                            <h5 class="card-title">Выгодные условия</h5>
-                            <p class="card-text">
-                                Оптимальные цены за счет прямых контрактов и индивидуальный подход
-                                к каждому клиенту
-                            </p>
+                            <h3 class="card-title">Выгодные цены</h3>
+                            <p class="card-text">Оптимальная стоимость запчастей для тяжелой техники</p>
                         </div>
                     </div>
                 </div>
@@ -160,15 +143,14 @@
         <div class="container">
             <div class="text-center mb-4">
                 <h2>Наши партнеры</h2>
-                <p class="lead">Работаем с ведущими производителями техники и комплектующих</p>
+                <p class="lead">Сотрудничаем с лидерами производства запчастей для спецтехники</p>
             </div>
             <div class="row justify-content-center align-items-center g-4">
-                <!-- Каждый партнер -->
                 <div class="col-6 col-md-4 col-lg-3">
                     <div class="partner-logo-container d-flex justify-content-center align-items-center h-100">
                         <a href="https://www.caterpillar.com/ru.html" target="_blank">
                             <img src="{% static 'config/images/partner-1.webp' %}"
-                                 alt="Caterpillar"
+                                 alt="Запчасти Caterpillar"
                                  class="partner-logo img-fluid grayscale"
                                  loading="lazy">
                         </a>
@@ -178,7 +160,7 @@
                     <div class="partner-logo-container d-flex justify-content-center align-items-center h-100">
                         <a href="https://www.komatsu.ru/" target="_blank">
                             <img src="{% static 'config/images/partner-2.webp' %}"
-                                 alt="Komatsu"
+                                 alt="Запчасти Komatsu"
                                  class="partner-logo img-fluid grayscale"
                                  loading="lazy">
                         </a>
@@ -188,7 +170,7 @@
                     <div class="partner-logo-container d-flex justify-content-center align-items-center h-100">
                         <a href="https://www.hitachi.com/en/" target="_blank">
                             <img src="{% static 'config/images/partner-3.webp' %}"
-                                 alt="Hitachi"
+                                 alt="Запчасти Hitachi"
                                  class="partner-logo img-fluid grayscale"
                                  loading="lazy">
                         </a>
@@ -198,7 +180,7 @@
                     <div class="partner-logo-container d-flex justify-content-center align-items-center h-100">
                         <a href="https://www.liebherr.com" target="_blank">
                             <img src="{% static 'config/images/partner-4.webp' %}"
-                                 alt="Liebherr"
+                                 alt="Запчасти Liebherr"
                                  class="partner-logo img-fluid grayscale"
                                  loading="lazy">
                         </a>
@@ -212,19 +194,19 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 mb-4 mb-lg-0">
-                    <h2 class="mb-4">Контакты</h2>
-                    <p class="lead">Готовы ответить на все ваши вопросы</p>
+                    <h2 class="mb-4">Свяжитесь с нами</h2>
+                    <p class="lead">Купить запчасти для Komatsu и Cat – просто позвоните!</p>
                     <div class="d-flex align-items-start mb-3">
                         <i class="bi bi-geo-alt-fill text-primary me-3 mt-1"></i>
                         <div>
-                            <h5 class="mb-1">Адрес</h5>
+                            <h3 class="mb-1">Адрес</h3>
                             <p>г. Москва, ул. Промышленная, 15, офис 304</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-start mb-3">
                         <i class="bi bi-telephone-fill text-primary me-3 mt-1"></i>
                         <div>
-                            <h5 class="mb-1">Телефоны</h5>
+                            <h3 class="mb-1">Телефоны</h3>
                             <p class="mb-1">+7 (495) 123-45-67 (бесплатно по России)</p>
                             <p>+7 (800) 123-45-67 (бесплатно по России)</p>
                         </div>
@@ -232,7 +214,7 @@
                     <div class="d-flex align-items-start">
                         <i class="bi bi-envelope-fill text-primary me-3 mt-1"></i>
                         <div>
-                            <h5 class="mb-1">Email</h5>
+                            <h3 class="mb-1">Email</h3>
                             <p>manager02@dieselenergoparts.ru</p>
                         </div>
                     </div>
@@ -240,4 +222,26 @@
             </div>
         </div>
     </section>
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "ООО ДИЗЕЛЬПАРТС",
+        "url": "https://dizparts-anapa.ru",
+        "description": "Поставка запчастей для тяжелой техники Komatsu, Cat и других марок по всей России",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "ул. Промышленная, 15, офис 304",
+            "addressLocality": "Москва",
+            "addressCountry": "RU"
+        },
+        "telephone": "+7 (495) 123-45-67",
+        "email": "manager02@dieselenergoparts.ru",
+        "sameAs": [
+            "https://www.caterpillar.com/ru.html",
+            "https://www.komatsu.ru/"
+        ]
+    }
+    </script>
 {% endblock %}
