@@ -6,6 +6,8 @@
    <meta property="og:title" content="{{ object.name }} - ООО ДИЗЕЛЬПАРТС" />
    <meta property="og:description"
          content="Купить {{ object.name }} (артикул: {{ object.article }}) за {{ object.sale_price }} руб. Оригинальные запчасти с доставкой по России." />
+   <meta name="description"
+         content="Купить {{ object.name }} (артикул: {{ object.article }}) за {{ object.sale_price }} руб. Оригинальные запчасти с доставкой по России." />
    <meta property="og:image"
          content="{% if product.moysklad_product.images %}{{ product.moysklad_product.get_medium_image_url }}{% else %}{% static 'catalog/images/placeholder-detail.jpg' %}{% endif %}" />
    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
