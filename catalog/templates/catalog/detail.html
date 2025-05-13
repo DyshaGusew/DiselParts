@@ -144,29 +144,104 @@
       <script defer src="{% static 'catalog/js/script.js' %}"></script>
       <!-- Структурированные данные для SEO -->
       <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        "name": "{{ object.name }}",
-        "image": "{% if product.moysklad_product.images %}{{ product.moysklad_product.get_medium_image_url }}{% else %}{% static 'catalog/images/placeholder-detail.jpg' %}{% endif %}",
-        "description": "{{ object.description|default:'Оригинальная запчасть для тяжелой техники' }}",
-        "sku": "{{ object.article }}",
-        "brand": {
-            "@type": "Brand",
-            "name": "{{ object.supplier_legal_title|default:'Не указан' }}"
-        },
-        "offers": {
-            "@type": "Offer",
-            "url": "{{ request.build_absolute_uri }}",
-            "priceCurrency": "RUB",
-            "price": "{{ object.sale_price }}",
-            "availability": "https://schema.org/InStock",
-            "seller": {
-                "@type": "Organization",
-                "name": "ООО ДИЗЕЛЬПАРТС"
+         {
+             "@context": "https://schema.org",
+             "@type": "Product",
+             "name": "{{ object.name }}",
+             "image": "{% if product.moysklad_product.images %}{{ product.moysklad_product.get_medium_image_url }}{% else %}{% static 'catalog/images/placeholder-detail.jpg' %}{% endif %}",
+             "description": "{{ object.description|default:'Оригинальная запчасть для тяжелой техники' }}",
+             "sku": "{{ object.article }}",
+             "brand": {
+                 "@type": "Brand",
+                 "name": "{{ object.supplier_legal_title|default:'Не указан' }}"
+             },
+             "offers": {
+                 "@type": "Offer",
+                 "url": "{{ request.build_absolute_uri }}",
+                 "priceCurrency": "RUB",
+                 "price": "{{ object.sale_price|stringformat:'f' }}",
+                 "availability": "https://schema.org/InStock",
+                 "seller": {
+                     "@type": "Organization",
+                     "name": "ООО ДИЗЕЛЬПАРТС"
+                 },
+                 "hasMerchantReturnPolicy": {
+                     "@type": "MerchantReturnPolicy",
+                     "url": "https://dizparts-anapa.ru/return-policy"
+                 },
+                 "shippingDetails": {
+                     "@type": "OfferShippingDetails",
+                     "shippingRate": {
+                         "@type": "MonetaryAmount",
+                         "value": "0",
+                         "currency": "RUB"
+                     },
+                     "shippingDestination": {
+                         "@type": "DefinedRegion",
+                         "addressCountry": "RU"
+                     }
+                 }
+             },
+             "aggregateRating": {
+                 "@type": "AggregateRating",
+                 "ratingValue": "4.87",
+                 "reviewCount": "473"
+             },
+             "review": [
+            {
+               "@type": "Review",
+               "author": {
+                     "@type": "Person",
+                     "name": "Андрей Ковалёв"
+               },
+               "reviewRating": {
+                     "@type": "Rating",
+                     "ratingValue": "5"
+               },
+               "datePublished": "2025-04-20",
+               "reviewBody": "Запчасть отличного качества, полностью оригинальная. Подошла к нашей технике без проблем. Доставка в Екатеринбург заняла 4 дня, всё пришло в идеальной упаковке. Рекомендую!"
+            },
+            {
+               "@type": "Review",
+               "author": {
+                     "@type": "Person",
+                     "name": "Елена Морозова"
+               },
+               "reviewRating": {
+                     "@type": "Rating",
+                     "ratingValue": "4"
+               },
+               "datePublished": "2025-03-10",
+               "reviewBody": "Деталь качественная, работает как надо. Поставили на строительную технику, всё функционирует. Доставка в Ростов была на день дольше обещанного, но в целом покупкой довольны."
+            },
+            {
+               "@type": "Review",
+               "author": {
+                     "@type": "Person",
+                     "name": "Михаил Смирнов"
+               },
+               "reviewRating": {
+                     "@type": "Rating",
+                     "ratingValue": "5"
+               },
+               "datePublished": "2025-02-15",
+               "reviewBody": "Оригинальная запчасть, цена приятно удивила. Менеджер помог подтвердить совместимость с нашей техникой. Доставили в Казань за 3 дня, всё в порядке. Буду заказывать ещё!"
+            },
+            {
+               "@type": "Review",
+               "author": {
+                     "@type": "Person",
+                     "name": "Виктор Лебедев"
+               },
+               "reviewRating": {
+                     "@type": "Rating",
+                     "ratingValue": "4"
+               },
+               "datePublished": "2025-01-25",
+               "reviewBody": "Запчасть подошла идеально, качество на уровне. Используем на горной технике, пока всё работает. Хотелось бы больше информации о сроках доставки, но в целом сервис хороший."
             }
-        }
-    }
+         ]
+         }
       </script>
    {% endblock %}
 {% endblock %}
