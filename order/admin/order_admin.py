@@ -1,6 +1,9 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin, TabularInline
 from ..models import Order, OrderItem
+from django.contrib import messages
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
 
 
 # Register your models here.
@@ -61,6 +64,9 @@ class OrderAdmin(ModelAdmin):
             },
         ),
     )
+    actions = [
+        'apply_status',
+    ]
 
     # Настройка поля status
     def get_form(self, request, obj=None, **kwargs):
@@ -70,3 +76,51 @@ class OrderAdmin(ModelAdmin):
             'Рекомендуемые статусы описаны ниже.'
         )
         return form
+
+    @admin.action(description="Изменить статус заказов")
+    def apply_status(self, request, queryset):
+        if 'apply' in request.POST:
+            try:
+                selected_ids = request.POST.getlist('_selected_action')
+                queryset = self.get_queryset(request).filter(pk__in=selected_ids)
+
+                new_status = request.POST.get('status', '')
+                other_info = request.POST.get('other_info', '')
+
+                if not new_status:
+                    raise ValueError("Не выбран статус")
+
+                updated = 0
+                for order in queryset:
+                    order.status = new_status
+                    if other_info:
+                        order.other_info = other_info
+                    order.save()
+                    updated += 1
+
+                self.message_user(
+                    request,
+                    f"Статус '{new_status}' и дополнительная информация применены к {updated} заказам",
+                    messages.SUCCESS,
+                )
+                return HttpResponseRedirect(request.get_full_path())
+            except Exception as e:
+                self.message_user(
+                    request,
+                    f"Ошибка: {str(e)}",
+                    messages.ERROR,
+                )
+                return HttpResponseRedirect(request.get_full_path())
+
+        return render(
+            request,
+            'order/apply_status_intermediate.html',
+            context={
+                'title': "Изменение статуса заказов",
+                'orders': queryset,
+                'opts': self.model._meta,
+                'action': 'apply_status',
+                'back_url': request.get_full_path(),
+                'selected_ids': request.POST.getlist('_selected_action'),
+            },
+        )
