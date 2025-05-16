@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /$
+Allow: /about/
+Allow: /sert/
+Allow: /catalog/
+Allow: /zapchasti/
+Disallow: /admin/
+Disallow: /accounts/
+Disallow: /order/
+Disallow: /love-daria/
+Disallow: /cart/
+Disallow: /remove/
+Disallow: /update-quantity/
+Disallow: /create-order
+Disallow: /product/
+
+Sitemap: https://dizparts-anapa.ru/sitemap.xml
