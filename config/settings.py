@@ -107,6 +107,9 @@ USE_TZ = True
 
 # Static files
 STATIC_URL = "static/"
+STATICFILES_DIRS = [
+    BASE_DIR / 'config/static',  # важно для runserver
+]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 

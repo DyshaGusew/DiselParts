@@ -1,7 +1,13 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
    <head>
+      <!-- CSS -->
+      {% load static %}
+      {% block extra_css %}
+         <link rel="stylesheet" href="{% static 'catalog/css/styles.css' %}" />
+         <link rel="stylesheet" href="{% static 'accounts/css/styles.css' %}" />
+      {% endblock %}
+
       <!-- Мета-теги для SEO и адаптивности -->
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,13 +27,11 @@
             href="{% static 'config/css/bootstrap.min.css' %}"
             as="style" />
       <link rel="stylesheet" href="{% static 'config/css/bootstrap.min.css' %}" />
-      <!-- Динамические и дополнительные стили -->
-      {% block extra_css %}
-         <link rel="stylesheet" href="{% static 'catalog/css/styles.css' %}" />
-         <link rel="stylesheet" href="{% static 'accounts/css/styles.css' %}" />
-      {% endblock %}
+
       <!-- Шрифты и иконки -->
-      <link rel="stylesheet" href="{% static 'config/css/bootstrap-icons.css' %}" />
+      <!-- Динамические и дополнительные стили -->
+
+      <link rel="stylesheet" href="{% static 'config/css/main.css' %}" />
       <link rel="icon"
             href="https://dizparts-anapa.ru/static/config/images/favicon.ico"
             type="image/x-icon" />
@@ -63,14 +67,14 @@
          </div>
       {% endif %}
       <!-- Основной контент -->
-      <div class="container mt-4">
+      <div class="container-fluid">
          {% block content %}{% endblock %}
       </div>
       <!-- Кэшируемый футер -->
       {% load cache %}
-      {% cache 3600 footer %}
-      {% include "includes/footer.html" %}
-   {% endcache %}
+      {# {% cache 3600 footer %} #}
+         {% include "includes/footer.html" %}
+      {# {% endcache %} #}
    <!-- Скрипты -->
    <script defer src="{% static 'config/js/bootstrap.bundle.min.js' %}"></script>
    <script>
