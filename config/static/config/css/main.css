@@ -36,6 +36,7 @@
   font-display: swap;
 }
 
+
 :root {
   --blue-color: #AAC3DA;
   --darkblue-color: #0A4780;
@@ -63,6 +64,7 @@
     color: var(--white);
 }
 
+
 .btn-outline-light {
     font-family: var(--font-btn);
     font-size: 32px;
@@ -79,9 +81,17 @@
     --bs-btn-bg: #fff;
 
     --bs-btn-border-color: none;
-    --bs-btn-hover-color: #212529;
-    --bs-btn-hover-bg: #AAC3DA;
+    --bs-btn-hover-bg: #0A4780;
 }
+
+.btn-outline-dark {
+    font-family: var(--font-btn);
+    font-size: 32px;
+    border: 3px solid #212529 !important;
+    border-radius: 0 !important;
+    color: #212529;
+}
+
 
 .text-white {
     font-family: var(--font-osw-lig);
@@ -141,7 +151,7 @@
     overflow: hidden; /* Обрезает избыточное изображение */
 }
 
-.py-5.text-dark {
+.py-5.down{
     background-color: var(--blue-color);
 }
 
@@ -170,7 +180,14 @@
 
 .card {
     border-radius: 0 !important;
+    border: none;
     background-color: var(--blue-color);
+}
+
+.card-img-top {
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Обрезает изображение, сохраняя пропорции */
 }
 
 .row.equal-height {
@@ -178,7 +195,7 @@
     flex-wrap: wrap; /* Разрешает перенос при необходимости */
 }
 
-.row.equal-height .col-md-4 {
+.row.equal-height.col-md-4 {
     display: flex;
     flex-direction: column;
     justify-content: center; /* Выравнивание по вертикали */
@@ -187,3 +204,8 @@
 .col-lg-4.mb-4 {
     padding-right: 1.5rem; /* Дополнительный правый отступ */
 }
+
+.col-md-6 {
+    padding-right: 1.5rem; /* Дополнительный правый отступ */
+}
+

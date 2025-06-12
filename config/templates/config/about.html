@@ -2,146 +2,82 @@
 {% load static %}
 {% block title %}О нас | ООО "ДИЗЕЛЬПАРТС" — Запчасти для Komatsu, Cat и спецтехники{% endblock %}
 {% block content %}
-    <!-- Hero-секция -->
-    <section class="hero-section position-relative text-white py-5"
-             style="background: url('{% static 'config/images/hero-about.webp' %}') no-repeat center center/cover">
-        <div class="position-absolute top-0 start-0 w-100 h-100"
-             style="background-color: rgba(0, 0, 0, 0.4);
-                    z-index: 1"></div>
-        <div class="container text-center position-relative" style="z-index: 2;">
-            <h1 class="display-4 fw-bold">О компании</h1>
-            <p class="lead">Надёжный поставщик запчастей для Komatsu, Cat и другой спецтехники</p>
-        </div>
-    </section>
-    <!-- Информация о компании -->
-    <section class="py-4">
-        <div class="container">
+
+    <!-- О компании -->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5">
             <div class="row align-items-center">
-                <div class="col-lg-8">
-                    <h2>ООО "ДИЗЕЛЬПАРТС" — Запчасти для тяжелой техники</h2>
-                    <p class="lead">Опыт, надежность, оперативность</p>
-                    <p>
-                        ООО "ДИЗЕЛЬПАРТС" — это ваш надёжный партнер в поставках <strong>запчастей для спецтехники</strong>, включая такие марки, как <strong>Komatsu</strong> и <strong>Cat</strong>. Мы специализируемся на обеспечении клиентов оригинальными комплектующими для тяжелой техники, предлагая широкий ассортимент и быструю доставку по всей России. Хотите <strong>купить запчасти для Komatsu</strong> или <strong>Cat</strong>? Мы гарантируем качество и конкурентные цены.
-                    </p>
-                    <p>
-                        <strong>Дата регистрации:</strong> 10.03.2023, г. Анапа
-                    </p>
-                    <p>
-                        <strong>Генеральный директор:</strong> Ремезов Евгений Игоревич
-                    </p>
+                <div class="col-lg-6 mb-4 mb-lg-0 d-flex flex-column align-items-start">
+                    <h1 class="display-4 mb-4">О компании</h1>
+                    <p class="lead">ООО "ДИЗЕЛЬПАРТС" – ваш надежный партнер в обеспечении запчастей для тяжелой техники. Мы поставляем комплектующие для Komatsu, Cat, Hitachi и других брендов строительной, горной и сельскохозяйственной техники.</p>
+                    <p class="lead">Наши клиенты – крупные компании по всей России, доверяющие нам за качество, конкурентные цены и оперативную доставку.</p>
+                    <p class="lead">Если вам нужны запчасти для Komatsu, Cat или других марок – гарантируем оптимальные условия и безупречное обслуживание.</p>
+                </div>
+                <div class="col-lg-6 mb-4 mb-lg-0 d-flex flex-column align-items-center">
+                    <img src="{% static 'config/images/details.png' %}" alt="Детали техники" class="img-fluid">
                 </div>
             </div>
         </div>
     </section>
-    <!-- Контакты и реквизиты -->
-    <section class="py-4 bg-light">
-        <div class="container">
-            <h2>Контакты и реквизиты для заказа запчастей</h2>
+
+    <!-- Сертификаты -->
+    <section id="services" class="py-5">
+        <div class="container px-4 px-lg-5">
+            <div class="text-start mb-5">
+                <h1 class="display-4 mb-4">Наши сертификаты</h1>
+                <p class="lead">Все наши комплектующие сертифицированы по стандартам ГОСТ Р, что подтверждает их высокое качество и соответствие требованиям безопасности. Мы сотрудничаем только с проверенными производителями, такими как Komatsu и Caterpillar, чтобы обеспечить надежность вашей техники.</p>
+            </div>
+            <div class="row g-4">
+            <!-- Карточка 1: Сертификат Caterpillar -->
+                <div class="col-md-6">
+                    <div class="card bg-light">
+                        <div class="card-body text-start px-4 py-0">
+                            <h3 class="card-title my-4">Сертификат Caterpillar</h3>
+                            <img src="{% static 'config/images/sert_cat.svg' %}" alt="Сертификат Caterpillar" class="card-img-top">
+                        </div>
+                    </div>
+                    <div class="card bg-dark">
+                        <div class="card-body text-start p-4 text-end text-light">
+                            <a href="{% static 'certificates/certificate_caterpillar.pdf' %}" class="btn btn-outline-light me-2 px-4 py-2" download>СКАЧАТЬ СЕРТИФИКАТ</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка 2: Сертификат Komatsu -->
+                <div class="col-md-6">
+                    <div class="card bg-light">
+                        <div class="card-body text-start px-4 py-0">
+                            <h3 class="card-title my-4">Сертификат Komatsu</h3>
+                            <img src="{% static 'config/images/sert_kom.svg' %}" alt="Сертификат Komatsu" class="card-img-top">
+                        </div>
+                    </div>
+                    <div class="card bg-dark">
+                        <div class="card-body text-start p-4 text-end text-light">
+                           <a href="{% static 'certificates/certificate_komatsu.pdf' %}" class="btn btn-outline-light me-2 px-4 py-2" download>СКАЧАТЬ СЕРТИФИКАТ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <!-- Призыв к действию -->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5">
             <div class="row">
-                <!-- Адреса -->
-                <div class="col-md-6">
-                    <h4>Адреса</h4>
-                    <p>
-                        <strong>Юридический адрес:</strong>
-                        <br>
-                        353451, Краснодарский край, Анапский р-н, Анапа г, Адмирала Пустошкина ул,
-                        д. 22, корп. 8, кв.(оф.) 249
-                    </p>
-                    <p>
-                        <strong>Адрес для корреспонденции:</strong>
-                        <br>
-                        353451, Краснодарский край, Анапский р-н, Анапа г, Адмирала Пустошкина ул,
-                        д. 22, корп. 8, кв.(оф.) 249
-                    </p>
-                    <p>
-                        <strong>Фактический адрес:</strong>
-                        <br>
-                        353451, Краснодарский край, Анапский р-н, Анапа г, ул. Промышленная 6
-                    </p>
+                <div class="col-lg-6 mb-4 mb-lg-0 d-flex flex-column align-items-start">
+                    <h2 class="display-4 mb-4 text-dark">Надежные запчасти для вашей техники</h2>
+                    <p class="lead text-dark">Наш офис и склад находятся в Анапе, что позволяет оперативно обрабатывать заказы на запчасти для Komatsu и Cat с доставкой по всей России.</p>
+                    <div class="d-flex gap-3 text-light">
+                        <a href="{% url 'catalog:product-list' %}" class="btn btn-primary btn-lg px-4 py-2 d-flex align-items-center">КУПИТЬ ЗАПЧАСТИ</a>
+                        <a href="{% url 'sert' %}" class="btn btn-primary btn-lg px-4 py-2 d-flex align-items-center">КОНТАКТЫ</a>
+                    </div>
                 </div>
-                <!-- Контактные данные и банковские реквизиты -->
-                <div class="col-md-6">
-                    <h4>Свяжитесь с нами для заказа запчастей</h4>
-                    <p>
-                        <strong>Телефон:</strong> 8(994)024-97-96
-                    </p>
-                    <p>
-                        <strong>Email:</strong> manager02@dieselenergoparts.ru
-                    </p>
-                    <h4 class="mt-4">Банковские реквизиты</h4>
-                    <p>
-                        <strong>ОГРН:</strong> 1212300047343
-                    </p>
-                    <p>
-                        <strong>ИНН/КПП:</strong> 2301104769 / 230101001
-                    </p>
-                    <p>
-                        <strong>ОКПО:</strong> 51354426
-                    </p>
-                    <p>
-                        <strong>Р/с:</strong> 40702810208000014273
-                        <br>
-                        в СТАВРОПОЛЬСКОМ Ф-ЛЕ ПАО "ПРОМСВЯЗЬБАНК"
-                    </p>
-                    <p>
-                        <strong>БИК:</strong> 040702773
-                    </p>
-                    <p>
-                        <strong>Корр. счет:</strong> 30101810500000000773
-                    </p>
+                <div class="col">
+                    <img src="{% static 'config/images/photo2.svg' %}" alt="фото1" class="img-fluid mx-4">
                 </div>
             </div>
         </div>
     </section>
-    <!-- Дополнительная информация -->
-    <section class="py-4">
-        <div class="container">
-            <h2>Почему выбирают нас для покупки запчастей?</h2>
-            <p>
-                ООО "ДИЗЕЛЬПАРТС" — это команда профессионалов с многолетним опытом в поставках <strong>запчастей для тяжелой техники</strong>. Мы предлагаем клиентам оперативные поставки <strong>запчастей для Komatsu</strong>, <strong>Cat</strong> и других марок спецтехники, обеспечивая конкурентные цены и высокое качество продукции.
-            </p>
-            <ul>
-                <li>
-                    Прямые поставки <strong>запчастей для спецтехники</strong> от производителей;
-                </li>
-                <li>
-                    Быстрая доставка <strong>запчастей для Komatsu и Cat</strong> по всей России;
-                </li>
-                <li>
-                    Отсутствие посредников при заказе <strong>запчастей для тяжелой техники</strong>;
-                </li>
-                <li>Собственные таможенные операции для гарантии оригинальности;</li>
-                <li>Индивидуальный подход к каждому клиенту.</li>
-            </ul>
-            <p>
-                Мы сотрудничаем с крупнейшими компаниями строительной, добывающей, лесозаготовительной и судоходной отраслей, предоставляя им надежные <strong>запчасти для спецтехники</strong>. Перейдите в <a href="{% url 'catalog:product-list' %}">каталог запчастей для Komatsu и Cat</a>, чтобы выбрать нужные комплектующие прямо сейчас!
-            </p>
-        </div>
-    </section>
-    <!-- Карта расположения -->
-    <section class="py-1">
-        <div class="container">
-            <h2>Расположение компании и доставка запчастей</h2>
-            <p>
-                Наш офис и склад находятся в Анапе, что позволяет оперативно обрабатывать заказы на <strong>запчасти для Komatsu и Cat</strong> с доставкой по всей России.
-            </p>
-            <div style="position:relative;overflow:hidden;">
-                <a href="https://yandex.ru/maps/1107/anapa/?utm_medium=mapframe&utm_source=maps"
-                   style="color:#eee;
-                          font-size:12px;
-                          position:absolute;
-                          top:0px">Анапа</a><a href="https://yandex.ru/maps/1107/anapa/house/promyshlennaya_ulitsa_6/Z04YdQVnTU0PQFpufXR5cH9lZw==/?ll=37.327488%2C44.881363&utm_medium=mapframe&utm_source=maps&z=16.59"
-   style="color:#eee;
-          font-size:12px;
-          position:absolute;
-          top:14px">Яндекс Карты — транспорт, навигация, поиск мест</a><iframe src="https://yandex.ru/map-widget/v1/?ll=37.327488%2C44.881363&mode=search&ol=geo&ouri=ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgoxOTQ1OTYxODgxEmXQoNC-0YHRgdC40Y8sINCa0YDQsNGB0L3QvtC00LDRgNGB0LrQuNC5INC60YDQsNC5LCDQkNC90LDQv9CwLCDQn9GA0L7QvNGL0YjQu9C10L3QvdCw0Y8g0YPQu9C40YbQsCwgNiIKDVhPFUIVg4YzQg%2C%2C&z=16.59"
-        loading="lazy"
-        width="1000"
-        height="600"
-        frameborder="1"
-        allowfullscreen="true"
-        style="position:relative"></iframe>
-            </div>
-        </div>
-    </section>
+
 {% endblock %}

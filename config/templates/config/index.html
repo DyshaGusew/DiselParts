@@ -48,11 +48,12 @@
             </div>
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-4 mb-lg-0 d-flex flex-column align-items-start">
-                <p class="lead">ООО "ДИЗЕЛЬПАРТС" — надежный поставщик запчастей для тяжелой техники.</p>
-                <p class="lead">Мы работаем с крупными компаниями по всей России, предлагая высокое качество, конкурентные цены и быструю доставку. Гарантируем оптимальные условия и безупречное обслуживание.</p>
-            </div>
-            <div class="col-lg-6 mb-4 mb-lg-0 d-flex flex-column align-items-center">
-                <img src="{% static 'config/images/detail1.png' %}" alt="Деталь техники" class="img-fluid">
+                    <p class="lead">ООО "ДИЗЕЛЬПАРТС" — надежный поставщик запчастей для тяжелой техники.</p>
+                    <p class="lead">Мы работаем с крупными компаниями по всей России, предлагая высокое качество, конкурентные цены и быструю доставку. Гарантируем оптимальные условия и безупречное обслуживание.</p>
+                </div>
+                <div class="col-lg-6 mb-4 mb-lg-0 d-flex flex-column align-items-center">
+                    <img src="{% static 'config/images/detail1.png' %}" alt="Деталь техники" class="img-fluid">
+                </div>
             </div>
         </div>
     </section>
@@ -144,25 +145,26 @@
         </div>
     </section>
 
-    <!-- Контакты -->
-    <section class="py-5 text-dark">
+    <!-- Призыв к действию -->
+    <section class="py-5 down">
         <div class="container px-4 px-lg-5">
             <div class="row">
                 <div class="col-lg-6 mb-4 mb-lg-0 d-flex flex-column align-items-start">
-                    <h2 class="display-4 mb-4">Ищете запчасти для Komatsu или Cat?</h2>
-                    <p class="lead">ООО "ДИЗЕЛЬПАРТС" — это ваш верный партнер в обеспечении деталями.</p>
-                    <p class="lead">Мы предоставляем высококачественные детали для промышленного оборудования. В нашем ассортименте представлен широкий выбор продукции с быстрой доставкой по всей России. </p>
-                    <div class="d-flex gap-3">
+                    <h2 class="display-4 mb-4 text-dark">Ищете запчасти для Komatsu или Cat?</h2>
+                    <p class="lead text-dark">ООО "ДИЗЕЛЬПАРТС" — это ваш верный партнер в обеспечении деталями.</p>
+                    <p class="lead text-dark">Мы предоставляем высококачественные детали для промышленного оборудования. В нашем ассортименте представлен широкий выбор продукции с быстрой доставкой по всей России. </p>
+                    <div class="d-flex gap-3 text-light">
                         <a href="{% url 'catalog:product-list' %}" class="btn btn-primary btn-lg px-4 py-2 d-flex align-items-center">КУПИТЬ ЗАПЧАСТИ</a>
-                        <a href="{% url 'sert' %}" class="btn btn-outline-light btn-lg px-4 py-2 d-flex align-items-center text-light">КОНТАКТЫ</a>
+                        <a href="{% url 'sert' %}" class="btn btn-outline-light me-2 px-4 py-2">КОНТАКТЫ</a>
                     </div>
                 </div>
                 <div class="col">
-                    <img src="{% static 'config/images/photo1.png' %}" alt="фото1" class="img-fluid mx-4">
+                    <img src="{% static 'config/images/photo1.svg' %}" alt="фото1" class="img-fluid mx-4">
                 </div>
             </div>
         </div>
     </section>
+
     <!-- Schema Markup -->
     <script type="application/ld+json">
     {
