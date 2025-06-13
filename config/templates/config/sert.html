@@ -2,78 +2,79 @@
 {% load static %}
 {% block title %}Сертификаты качества{% endblock %}
 {% block content %}
-    <!-- Hero-секция с фоновым изображением -->
-    <section class="hero-section bg-dark text-white py-5"
-             style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{% static 'config/images/cert-hero-bg.webp' %}');
-                    background-size: cover;
-                    background-position: center">
-        <div class="container py-5">
-            <div class="row align-items-center">
-                <div class="col-lg-8 mx-auto text-center">
-                    <h1 class="display-4 fw-bold mb-4">Сертификаты качества</h1>
-                    <p class="lead mb-4">Гарантия подлинности и соответствия стандартам для всех наших запчастей</p>
-                    <a href="#certificates" class="btn btn-primary btn-lg px-4">Посмотреть сертификаты</a>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Контакты и реквизиты -->
-    <section class="py-4 bg-light">
-        <div class="container">
-            <h2>Контакты и реквизиты для заказа запчастей</h2>
-            <div class="row">
-                <!-- Адреса -->
-                <div class="col-md-6">
-                    <h4>Адреса</h4>
-                    <p>
-                        <strong>Юридический адрес:</strong>
-                        <br>
-                        353451, Краснодарский край, Анапский р-н, Анапа г, Адмирала Пустошкина ул,
-                        д. 22, корп. 8, кв.(оф.) 249
-                    </p>
-                    <p>
-                        <strong>Адрес для корреспонденции:</strong>
-                        <br>
-                        353451, Краснодарский край, Анапский р-н, Анапа г, Адмирала Пустошкина ул,
-                        д. 22, корп. 8, кв.(оф.) 249
-                    </p>
-                    <p>
-                        <strong>Фактический адрес:</strong>
-                        <br>
-                        353451, Краснодарский край, Анапский р-н, Анапа г, ул. Промышленная 6
-                    </p>
+    <section id="contacts" class="py-5">
+        <div class="container px-4 px-lg-5">
+            <div class="text-start mb-5">
+                <h1 class="display-4 mb-4">Контакты и реквизиты</h1>
+            </div>
+
+            <div class="row g-4 equal-height">
+                <!-- Карточка 1 -->
+                <div class="col-md-6 col-fluid mb-4">
+                    <div class="card bg-light text-start p-4 h-100 d-flex flex-column">
+                        <div class="flex-grow-1">
+                            <h3 class="card-title">Адреса</h3>
+                            <p class="text-muted">
+                                <strong>Юридический адрес:</strong><br>
+                                353451, Краснодарский край, Анапский р-н,<br>
+                                г. Анапа, ул. Адмирала Пустошкина, д. 22, корп. 8, кв.(оф.) 249
+                            </p>
+                            <p class="text-muted">
+                                <strong>Адрес для корреспонденции:</strong><br>
+                                353451, Краснодарский край, Анапский р-н,<br>
+                                г. Анапа, ул. Адмирала Пустошкина, д. 22, корп. 8, кв.(оф.) 249
+                            </p>
+                            <p class="text-muted">
+                                <strong>Фактический адрес:</strong><br>
+                                353451, Краснодарский край, Анапский р-н,<br>
+                                г. Анапа, ул. Промышленная 6
+                            </p>
+
+                            <h3 class="card-title mt-4">Связь для заказа запчастей</h3>
+                            <p class="text-muted">
+                                <strong>Телефон:</strong> 8(994)024-97-96<br>
+                                <strong>Email:</strong> manager02@dieselenergoparts.ru
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                <!-- Контактные данные и банковские реквизиты -->
-                <div class="col-md-6">
-                    <h4>Свяжитесь с нами для заказа запчастей</h4>
-                    <p>
-                        <strong>Телефон:</strong> 8(994)024-97-96
-                    </p>
-                    <p>
-                        <strong>Email:</strong> manager02@dieselenergoparts.ru
-                    </p>
-                    <h4 class="mt-4">Банковские реквизиты</h4>
-                    <p>
-                        <strong>ОГРН:</strong> 1212300047343
-                    </p>
-                    <p>
-                        <strong>ИНН/КПП:</strong> 2301104769 / 230101001
-                    </p>
-                    <p>
-                        <strong>ОКПО:</strong> 51354426
-                    </p>
-                    <p>
-                        <strong>Р/с:</strong> 40702810208000014273
-                        <br>
-                        в СТАВРОПОЛЬСКОМ Ф-ЛЕ ПАО "ПРОМСВЯЗЬБАНК"
-                    </p>
-                    <p>
-                        <strong>БИК:</strong> 040702773
-                    </p>
-                    <p>
-                        <strong>Корр. счет:</strong> 30101810500000000773
-                    </p>
+
+                <!-- Карточка 2 -->
+                <div class="col-md-6 col-fluid mb-4">
+                    <div class="card bg-light text-start p-4 h-100 d-flex flex-column">
+                        <div class="flex-grow-1">
+                            <h4 class="card-title">Свяжитесь с нами для заказа запчастей</h4>
+                            <p class="text-muted">
+                                <strong>Телефон:</strong> 8(994)024-97-96
+                            </p>
+                            <p class="text-muted">
+                                <strong>Email:</strong> manager02@dieselenergoparts.ru
+                            </p>
+
+                            <h3 class="card-title mt-4">Банковские реквизиты</h3>
+                            <p class="text-muted">
+                                <strong>ОГРН:</strong> 1212300047343
+                            </p>
+                            <p class="text-muted">
+                                <strong>ИНН/КПП:</strong> 2301104769 / 230101001
+                            </p>
+                            <p class="text-muted">
+                                <strong>ОКПО:</strong> 51354426
+                            </p>
+                            <p class="text-muted">
+                                <strong>Р/с:</strong> 40702810208000014273<br>
+                                в СТАВРОПОЛЬСКОМ Ф-ЛЕ ПАО "ПРОМСВЯЗЬБАНК"
+                            </p>
+                            <p class="text-muted">
+                                <strong>БИК:</strong> 040702773
+                            </p>
+                            <p class="text-muted">
+                                <strong>Корр. счет:</strong> 30101810500000000773
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -81,130 +82,42 @@
 
 
     <!-- Карта расположения -->
-    <section class="py-1">
-        <div class="container">
-            <h2>Расположение компании и доставка запчастей</h2>
-            <p>
+    <section class="py-5">
+        <div class="container px-4 px-lg-5">
+            <h1 class="display-4 mb-4">Расположение компании</h1>
+            <p class="text-muted mb-4">
                 Наш офис и склад находятся в Анапе, что позволяет оперативно обрабатывать заказы на <strong>запчасти для Komatsu и Cat</strong> с доставкой по всей России.
             </p>
-            <div style="position:relative;overflow:hidden;">
-                <a href="https://yandex.ru/maps/1107/anapa/?utm_medium=mapframe&utm_source=maps"
-                   style="color:#eee;
-                          font-size:12px;
-                          position:absolute;
-                          top:0px">Анапа</a><a href="https://yandex.ru/maps/1107/anapa/house/promyshlennaya_ulitsa_6/Z04YdQVnTU0PQFpufXR5cH9lZw==/?ll=37.327488%2C44.881363&utm_medium=mapframe&utm_source=maps&z=16.59"
-   style="color:#eee;
-          font-size:12px;
-          position:absolute;
-          top:14px">Яндекс Карты — транспорт, навигация, поиск мест</a><iframe src="https://yandex.ru/map-widget/v1/?ll=37.327488%2C44.881363&mode=search&ol=geo&ouri=ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgoxOTQ1OTYxODgxEmXQoNC-0YHRgdC40Y8sINCa0YDQsNGB0L3QvtC00LDRgNGB0LrQuNC5INC60YDQsNC5LCDQkNC90LDQv9CwLCDQn9GA0L7QvNGL0YjQu9C10L3QvdCw0Y8g0YPQu9C40YbQsCwgNiIKDVhPFUIVg4YzQg%2C%2C&z=16.59"
-        loading="lazy"
-        width="1000"
-        height="600"
-        frameborder="1"
-        allowfullscreen="true"
-        style="position:relative"></iframe>
+            <div class="map-container">
+                <iframe src="https://yandex.ru/map-widget/v1/?ll=37.327488%2C44.881363&mode=search&ol=geo&ouri=ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgoxOTQ1OTYxODgxEmXQoNC-0YHRgdC40Y8sINCa0YDQsNGB0L3QvtC00LDRgNGB0LrQuNC5INC60YDQsNC5LCDQkNC90LDQv9CwLCDQn9GA0L7QvNGL0YjQu9C10L3QvdCw0Y8g0YPQu9C40YbQsCwgNiIKDVhPFUIVg4YzQg%2C%2C&z=16.59"
+                       loading="lazy"
+                       width="100%"
+                       height="400"
+                       frameborder="0"
+                       allowfullscreen="true"
+                       style="border:0"></iframe>
             </div>
         </div>
     </section>
 
-    <!-- Секция с сертификатами -->
-    <section id="certificates" class="py-5 bg-light">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2>Наши сертификаты</h2>
-                <p class="lead">
-                    Все наши комплектующие сертифицированы по стандартам ГОСТ Р, что подтверждает их высокое качество и соответствие требованиям безопасности. Мы сотрудничаем только с проверенными производителями, такими как Komatsu и Caterpillar, чтобы обеспечить надежность вашей техники.
-                </p>
-            </div>
-            <div class="row g-4">
-                <!-- Сертификат Komatsu -->
-                <div class="col-md-6">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body p-4">
-                            <div class="d-flex align-items-center mb-3">
-                                <img src="{% static 'config/images/komatsu-cert.webp' %}"
-                                     alt="Komatsu Certificate"
-                                     class="img-fluid rounded me-3"
-                                     style="max-width: 100px;
-                                            height: auto">
-                                <h5 class="card-title mb-0">Сертификат Komatsu</h5>
-                            </div>
-                            <p class="card-text">
-                                <strong>Номер:</strong> РОСС DE.HА34.H06089
-                                <br>
-                                <strong>Срок действия:</strong> 22.06.2022 – 21.06.2025
-                                <br>
-                                <strong>Продукция:</strong> Комплектующие и принадлежности для автотранспортных средств
-                                <br>
-                                <strong>Стандарты:</strong> ГОСТ Р 53808-2010, ГОСТ Р 57399-2017, ГОСТ 33116-2014, и др.
-                                <br>
-                                <strong>Изготовитель:</strong> Komatsu Ltd., Япония
-                                <br>
-                                <strong>Орган сертификации:</strong> ООО «Вега», Калуга
-                            </p>
-                            <a href="{% static 'config/certificates/Komatsu_sert.pdf' %}"
-                               class="btn btn-outline-primary mt-3"
-                               download>Скачать сертификат</a>
-                        </div>
+ <!-- Призыв к действию -->
+    <section class="py-5 down">
+        <div class="container px-4 px-lg-5">
+            <div class="row">
+                <div class="col-lg-6 mb-4 mb-lg-0 d-flex flex-column align-items-start">
+                    <h2 class="display-4 mb-4 text-dark">Запчасти для спецтехники Komatsu и Cat</h2>
+                    <p class="lead text-dark">Перейдите в каталог запчастей для Komatsu и Cat, чтобы выбрать нужные комплектующие прямо сейчас!</p>
+                    <p class="lead text-dark">Или перейдите в раздел о компании, чтобы познакомиться с нами поближе.</p>
+                    <div class="d-flex gap-3 text-light">
+                        <a href="{% url 'catalog:product-list' %}" class="btn btn-primary btn-lg px-4 py-2 d-flex align-items-center">КУПИТЬ ЗАПЧАСТИ</a>
+                        <a href="{% url 'sert' %}" class="btn btn-outline-light me-2 px-4 py-2">О КОМПАНИИ</a>
                     </div>
                 </div>
-                <!-- Сертификат Caterpillar -->
-                <div class="col-md-6">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body p-4">
-                            <div class="d-flex align-items-center mb-3">
-                                <img src="{% static 'config/images/caterpillar-cert.webp' %}"
-                                     alt="Caterpillar Certificate"
-                                     class="img-fluid rounded me-3"
-                                     style="max-width: 100px;
-                                            height: auto">
-                                <h5 class="card-title mb-0">Сертификат Caterpillar</h5>
-                            </div>
-                            <p class="card-text">
-                                <strong>Номер:</strong> РОСС US.HА34.H05353
-                                <br>
-                                <strong>Срок действия:</strong> 22.06.2022 – 21.06.2025
-                                <br>
-                                <strong>Продукция:</strong> Запасные части, прокладки, валы, части ДВС, фильтры, и др.
-                                <br>
-                                <strong>Стандарты:</strong> ГОСТ Р 53808-2010, ГОСТ Р 57399-2017, ГОСТ 33116-2014, и др.
-                                <br>
-                                <strong>Изготовитель:</strong> Caterpillar Inc., США
-                                <br>
-                                <strong>Орган сертификации:</strong> ООО «Вега», Калуга
-                            </p>
-                            <a href="{% static 'config/certificates/CAT_sert.pdf' %}"
-                               class="btn btn-outline-primary mt-3"
-                               download>Скачать сертификат</a>
-                        </div>
-                    </div>
+                <div class="col">
+                    <img src="{% static 'config/images/photo3.svg' %}" alt="фото3" class="img-fluid mx-4">
                 </div>
             </div>
         </div>
     </section>
-    <!-- Призыв к действию -->
-    <section class="py-5 bg-dark text-white">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mb-4 mb-lg-0">
-                    <h2 class="mb-4">Надежные запчасти для вашей техники</h2>
-                    <p class="lead">
-                        Убедитесь в качестве нашей продукции и выберите сертифицированные комплектующие для бесперебойной работы вашего оборудования.
-                    </p>
-                    <div class="d-flex gap-3">
-                        <a href="{% url 'catalog:product-list' %}"
-                           class="btn btn-primary btn-lg px-4">Перейти в каталог</a>
-                        <a href="{% url 'about' %}" class="btn btn-outline-light btn-lg px-4">Узнать о компании больше</a>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <img src="{% static 'config/images/logistics-cta.webp' %}"
-                         alt="Логистика"
-                         class="img-fluid rounded shadow"
-                         style="object-fit: cover;
-                                height: 100%">
-                </div>
-            </div>
-        </div>
-    </section>
+
 {% endblock %}
