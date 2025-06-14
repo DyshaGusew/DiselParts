@@ -14,7 +14,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto">
-            <!-- Старая "Главная" теперь "Каталог" и ведёт на product-list -->
+            <!-- Меню -->
             <li class="nav-item">
               <a class="nav-link {% if request.resolver_match.url_name == 'product-list' %}active{% endif %}"
                  href="{% url 'catalog:product-list' %}">КАТАЛОГ</a>
@@ -40,7 +40,7 @@
               <a href="{% url 'orders:cart-view' %}"
                  class="btn btn-outline-light me-2 px-4 py-2">КОРЗИНА
                 {% if basket and basket.products_count > 0 %}
-                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill">
                     {{ basket.products_count }}
                     <span class="visually-hidden">ТОВАРОВ В КОРЗИНЕ</span>
                   </span>
