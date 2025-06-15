@@ -9,7 +9,7 @@
     <meta name="description"
           content="Купить {{ object.name }} (артикул: {{ object.article }}) за {{ object.sale_price }} руб. Оригинальные запчасти с доставкой по России." />
     <meta property="og:image"
-          content="{% if product.moysklad_product.images %}{{ product.moysklad_product.get_medium_image_url }}{% else %}{% static 'catalog/images/placeholder-detail.jpg' %}{% endif %}" />
+          content="{% if product.moysklad_product.images %}{{ product.moysklad_product.get_medium_image_url }}{% else %}{% static 'catalog/images/placeholder-detail.webp' %}{% endif %}" />
     <meta property="og:url" content="{{ request.build_absolute_uri }}" />
 {% endblock %}
 {% block title %}{{ object.name }}{% endblock %}
@@ -29,7 +29,7 @@
                                     background: #f8f9fa"
                              loading="lazy">
                     {% else %}
-                        <img src="{% static 'catalog/images/placeholder-detail.jpg' %}"
+                        <img src="{% static 'catalog/images/placeholder-detail.webp' %}"
                              class="card-img-top lazy-load"
                              alt="Нет изображения"
                              style="object-fit: contain;
@@ -140,7 +140,7 @@
           "@context": "https://schema.org",
           "@type": "Product",
           "name": "{{ object.name }}",
-          "image": "{% if product.moysklad_product.images %}{{ product.moysklad_product.get_medium_image_url }}{% else %}{% static 'catalog/images/placeholder-detail.jpg' %}{% endif %}",
+          "image": "{% if product.moysklad_product.images %}{{ product.moysklad_product.get_medium_image_url }}{% else %}{% static 'catalog/images/placeholder-detail.webp' %}{% endif %}",
           "description": "{{ object.description|default:'Оригинальная запчасть для тяжелой техники' }}",
           "sku": "{{ object.article }}",
           "brand": {

@@ -2,14 +2,12 @@
 {% load static %}
 {% block title %}Сертификаты качества{% endblock %}
 {% block content %}
-
     <!-- Контакты и реквизиты -->
     <section id="contacts" class="py-5">
         <div class="container px-4 px-lg-5">
             <div class="text-start mb-5">
                 <h1 class="display-4 mb-4">Контакты и реквизиты</h1>
             </div>
-
             <div class="row g-4 equal-height">
                 <!-- Карточка 1 -->
                 <div class="col-md-6 col-fluid mb-4">
@@ -17,30 +15,35 @@
                         <div class="flex-grow-1">
                             <h3 class="card-title">Адреса</h3>
                             <p class="text-muted">
-                                <strong>Юридический адрес:</strong><br>
-                                353451, Краснодарский край, Анапский р-н,<br>
+                                <strong>Юридический адрес:</strong>
+                                <br>
+                                353451, Краснодарский край, Анапский р-н,
+                                <br>
                                 г. Анапа, ул. Адмирала Пустошкина, д. 22, корп. 8, кв.(оф.) 249
                             </p>
                             <p class="text-muted">
-                                <strong>Адрес для корреспонденции:</strong><br>
-                                353451, Краснодарский край, Анапский р-н,<br>
+                                <strong>Адрес для корреспонденции:</strong>
+                                <br>
+                                353451, Краснодарский край, Анапский р-н,
+                                <br>
                                 г. Анапа, ул. Адмирала Пустошкина, д. 22, корп. 8, кв.(оф.) 249
                             </p>
                             <p class="text-muted">
-                                <strong>Фактический адрес:</strong><br>
-                                353451, Краснодарский край, Анапский р-н,<br>
+                                <strong>Фактический адрес:</strong>
+                                <br>
+                                353451, Краснодарский край, Анапский р-н,
+                                <br>
                                 г. Анапа, ул. Промышленная 6
                             </p>
-
                             <h3 class="card-title mt-4">Связь для заказа запчастей</h3>
                             <p class="text-muted">
-                                <strong>Телефон:</strong> 8(994)024-97-96<br>
+                                <strong>Телефон:</strong> 8(994)024-97-96
+                                <br>
                                 <strong>Email:</strong> manager02@dieselenergoparts.ru
                             </p>
                         </div>
                     </div>
                 </div>
-
                 <!-- Карточка 2 -->
                 <div class="col-md-6 col-fluid mb-4">
                     <div class="card bg-light text-start p-4 h-100 d-flex flex-column">
@@ -52,7 +55,6 @@
                             <p class="text-muted">
                                 <strong>Email:</strong> manager02@dieselenergoparts.ru
                             </p>
-
                             <h3 class="card-title mt-4">Банковские реквизиты</h3>
                             <p class="text-muted">
                                 <strong>ОГРН:</strong> 1212300047343
@@ -64,7 +66,8 @@
                                 <strong>ОКПО:</strong> 51354426
                             </p>
                             <p class="text-muted">
-                                <strong>Р/с:</strong> 40702810208000014273<br>
+                                <strong>Р/с:</strong> 40702810208000014273
+                                <br>
                                 в СТАВРОПОЛЬСКОМ Ф-ЛЕ ПАО "ПРОМСВЯЗЬБАНК"
                             </p>
                             <p class="text-muted">
@@ -79,8 +82,6 @@
             </div>
         </div>
     </section>
-
-
     <!-- Карта расположения -->
     <section class="py-5">
         <div class="container px-4 px-lg-5">
@@ -90,34 +91,38 @@
             </p>
             <div class="map-container">
                 <iframe src="https://yandex.ru/map-widget/v1/?ll=37.327488%2C44.881363&mode=search&ol=geo&ouri=ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgoxOTQ1OTYxODgxEmXQoNC-0YHRgdC40Y8sINCa0YDQsNGB0L3QvtC00LDRgNGB0LrQuNC5INC60YDQsNC5LCDQkNC90LDQv9CwLCDQn9GA0L7QvNGL0YjQu9C10L3QvdCw0Y8g0YPQu9C40YbQsCwgNiIKDVhPFUIVg4YzQg%2C%2C&z=16.59"
-                       loading="lazy"
-                       width="100%"
-                       height="400"
-                       frameborder="0"
-                       allowfullscreen="true"
-                       style="border:0"></iframe>
+                        loading="lazy"
+                        width="100%"
+                        height="400"
+                        frameborder="0"
+                        allowfullscreen="true"
+                        style="border:0"></iframe>
             </div>
         </div>
     </section>
-
- <!-- Призыв к действию -->
+    <!-- Призыв к действию -->
     <section class="py-5 down">
         <div class="container px-4 px-lg-5">
             <div class="row">
                 <div class="col-lg-6 mb-4 mb-lg-0 d-flex flex-column align-items-start">
                     <h2 class="display-4 mb-4 text-dark">Запчасти для спецтехники Komatsu и Cat</h2>
-                    <p class="lead text-dark">Перейдите в каталог запчастей для Komatsu и Cat, чтобы выбрать нужные комплектующие прямо сейчас!</p>
+                    <p class="lead text-dark">
+                        Перейдите в каталог запчастей для Komatsu и Cat, чтобы выбрать нужные комплектующие прямо сейчас!
+                    </p>
                     <p class="lead text-dark">Или перейдите в раздел о компании, чтобы познакомиться с нами поближе.</p>
                     <div class="d-flex gap-3 text-light">
-                        <a href="{% url 'catalog:product-list' %}" class="btn btn-primary btn-lg px-4 py-2 d-flex align-items-center">КАТАЛОГ</a>
-                        <a href="{% url 'sert' %}" class="btn btn-primary btn-lg px-4 py-2 d-flex align-items-center">О КОМПАНИИ</a>
+                        <a href="{% url 'catalog:product-list' %}"
+                           class="btn btn-primary btn-lg px-4 py-2 d-flex align-items-center">КАТАЛОГ</a>
+                        <a href="{% url 'sert' %}"
+                           class="btn btn-primary btn-lg px-4 py-2 d-flex align-items-center">О КОМПАНИИ</a>
                     </div>
                 </div>
                 <div class="col">
-                    <img src="{% static 'config/images/photo3.svg' %}" alt="фото3" class="img-fluid mx-4">
+                    <img src="{% static 'config/images/photo3.webp' %}"
+                         alt="фото3"
+                         class="img-fluid mx-4">
                 </div>
             </div>
         </div>
     </section>
-
 {% endblock %}

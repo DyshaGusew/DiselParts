@@ -16,9 +16,12 @@
                     <div class="col-md-6 card-title">
                         <p>Информация о заказе</p>
                         <p>Дата: {{ order.get_date }}</p>
-                        <p>Статус: <span class="badge {% if order.status == 'Обрабатывается' %}bg-secondary {% elif order.status == 'Отправлен' %}bg-info {% elif order.status == 'Доставлен' %}bg-success {% elif order.status == 'Отменен' %}bg-danger {% else %}bg-primary{% endif %}">{{ order.status }}</span></p>
+                        <p>
+                            Статус: <span class="badge {% if order.status == 'Обрабатывается' %}bg-secondary {% elif order.status == 'Отправлен' %}bg-info {% elif order.status == 'Доставлен' %}bg-success {% elif order.status == 'Отменен' %}bg-danger {% else %}bg-primary{% endif %}">{{ order.status }}</span>
+                        </p>
                         {% if order.other_info %}
-                            <p>Дополнительная информация:
+                            <p>
+                                Дополнительная информация:
                                 <br>
                                 <span class="text-muted">{{ order.other_info|linebreaksbr }}</span>
                             </p>
@@ -27,7 +30,7 @@
                     <div class="col-md-6 card-title">
                         <h5>Контактная информация</h5>
                         <p>Покупатель: {{ order.User.email }}</p>
-                        <p>Телефон: {{ order.User.phone|default:"не указан"}}</p>
+                        <p>Телефон: {{ order.User.phone|default:"не указан" }}</p>
                         <p>Адрес доставки: {{ order.User.delivery_address|default:"не указан" }}</p>
                     </div>
                 </div>
@@ -58,7 +61,7 @@
                                                      style="object-fit: contain"
                                                      alt="{{ item.Product.name }}">
                                             {% else %}
-                                                <img src="{% static 'catalog/images/placeholder-detail.jpg' %}"
+                                                <img src="{% static 'catalog/images/placeholder-detail.webp' %}"
                                                      class="img-fluid h-100 w-100"
                                                      style="object-fit: contain"
                                                      alt="Нет изображения">

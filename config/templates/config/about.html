@@ -2,82 +2,107 @@
 {% load static %}
 {% block title %}О нас | ООО "ДИЗЕЛЬПАРТС" — Запчасти для Komatsu, Cat и спецтехники{% endblock %}
 {% block content %}
-
     <!-- О компании -->
     <section class="py-5">
         <div class="container px-4 px-lg-5">
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-4 mb-lg-0 d-flex flex-column align-items-start">
                     <h1 class="display-4 mb-4">О компании</h1>
-                    <p class="lead">ООО "ДИЗЕЛЬПАРТС" – ваш надежный партнер в обеспечении запчастей для тяжелой техники. Мы поставляем комплектующие для Komatsu, Cat, Hitachi <br>и других брендов строительной, горной и сельскохозяйственной техники.</p>
-                    <p class="lead">Наши клиенты – крупные компании по всей России, доверяющие нам <br>за качество, конкурентные цены и оперативную доставку.</p>
-                    <p class="lead">Если вам нужны запчасти для Komatsu, Cat или других марок – гарантируем оптимальные условия и безупречное обслуживание.</p>
+                    <p class="lead">
+                        ООО "ДИЗЕЛЬПАРТС" – ваш надежный партнер в обеспечении запчастей для тяжелой техники. Мы поставляем комплектующие для Komatsu, Cat, Hitachi
+                        <br>
+                        и других брендов строительной, горной и сельскохозяйственной техники.
+                    </p>
+                    <p class="lead">
+                        Наши клиенты – крупные компании по всей России, доверяющие нам
+                        <br>
+                        за качество, конкурентные цены и оперативную доставку.
+                    </p>
+                    <p class="lead">
+                        Если вам нужны запчасти для Komatsu, Cat или других марок – гарантируем оптимальные условия и безупречное обслуживание.
+                    </p>
                 </div>
                 <div class="col-lg-6 mb-4 mb-lg-0 d-flex flex-column align-items-center">
-                    <img src="{% static 'config/images/details.png' %}" alt="Детали техники" class="img-fluid">
+                    <img src="{% static 'config/images/details.webp' %}"
+                         alt="Детали техники"
+                         class="img-fluid">
                 </div>
             </div>
         </div>
     </section>
-
     <!-- Сертификаты -->
     <section id="services" class="py-5">
         <div class="container px-4 px-lg-5">
             <div class="text-start mb-5">
                 <h1 class="display-4 mb-4">Наши сертификаты</h1>
-                <p class="lead">Все наши комплектующие сертифицированы по стандартам ГОСТ Р, что подтверждает их высокое качество и соответствие требованиям безопасности. <br>Мы сотрудничаем только с проверенными производителями, такими как Komatsu и Caterpillar, чтобы обеспечить надежность вашей техники.</p>
+                <p class="lead">
+                    Все наши комплектующие сертифицированы по стандартам ГОСТ Р, что подтверждает их высокое качество и соответствие требованиям безопасности.
+                    <br>
+                    Мы сотрудничаем только с проверенными производителями, такими как Komatsu и Caterpillar, чтобы обеспечить надежность вашей техники.
+                </p>
             </div>
             <div class="row g-4">
-            <!-- Карточка 1: Сертификат Caterpillar -->
+                <!-- Карточка 1: Сертификат Caterpillar -->
                 <div class="col-md-6">
                     <div class="card bg-light">
                         <div class="card-body text-start px-4 py-0">
                             <h3 class="card-title my-4">Сертификат Caterpillar</h3>
-                            <img src="{% static 'config/images/sert_cat.svg' %}" alt="Сертификат Caterpillar" class="card-img-top">
+                            <img src="{% static 'config/images/sert_cat.webp' %}"
+                                 alt="Сертификат Caterpillar"
+                                 class="card-img-top">
                         </div>
                     </div>
                     <div class="card bg-dark">
                         <div class="card-body text-start p-4 text-end text-light">
-                            <a href="{% static 'config/certificates/CAT_sert.pdf' %}" class="btn btn-outline-light me-2 px-4 py-2" download>СКАЧАТЬ СЕРТИФИКАТ</a>
+                            <a href="{% static 'config/certificates/CAT_sert.pdf' %}"
+                               class="btn btn-outline-light me-2 px-4 py-2"
+                               download>СКАЧАТЬ СЕРТИФИКАТ</a>
                         </div>
                     </div>
                 </div>
-
                 <!-- Карточка 2: Сертификат Komatsu -->
                 <div class="col-md-6">
                     <div class="card bg-light">
                         <div class="card-body text-start px-4 py-0">
                             <h3 class="card-title my-4">Сертификат Komatsu</h3>
-                            <img src="{% static 'config/images/sert_kom.svg' %}" alt="Сертификат Komatsu" class="card-img-top">
+                            <img src="{% static 'config/images/sert_kom.webp' %}"
+                                 alt="Сертификат Komatsu"
+                                 class="card-img-top">
                         </div>
                     </div>
                     <div class="card bg-dark">
                         <div class="card-body text-start p-4 text-end text-light">
-                           <a href="{% static 'config/certificates/Komatsu_sert.pdf' %}" class="btn btn-outline-light me-2 px-4 py-2" download>СКАЧАТЬ СЕРТИФИКАТ</a>
+                            <a href="{% static 'config/certificates/Komatsu_sert.pdf' %}"
+                               class="btn btn-outline-light me-2 px-4 py-2"
+                               download>СКАЧАТЬ СЕРТИФИКАТ</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-     <!-- Призыв к действию -->
+    <!-- Призыв к действию -->
     <section class="py-5">
         <div class="container px-4 px-lg-5">
             <div class="row">
                 <div class="col-lg-6 mb-4 mb-lg-0 d-flex flex-column align-items-start">
                     <h2 class="display-4 mb-4 text-dark">Надежные запчасти для вашей техники</h2>
-                    <p class="lead text-dark">Наш офис и склад находятся в Анапе, что позволяет оперативно обрабатывать заказы на запчасти для Komatsu и Cat с доставкой по всей России.</p>
+                    <p class="lead text-dark">
+                        Наш офис и склад находятся в Анапе, что позволяет оперативно обрабатывать заказы на запчасти для Komatsu и Cat с доставкой по всей России.
+                    </p>
                     <div class="d-flex gap-3 text-light">
-                        <a href="{% url 'catalog:product-list' %}" class="btn btn-primary btn-lg px-4 py-2 d-flex align-items-center">КУПИТЬ ЗАПЧАСТИ</a>
-                        <a href="{% url 'sert' %}" class="btn btn-primary btn-lg px-4 py-2 d-flex align-items-center">КОНТАКТЫ</a>
+                        <a href="{% url 'catalog:product-list' %}"
+                           class="btn btn-primary btn-lg px-4 py-2 d-flex align-items-center">КУПИТЬ ЗАПЧАСТИ</a>
+                        <a href="{% url 'sert' %}"
+                           class="btn btn-primary btn-lg px-4 py-2 d-flex align-items-center">КОНТАКТЫ</a>
                     </div>
                 </div>
                 <div class="col">
-                    <img src="{% static 'config/images/photo2.svg' %}" alt="фото1" class="img-fluid mx-4">
+                    <img src="{% static 'config/images/photo2.webp' %}"
+                         alt="фото1"
+                         class="img-fluid mx-4">
                 </div>
             </div>
         </div>
     </section>
-
 {% endblock %}

@@ -84,7 +84,7 @@
                         <!-- Изображение товара -->
                         <div class="text-center mb-2" style="height: 200px; overflow: hidden;">
                             <a href="{% url 'catalog:product-detail' product.slug %}">
-                                <img src="{% if product.get_medium_image_url %}{{ product.get_medium_image_url }}{% else %}{% static 'catalog/images/placeholder-detail.jpg' %}{% endif %}"
+                                <img src="{% if product.get_medium_image_url %}{{ product.get_medium_image_url }}{% else %}{% static 'catalog/images/placeholder-detail.webp' %}{% endif %}"
                                      class="img-fluid w-100 lazy"
                                      alt="{{ product.name }}"
                                      style="height: 200px;
