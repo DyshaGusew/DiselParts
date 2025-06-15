@@ -6,7 +6,7 @@
         <div class="row justify-content-center">
             <div class="container px-4 px-lg-5">
                 <!-- Заголовок с анимацией -->
-                <h1 class="display-4 mb-4 text-center">Личный кабинет</h1>
+                <h1 class="display-4 mb-4 text-start">Личный кабинет</h1>
                 <!-- Карточка профиля -->
                 <div class="card mb-5 border-0 shadow-sm overflow-hidden">
                     <div class="card bg-white p-4 border-0">
@@ -16,9 +16,6 @@
                         <div class="row g-4">
                             <div class="col-md-6">
                                 <div class="d-flex align-items-start">
-                                    <div class="me-3 text-primary">
-                                        <i class="bi bi-person-circle fs-4"></i>
-                                    </div>
                                     <div>
                                         <p class="text-muted small mb-1">Имя пользователя</p>
                                         <p class="card-title">{{ user.username }}</p>
@@ -27,9 +24,6 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="d-flex align-items-start">
-                                    <div class="me-3 text-primary">
-                                        <i class="bi bi-envelope fs-4"></i>
-                                    </div>
                                     <div>
                                         <p class="text-muted small mb-1">Email</p>
                                         <p class="card-title">{{ user.email|default:"Не указан" }}</p>
@@ -38,9 +32,6 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="d-flex align-items-start">
-                                    <div class="me-3 text-primary">
-                                        <i class="bi bi-telephone fs-4"></i>
-                                    </div>
                                     <div>
                                         <p class="text-muted small mb-1">Телефон</p>
                                         <p class="card-title">{{ user.phone|default:"Не указан" }}</p>
@@ -49,9 +40,6 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="d-flex align-items-start">
-                                    <div class="me-3 text-primary">
-                                        <i class="bi bi-geo-alt fs-4"></i>
-                                    </div>
                                     <div>
                                         <p class="text-muted small mb-1">Адрес доставки</p>
                                         <p class="card-title">{{ user.delivery_address|default:"Не указан" }}</p>
@@ -124,7 +112,7 @@
                                                 </td>
                                                 <td class="text-end pe-4">
                                                     <a href="{% url 'order:order-view' order.id %}"
-                                                       class="btn btn-primary rounded-pill px-4 px-sm-3 py-sm-2 fs-sm-6"> Подробнее
+                                                       class="btn btn-primary rounded-pill px-4 px-sm-3 py-sm-2 fs-sm-6">ПОДРОБНЕЕ
                                                     </a>
                                                 </td>
                                             </tr>

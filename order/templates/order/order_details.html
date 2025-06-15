@@ -2,56 +2,42 @@
 {% load static %}
 {% block title %}Информация о заказе №{{ order.id }}{% endblock %}
 {% block content %}
-    <div class="container mt-4">
+    <div class="container px-4 px-lg-5 my-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2>Заказ №{{ order.id }}</h2>
+            <h1 class="display-4 mb-4 text-start">Заказ №{{ order.id }}</h1>
             <a href="{% url 'accounts:profile' %}" class="btn btn-outline-secondary">
-                <i class="bi bi-arrow-left"></i> Вернуться
+                <i class="bi bi-arrow-left"></i> НАЗАД
             </a>
         </div>
         <div class="card shadow-sm mb-4">
             <div class="card-body">
                 <!-- Основная информация о заказе -->
                 <div class="row mb-4">
-                    <div class="col-md-6">
-                        <h5>Информация о заказе</h5>
-                        <p>
-                            <strong>Дата:</strong> {{ order.get_date }}
-                        </p>
-                        <p>
-                            <strong>Статус:</strong>
-                            <span class="badge {% if order.status == 'Обрабатывается' %}bg-secondary {% elif order.status == 'Отправлен' %}bg-info {% elif order.status == 'Доставлен' %}bg-success {% elif order.status == 'Отменен' %}bg-danger {% else %}bg-primary{% endif %}">
-                                {{ order.status }}
-                            </span>
-                        </p>
+                    <div class="col-md-6 card-title">
+                        <p>Информация о заказе</p>
+                        <p>Дата: {{ order.get_date }}</p>
+                        <p>Статус: <span class="badge {% if order.status == 'Обрабатывается' %}bg-secondary {% elif order.status == 'Отправлен' %}bg-info {% elif order.status == 'Доставлен' %}bg-success {% elif order.status == 'Отменен' %}bg-danger {% else %}bg-primary{% endif %}">{{ order.status }}</span></p>
                         {% if order.other_info %}
-                            <p>
-                                <strong>Дополнительная информация:</strong>
+                            <p>Дополнительная информация:
                                 <br>
                                 <span class="text-muted">{{ order.other_info|linebreaksbr }}</span>
                             </p>
                         {% endif %}
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 card-title">
                         <h5>Контактная информация</h5>
-                        <p>
-                            <strong>Покупатель:</strong> {{ order.User.email }}
-                        </p>
-                        <p>
-                            <strong>Телефон:</strong> {{ order.User.phone|default:"не указан" }}
-                        </p>
-                        <p>
-                            <strong>Адрес доставки:</strong> {{ order.User.delivery_address|default:"не указан" }}
-                        </p>
+                        <p>Покупатель: {{ order.User.email }}</p>
+                        <p>Телефон: {{ order.User.phone|default:"не указан"}}</p>
+                        <p>Адрес доставки: {{ order.User.delivery_address|default:"не указан" }}</p>
                     </div>
                 </div>
                 <!-- Таблица товаров -->
-                <h5 class="mb-3">Состав заказа</h5>
+                <p class="card-title">Состав заказа</p>
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table table-hover align-middle">
                         <thead class="table-light">
                             <tr>
-                                <th style="width: 60px;">Фото</th>
+                                <th style="width: 200px;">Фото</th>
                                 <th style="width: 30%;">Товар</th>
                                 <th class="text-end" style="width: 150px;">Цена</th>
                                 <th class="text-center" style="width: 120px;">Кол-во</th>
@@ -62,10 +48,10 @@
                             {% for item in order.items.all %}
                                 <tr>
                                     <td>
-                                        <div style="width: 50px;
-                                                    height: 50px;
+                                        <div style="width: 100px;
+                                                    height: 100px;
                                                     overflow: hidden;
-                                                    background: #f8f9fa">
+                                                    background: #fff">
                                             {% if item.Product.get_medium_image_url %}
                                                 <img src="{{ item.Product.get_medium_image_url }}"
                                                      class="img-fluid h-100 w-100"
@@ -80,14 +66,19 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <h6 class="mb-1">{{ item.Product.name }}</h6>
-                                        <p class="text-muted small mb-0">
-                                            <strong>Арт.:</strong> {{ item.Product.article|default:"-" }}
+                                        <h6 class="card-title">{{ item.Product.name }}</h6>
+                                        <p class="text-nowrap">
+                                            <strong>Артикул:</strong> {{ item.Product.article|default:"-" }}
                                         </p>
+                                        {% if item.Product.country %}
+                                            <p class="text-nowrap">
+                                                <strong>Страна:</strong> {{ item.Product.country }}
+                                            </p>
+                                        {% endif %}
                                     </td>
-                                    <td class="text-end">{{ item.Product.sale_price|floatformat:2 }} ₽</td>
+                                    <td class="text-end">{{ item.Product.sale_price|floatformat:2 }} руб.</td>
                                     <td class="text-center">{{ item.quantity }}</td>
-                                    <td class="text-end">{{ item.get_sum|floatformat:2 }} ₽</td>
+                                    <td class="text-end">{{ item.get_sum|floatformat:2 }} руб.</td>
                                 </tr>
                             {% endfor %}
                         </tbody>

@@ -3,72 +3,67 @@
 {% block title %}Редактировать профиль{% endblock %}
 {% block content %}
     <div class="container mt-5">
-        <h1 class="mb-4 text-center text-primary">Редактировать профиль</h1>
+        <h1 class="display-4 mb-4 text-center">Редактировать профиль</h1>
         <div class="card shadow-lg border-0 rounded-3 mx-auto"
              style="max-width: 500px">
             <div class="card-body p-4">
                 <form method="post">
                     {% csrf_token %}
                     <!-- Username -->
-                    <div class="mb-3">
-                        <div class="form-floating">
-                            <input type="text"
+                    <div class="mb-3 w-100">
+                        <input type="text"
                                    name="username"
                                    id="id_username"
-                                   class="form-control"
+                                   class="form-control flex-fill"
+                                   placeholder="Имя пользователя"
                                    value="{{ form.username.value|default_if_none:'' }}"
-                                   required>
-                            <label for="id_username">Имя пользователя</label>
-                        </div>
+                                   required
+                                   autofocus>
                         {% if form.username.errors %}<div class="text-danger small mt-1">{{ form.username.errors.0 }}</div>{% endif %}
                     </div>
                     <!-- Email -->
-                    <div class="mb-3">
-                        <div class="form-floating">
-                            <input type="email"
+                    <div class="mb-3 w-100">
+                        <input type="email"
                                    name="email"
                                    id="id_email"
-                                   class="form-control"
+                                   class="form-control flex-fill"
+                                   placeholder="Email"
                                    value="{{ form.email.value|default_if_none:'' }}"
-                                   required>
-                            <label for="id_email">Email</label>
-                        </div>
+                                   required
+                                   autofocus>
                         {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>{% endif %}
                     </div>
                     <!-- Телефон -->
-                    <div class="mb-3">
-                        <div class="form-floating">
-                            <input type="text"
+                    <div class="mb-3 w-100">
+                        <input type="text"
                                    name="phone"
                                    id="id_phone"
-                                   class="form-control"
-                                   value="{{ form.phone.value|default_if_none:'' }}">
-                            <label for="id_phone">Телефон</label>
-                        </div>
+                                   class="form-control flex-fill"
+                                   placeholder="Телефон"
+                                   value="{{ form.phone.value|default_if_none:'' }}"
+                                   required
+                                   autofocus>
                         {% if form.phone.errors %}<div class="text-danger small mt-1">{{ form.phone.errors.0 }}</div>{% endif %}
                     </div>
                     <!-- Адрес доставки -->
-                    <div class="mb-3">
-                        <div class="form-floating">
-                            <input type="text"
+                    <div class="mb-3 w-100">
+                        <input type="text"
                                    name="delivery_address"
                                    id="id_delivery_address"
-                                   class="form-control"
-                                   value="{{ form.delivery_address.value|default_if_none:'' }}">
-                            <label for="id_delivery_address">Адрес доставки</label>
-                        </div>
+                                   class="form-control flex-fill"
+                                   placeholder="Адрес доставки"
+                                   value="{{ form.delivery_address.value|default_if_none:'' }}"
+                                   required
+                                   autofocus>
                         {% if form.delivery_address.errors %}
                             <div class="text-danger small mt-1">{{ form.delivery_address.errors.0 }}</div>
                         {% endif %}
                     </div>
                     <!-- Сохранить -->
-                    <button type="submit" class="btn btn-primary w-100">
-                        <i class="bi bi-check-circle me-2"></i>Сохранить
-                    </button>
+                    <button type="submit" class="btn btn-success w-100">СОХРАНИТЬ</button>
                 </form>
                 <div class="mt-3 text-center">
-                    <a href="{% url 'accounts:profile' %}" class="text-secondary small">
-                        <i class="bi bi-arrow-left-circle me-1"></i>Вернуться к профилю
+                    <a href="{% url 'accounts:profile' %}" class="text-muted small mb-1">Вернуться к профилю
                     </a>
                 </div>
             </div>
