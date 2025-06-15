@@ -443,3 +443,8 @@
         height: 48px; /* Устанавливаем фиксированную ширину */
     }
 }
+
+.cart-badge {
+    padding: 0.2em 0.4em;
+    transform: translate(-73%, +2%) !important;
+  }

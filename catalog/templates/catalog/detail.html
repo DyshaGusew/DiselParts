@@ -2,108 +2,111 @@
 {% load static %}
 {% load cache %}
 {% block extra_head %}
-   <!-- Мета-теги для SEO -->
-   <meta property="og:title" content="{{ object.name }} - ООО ДИЗЕЛЬПАРТС" />
-   <meta property="og:description"
-         content="Купить {{ object.name }} (артикул: {{ object.article }}) за {{ object.sale_price }} руб. Оригинальные запчасти с доставкой по России." />
-   <meta name="description"
-         content="Купить {{ object.name }} (артикул: {{ object.article }}) за {{ object.sale_price }} руб. Оригинальные запчасти с доставкой по России." />
-   <meta property="og:image"
-         content="{% if product.moysklad_product.images %}{{ product.moysklad_product.get_medium_image_url }}{% else %}{% static 'catalog/images/placeholder-detail.jpg' %}{% endif %}" />
-   <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+    <!-- Мета-теги для SEO -->
+    <meta property="og:title" content="{{ object.name }} - ООО ДИЗЕЛЬПАРТС" />
+    <meta property="og:description"
+          content="Купить {{ object.name }} (артикул: {{ object.article }}) за {{ object.sale_price }} руб. Оригинальные запчасти с доставкой по России." />
+    <meta name="description"
+          content="Купить {{ object.name }} (артикул: {{ object.article }}) за {{ object.sale_price }} руб. Оригинальные запчасти с доставкой по России." />
+    <meta property="og:image"
+          content="{% if product.moysklad_product.images %}{{ product.moysklad_product.get_medium_image_url }}{% else %}{% static 'catalog/images/placeholder-detail.jpg' %}{% endif %}" />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
 {% endblock %}
 {% block title %}{{ object.name }}{% endblock %}
 {% block content %}
-   <div class="container mt-5">
-      <div class="row">
-         <!-- Изображение товара -->
-         <div class="col p-4">
-            <div class="card">
-               {% if product.get_medium_image_url %}
-                  <img src="{{ product.get_medium_image_url }}"
-                       data-src="{{ product.get_original_image_url }}"
-                       class="card-img-top rounded lazy-load"
-                       alt="{{ product.name }}"
-                       style="object-fit: contain;
-                              max-height: 500px;
-                              background: #f8f9fa"
-                       loading="lazy">
-               {% else %}
-                  <img src="{% static 'catalog/images/placeholder-detail.jpg' %}"
-                       class="card-img-top lazy-load"
-                       alt="Нет изображения"
-                       style="object-fit: contain;
-                              max-height: 500px;
-                              background: #f8f9fa"
-                       loading="lazy">
-               {% endif %}
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Изображение товара -->
+            <div class="col p-4">
+                <div class="card">
+                    {% if product.get_medium_image_url %}
+                        <img src="{{ product.get_medium_image_url }}"
+                             data-src="{{ product.get_original_image_url }}"
+                             class="card-img-top rounded lazy-load"
+                             alt="{{ product.name }}"
+                             style="object-fit: contain;
+                                    max-height: 500px;
+                                    background: #f8f9fa"
+                             loading="lazy">
+                    {% else %}
+                        <img src="{% static 'catalog/images/placeholder-detail.jpg' %}"
+                             class="card-img-top lazy-load"
+                             alt="Нет изображения"
+                             style="object-fit: contain;
+                                    max-height: 500px;
+                                    background: #f8f9fa"
+                             loading="lazy">
+                    {% endif %}
+                </div>
             </div>
-         </div>
-         <!-- Информация о товаре -->
-         <div class="col p-4">
-            <h1 class="display-4 mb-4">{{ object.name }} <br>для тяжелой техники</h1>
-               <div class="mb-4">
-                  <h2 class="display-4 mb-4 text-light p-4">{{ object.sale_price }} руб.</h2>
-                  <p class="text-muted">
-                     <strong>Артикул:</strong> {{ object.article }}
-                  </p>
-                  {% if object.country %}
-                     <p class="text-muted">
-                        <strong>Страна:</strong> {{ object.country }}
-                     </p>
-                  {% endif %}
-                  {% if object.supplier_legal_title %}
-                     <p class="text-muted">
-                        <strong>Производитель:</strong> {{ object.supplier_legal_title }}
-                     </p>
-                  {% endif %}
-                  {% if object.group %}
-                     <p class="text-muted">
-                        <strong>Группа:</strong> {{ object.group }}
-                     </p>
-                  {% endif %}
-               </div>
-               {% if not object.description %}
-                  <p class="lead">
-                     Оригинальная запчасть {{ object.name }} (артикул: {{ object.article }}) от {{ object.supplier_legal_title|default:'производителя' }}. Подходит для тяжелой техники.
-                  </p>
-               {% endif %}
-               {% if object.description %}
-                  <div class="mt-4 mb-4">
-                     <p class="lead">{{ object.description }}</p>
-                  </div>
-               {% endif %}
-               <!-- Блок управления количеством и добавлением в корзину -->
-               <div class="d-flex align-items-center gap-3 mt-4">
-                  <form action="{% url 'order:update-quantity-product' product.id %}"
-                        method="post"
-                        class="add-to-cart-form d-flex align-items-center gap-3">
-                     {% csrf_token %}
-                     <input type="hidden" name="action" value="add" />
-                     <input type="hidden"
-                            name="current_params"
-                            value="{{ request.GET.urlencode }}" />
-                     <!-- Блок с кнопками +/- -->
-                     <div class="input-group" style="width: 200px;">
-                        <button type="button" class="btn btn-outline-secondary minus-btn">-</button>
-                        <input type="number"
-                               name="quantity"
-                               class="form-control text-center quantity-input"
-                               value="1"
-                               min="1" />
-                        <button type="button" class="btn btn-outline-secondary plus-btn">+</button>
-                     </div>
-                     <!-- Основная кнопка добавления -->
-                     <button type="submit" class="btn btn-success fixed-width-button">В КОРЗИНУ</button>
-                  </form>
-
-               </div>
-         </div>
-      </div>
-   </div>
-   {% block extra_js %}
-      <!-- Скрипт для последовательной загрузки изображений -->
-      <script>
+            <!-- Информация о товаре -->
+            <div class="col p-4">
+                <h1 class="display-4 mb-4">
+                    {{ object.name }}
+                    <br>
+                    для тяжелой техники
+                </h1>
+                <div class="mb-4">
+                    <h2 class="display-4 mb-4 text-light p-4">{{ object.sale_price }} руб.</h2>
+                    <p class="text-muted">
+                        <strong>Артикул:</strong> {{ object.article }}
+                    </p>
+                    {% if object.country %}
+                        <p class="text-muted">
+                            <strong>Страна:</strong> {{ object.country }}
+                        </p>
+                    {% endif %}
+                    {% if object.supplier_legal_title %}
+                        <p class="text-muted">
+                            <strong>Производитель:</strong> {{ object.supplier_legal_title }}
+                        </p>
+                    {% endif %}
+                    {% if object.group %}
+                        <p class="text-muted">
+                            <strong>Группа:</strong> {{ object.group }}
+                        </p>
+                    {% endif %}
+                </div>
+                {% if not object.description %}
+                    <p class="lead">
+                        Оригинальная запчасть {{ object.name }} (артикул: {{ object.article }}) от {{ object.supplier_legal_title|default:'производителя' }}. Подходит для тяжелой техники.
+                    </p>
+                {% endif %}
+                {% if object.description %}
+                    <div class="mt-4 mb-4">
+                        <p class="lead">{{ object.description }}</p>
+                    </div>
+                {% endif %}
+                <!-- Блок управления количеством и добавлением в корзину -->
+                <div class="d-flex align-items-center gap-3 mt-4">
+                    <form action="{% url 'order:update-quantity-product' product.id %}"
+                          method="post"
+                          class="add-to-cart-form d-flex align-items-center gap-3">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="add" />
+                        <input type="hidden"
+                               name="current_params"
+                               value="{{ request.GET.urlencode }}" />
+                        <!-- Блок с кнопками +/- -->
+                        <div class="input-group quantity-selector" style="width: 200px;">
+                            <button type="button" class="btn btn-outline-secondary minus-btn">-</button>
+                            <input type="number"
+                                   name="quantity"
+                                   class="form-control text-center quantity-input"
+                                   value="1"
+                                   min="1" />
+                            <button type="button" class="btn btn-outline-secondary plus-btn">+</button>
+                        </div>
+                        <!-- Основная кнопка добавления -->
+                        <button type="submit" class="btn btn-success fixed-width-button">В КОРЗИНУ</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block extra_js %}
+        <!-- Скрипт для последовательной загрузки изображений -->
+        <script>
          document.addEventListener('DOMContentLoaded', () => {
              const images = document.querySelectorAll('.lazy-load');
              const observer = new IntersectionObserver((entries, observer) => {
@@ -128,11 +131,11 @@
  
              images.forEach(img => observer.observe(img));
          });
-      </script>
-      <!-- Основной JS с defer -->
-      <script defer src="{% static 'catalog/js/script.js' %}"></script>
-      <!-- Структурированные данные для SEO -->
-      <script type="application/ld+json">
+        </script>
+        <!-- Основной JS с defer -->
+        <script defer src="{% static 'catalog/js/script.js' %}"></script>
+        <!-- Структурированные данные для SEO -->
+        <script type="application/ld+json">
       {
           "@context": "https://schema.org",
           "@type": "Product",
@@ -262,6 +265,6 @@
               }
           ]
       }
-      </script>
-   {% endblock %}
+        </script>
+    {% endblock %}
 {% endblock %}
