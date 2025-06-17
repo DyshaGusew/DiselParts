@@ -13,6 +13,37 @@ from django.core.files.base import ContentFile
 from PIL import Image
 import io
 import base64
+import os
+import shutil
+
+
+def clear_product_images():
+    """Очищает папки с изображениями товаров перед загрузкой новых"""
+    try:
+        media_root = settings.MEDIA_ROOT
+        medium_images_path = os.path.join(media_root, 'products', 'medium')
+        original_images_path = os.path.join(media_root, 'products', 'original')
+
+        for folder_path in [medium_images_path, original_images_path]:
+            if os.path.exists(folder_path):
+                for filename in os.listdir(folder_path):
+                    file_path = os.path.join(folder_path, filename)
+                    try:
+                        if os.path.isfile(file_path) or os.path.islink(file_path):
+                            os.unlink(file_path)
+                        elif os.path.isdir(file_path):
+                            shutil.rmtree(file_path)
+                    except Exception as e:
+                        print(f'Не удалось удалить {file_path}. Причина: {e}')
+                print(f'Очищена папка {folder_path}')
+            else:
+                os.makedirs(folder_path)
+                print(f'Создана папка {folder_path}')
+
+        return True
+    except Exception as e:
+        print(f'Ошибка при очистке папок с изображениями: {e}')
+        return False
 
 
 def fetch_products() -> dict:
@@ -273,7 +304,7 @@ def extract_product_defaults(product_data: dict) -> dict:
     """Извлекает и преобразует данные товара в формат для модели"""
     product_id = product_data["id"]
     moysklad_url = product_data.get("meta", {}).get("uuidHref", "")
-    moysklad_product = MoyskladProduct(id=product_id)
+    moysklad_product, _ = MoyskladProduct.objects.get_or_create(id=product_id)
     images = get_product_images(product_id, moysklad_product)
     main_price = product_data.get("salePrices", [{}])[0]
     min_price = product_data.get("minPrice", {})
@@ -341,6 +372,7 @@ def extract_product_defaults(product_data: dict) -> dict:
 
 def sync_products_with_moysklad() -> bool:
     """Основная логика синхронизации товаров"""
+    clear_product_images()
     products_data = fetch_products()
 
     if not products_data or "rows" not in products_data:
