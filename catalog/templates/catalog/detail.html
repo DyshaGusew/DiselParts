@@ -5,9 +5,9 @@
     <!-- Мета-теги для SEO -->
     <meta property="og:title" content="{{ object.name }} - ООО ДИЗЕЛЬПАРТС" />
     <meta property="og:description"
-          content="Купить {{ object.name }} (артикул: {{ object.article }}) за {{ object.sale_price }} руб. Оригинальные запчасти с доставкой по России." />
+          content="Купить {{ object.name }} (артикул: {{ object.article }}) за {{ object.sale_price }} руб. Оригинальные запчасти с доставкой по России. Гарантируем наличие." />
     <meta name="description"
-          content="Купить {{ object.name }} (артикул: {{ object.article }}) за {{ object.sale_price }} руб. Оригинальные запчасти с доставкой по России." />
+          content="Купить {{ object.name }} (артикул: {{ object.article }}) за {{ object.sale_price }} руб. Оригинальные запчасти с доставкой по России. Гарантируем наличие." />
     <meta property="og:image"
           content="{% if product.moysklad_product.images %}{{ product.moysklad_product.get_medium_image_url }}{% else %}{% static 'catalog/images/placeholder-detail.webp' %}{% endif %}" />
     <meta property="og:url" content="{{ request.build_absolute_uri }}" />
@@ -41,11 +41,7 @@
             </div>
             <!-- Информация о товаре -->
             <div class="col p-4">
-                <h1 class="display-4 mb-4">
-                    {{ object.name }}
-                    <br>
-                    для тяжелой техники
-                </h1>
+                <h1 class="display-4 mb-4">{{ object.name }}</h1>
                 <div class="mb-4">
                     <h2 class="display-4 mb-4 text-light p-4">{{ object.sale_price }} руб.</h2>
                     <p class="text-muted">
@@ -61,15 +57,10 @@
                             <strong>Производитель:</strong> {{ object.supplier_legal_title }}
                         </p>
                     {% endif %}
-                    {% if object.group %}
-                        <p class="text-muted">
-                            <strong>Группа:</strong> {{ object.group }}
-                        </p>
-                    {% endif %}
                 </div>
                 {% if not object.description %}
                     <p class="lead">
-                        Оригинальная запчасть {{ object.name }} (артикул: {{ object.article }}) от {{ object.supplier_legal_title|default:'производителя' }}. Подходит для тяжелой техники.
+                        Оригинальная запчасть {{ object.name }} (артикул: {{ object.article }}) от {{ object.supplier_legal_title|default:'производителя' }}. В наличии.
                     </p>
                 {% endif %}
                 {% if object.description %}
@@ -141,7 +132,7 @@
           "@type": "Product",
           "name": "{{ object.name }}",
           "image": "{% if product.moysklad_product.images %}{{ product.moysklad_product.get_medium_image_url }}{% else %}{% static 'catalog/images/placeholder-detail.webp' %}{% endif %}",
-          "description": "{{ object.description|default:'Оригинальная запчасть для тяжелой техники' }}",
+          "description": "{{ object.description|default:'Оригинальная запчасть в наличии' }}",
           "sku": "{{ object.article }}",
           "brand": {
               "@type": "Brand",

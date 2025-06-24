@@ -6,6 +6,9 @@
     <div class="container px-4 px-lg-5 mt-5">
         <!-- Заголовок -->
         <h1 class="display-4 mb-4">Каталог деталей и запчастей</h1>
+        <div class="text-dark fs-5 fw-medium mt-6 py-3">
+            Каталог актуален на <span id="current-date" class="fw-bold"></span>
+        </div>
         <!-- Панель фильтров и сортировки -->
         <div class="card mb-5 border-0 rounded-3 bg-light">
             <div class="card-body p-4 bg-white">
@@ -48,16 +51,6 @@
                                             {% if selected_manufacturer == manufacturer %}selected{% endif %}>
                                         {{ manufacturer }}
                                     </option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <!-- Фильтр по группе -->
-                        <div class="flex-fill">
-                            <select name="group" class="form-select">
-                                <option value="">Группа</option>
-                                {% for group in groups %}
-                                    <option value="{{ group }}"
-                                            {% if selected_group == group %}selected{% endif %}>{{ group }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -170,5 +163,13 @@
     </div>
     {% block extra_js %}
         <script defer src="{% static 'catalog/js/script.js' %}"></script>
+        <script>
+            // Скрипт для отображения текущей даты
+            document.addEventListener('DOMContentLoaded', function() {
+                const now = new Date();
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                document.getElementById('current-date').textContent = now.toLocaleDateString('ru-RU', options);
+            });
+        </script>
     {% endblock %}
 {% endblock %}

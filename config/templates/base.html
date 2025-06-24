@@ -7,19 +7,18 @@
          <link rel="stylesheet" href="{% static 'catalog/css/styles.css' %}" />
          <link rel="stylesheet" href="{% static 'accounts/css/styles.css' %}" />
       {% endblock %}
-
       <!-- Мета-теги для SEO и адаптивности -->
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta name="description"
-            content="ООО ДИЗЕЛЬПАРТС – поставка запчастей для тяжелой техники Komatsu, Cat и других марок по всей России. Купить запчасти для спецтехники выгодно и быстро!" />
+            content="ООО ДИЗЕЛЬПАРТС – поставка оригинальных запчастей Komatsu, Cat и других марок по всей России. Гарантия наличия. Купить оригинальные запчасти для вашей техники выгодно и быстро!" />
       <meta name="google-site-verification"
             content="-afcy8XFTKi8Fi8pEDSROqOdmhogjNR3eHhD_7ESJq0" />
       <meta name="yandex-verification" content="b821bec763c721ac" />
       <meta property="og:title"
-            content="ООО ДИЗЕЛЬПАРТС - Запчасти для тяжелой техники" />
+            content="ООО ДИЗЕЛЬПАРТС - Оригинальные запчасти в наличии" />
       <meta property="og:description"
-            content="Поставка оригинальных запчастей для строительной и горной техники по всей России." />
+            content="Поставка оригинальных запчастей по всей России." />
       <meta property="og:image"
             content="{% static 'config/images/hero-bg.webp' %}" />
       <!-- Оптимизация загрузки критических ресурсов -->
@@ -27,15 +26,12 @@
             href="{% static 'config/css/bootstrap.min.css' %}"
             as="style" />
       <link rel="stylesheet" href="{% static 'config/css/bootstrap.min.css' %}" />
-
       <link rel="preload"
             href="{% static 'config/css/bootstrap-icons.css' %}"
             as="style" />
       <link rel="stylesheet" href="{% static 'config/css/bootstrap-icons.css' %}" />
-
       <!-- Шрифты и иконки -->
       <!-- Динамические и дополнительные стили -->
-
       <link rel="stylesheet" href="{% static 'config/css/main.css' %}" />
       <link rel="icon"
             href="https://dizparts-anapa.ru/static/config/images/favicon.ico"
@@ -45,7 +41,7 @@
             type="image/x-icon" />
       <!-- Заголовок страницы -->
       <title>
-         {% block title %}Запчасти для спецтехники{% endblock %}
+         {% block title %}Оригинальные запчасти для вашей техники{% endblock %}
       </title>
    </head>
    <body>
@@ -78,11 +74,11 @@
       <!-- Кэшируемый футер -->
       {% load cache %}
       {# {% cache 3600 footer %} #}
-         {% include "includes/footer.html" %}
+      {% include "includes/footer.html" %}
       {# {% endcache %} #}
-   <!-- Скрипты -->
-   <script defer src="{% static 'config/js/bootstrap.bundle.min.js' %}"></script>
-   <script>
+      <!-- Скрипты -->
+      <script defer src="{% static 'config/js/bootstrap.bundle.min.js' %}"></script>
+      <script>
          function initToasts() {
              const toasts = document.querySelectorAll('.toast');
              toasts.forEach(toast => {
@@ -94,16 +90,16 @@
              });
          }
          document.addEventListener('DOMContentLoaded', function() { initToasts(); });
-   </script>
-   <!-- Schema Markup для всей базы -->
-   <script type="application/ld+json">
+      </script>
+      <!-- Schema Markup для всей базы -->
+      <script type="application/ld+json">
       {
           "@context": "https://schema.org",
           "@type": "Organization",
           "name": "ООО ДИЗЕЛЬПАРТС",
           "url": "https://dizparts-anapa.ru",
-          "description": "Поставка запчастей для тяжелой техники Komatsu, Cat и других марок по всей России"
+          "description": "Поставка оригинальных запчастей Komatsu, Cat и других марок по всей России. Гарантия наличия."
       }
-   </script>
-</body>
+      </script>
+   </body>
 </html>
